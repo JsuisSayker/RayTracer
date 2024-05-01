@@ -10,7 +10,7 @@
 RayTracer::Camera::Camera()
 {
     origin = Math::Point3D(0, 0, 0);
-    screen = Rectangle3D(Math::Point3D(0, 0, 0), Math::Vector3D(1920, 0, 0), Math::Vector3D(0, 1080, 0));
+    screen = Rectangle3D(Math::Point3D(0, 0, 0), Math::Vector3D(400, 0, 0), Math::Vector3D(0, 400, 0));
 }
 
 RayTracer::Ray RayTracer::Camera::ray(double u, double v) const
