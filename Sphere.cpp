@@ -11,6 +11,10 @@ RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius) : center(c
 {
 }
 
+RayTracer::Sphere::~Sphere()
+{
+}
+
 bool RayTracer::Sphere::hits(const Ray &ray) const
 {
     Math::Vector3D oc = ray.origin - center;
@@ -21,6 +25,7 @@ bool RayTracer::Sphere::hits(const Ray &ray) const
     return (discriminant > 0);
 }
 
-RayTracer::Sphere::~Sphere()
+void RayTracer::Sphere::translate(const Math::Vector3D &translation)
 {
+    center = center + translation;
 }

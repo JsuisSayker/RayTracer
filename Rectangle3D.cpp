@@ -13,8 +13,12 @@ Rectangle3D::Rectangle3D()
     this->bottom_side = Math::Vector3D(1, 0, 0);
     this->left_side = Math::Vector3D(0, 1, 0);
 }
+Rectangle3D::~Rectangle3D()
+{
+}
 
-Rectangle3D::Rectangle3D(const Math::Point3D& origin, const Math::Vector3D& bottom_side, const Math::Vector3D& left_side)
+Rectangle3D::Rectangle3D(const Math::Point3D& origin, const Math::Vector3D&
+    bottom_side, const Math::Vector3D& left_side)
 {
     this->origin = origin;
     this->bottom_side = bottom_side;
@@ -23,9 +27,11 @@ Rectangle3D::Rectangle3D(const Math::Point3D& origin, const Math::Vector3D& bott
 
 Math::Point3D Rectangle3D::pointAt(double u, double v) const
 {
-    return Math::Point3D(this->origin.x + u , this->origin.y + v, this->origin.z);
+    return Math::Point3D(this->origin.x + u , this->origin.y + v,
+        this->origin.z);
 }
 
-Rectangle3D::~Rectangle3D()
+void Rectangle3D::translate(const Math::Vector3D &translation)
 {
+    this->origin = this->origin + translation;
 }

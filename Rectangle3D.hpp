@@ -22,6 +22,7 @@ class Rectangle3D {
     ~Rectangle3D();
 
     Math::Point3D pointAt(double u, double v) const;
+    void translate(const Math::Vector3D &translation);
 };
 
 #endif /* !RECTANGLE3D_HPP_ */

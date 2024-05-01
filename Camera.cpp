@@ -9,7 +9,7 @@
 
 RayTracer::Camera::Camera()
 {
-    origin = Math::Point3D(0, 0, 0);
+    origin = Math::Point3D(-200, -200, 0);
     screen = Rectangle3D(Math::Point3D(0, 0, 0), Math::Vector3D(400, 0, 0), Math::Vector3D(0, 400, 0));
 }
 

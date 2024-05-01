@@ -1,2 +1,4 @@
 *.txt
 *vgcore.*
+*.out
+*.ppm

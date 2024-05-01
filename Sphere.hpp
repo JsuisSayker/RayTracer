@@ -26,6 +26,7 @@ namespace RayTracer
         ~Sphere();
 
         bool hits(const Ray &ray) const;
+        void translate(const Math::Vector3D &translation);
     };
 
 }
