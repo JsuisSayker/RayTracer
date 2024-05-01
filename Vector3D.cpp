@@ -84,3 +84,24 @@ double Math::Vector3D::dot(const Math::Vector3D &v) const
 {
     return x * v.x + y * v.y + z * v.z;
 }
+
+void Math::Vector3D::rotateX(double angle)
+{
+    double rad = angle * M_PI / 180;
+    double new_y = this->y * cos(rad) - this->z * sin(rad);
+    double new_z = this->y * sin(rad) + this->z * cos(rad);
+}
+
+void Math::Vector3D::rotateY(double angle)
+{
+    double rad = angle * M_PI / 180;
+    double new_x = this->x * cos(rad) + this->z * sin(rad);
+    double new_z = -this->x * sin(rad) + this->z * cos(rad);
+}
+
+void Math::Vector3D::rotateZ(double angle)
+{
+    double rad = angle * M_PI / 180;
+    double new_x = this->x * cos(rad) - this->y * sin(rad);
+    double new_y = this->x * sin(rad) + this->y * cos(rad);
+}

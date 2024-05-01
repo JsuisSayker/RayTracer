@@ -25,6 +25,11 @@ namespace Math {
 
         double length();
 
+        //rotate functions
+        void rotateX(double angle);
+        void rotateY(double angle);
+        void rotateZ(double angle);
+
         // Operator overloading
         Vector3D operator+(const Vector3D& v) const;
         Vector3D operator+=(const Vector3D& v);
