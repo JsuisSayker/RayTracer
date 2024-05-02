@@ -20,15 +20,18 @@ jobs:
           repository: ''
 
       - name: Compile repository
-        run: make
+        run: cmake -S . -B build
 
-      - name: Clean repository
-        run: make clean
+      - name: Build project
+        run: cmake --build build
+
+      # - name: Clean repository
+      #   run: make clean
 
       - name: Check file
         run: |
           for file in ${{ vars.EXECUTABLES }};do
-             if [ ! -x "$file" ]; then
+             if [ ! -x "./build/$file" ]; then
               echo"File $file does not exist or is not executable"
               exit 1
             fi
