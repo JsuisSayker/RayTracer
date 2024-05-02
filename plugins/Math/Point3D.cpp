@@ -22,27 +22,27 @@ Math::Point3D::~Point3D()
 {
 }
 
-Math::Point3D Math::Point3D::operator+(const Math::Vector3D &v) const
+Math::Point3D Math::Point3D::operator+(const Math::IVector3D &v) const
 {
     return Math::Point3D(x + v.x, y + v.y, z + v.z);
 }
 
-Math::Point3D Math::Point3D::operator-(const Math::Vector3D &v) const
+Math::Point3D Math::Point3D::operator-(const Math::IVector3D &v) const
 {
     return Math::Point3D(x - v.x, y - v.y, z - v.z);
 }
 
-Math::Vector3D Math::Point3D::operator-(const Math::Point3D &p) const
+Math::Vector3D Math::Point3D::operator-(const Math::IPoint3D &p) const
 {
     return Math::Vector3D(x - p.x, y - p.y, z - p.z);
 }
 
-Math::Vector3D Math::Point3D::operator+(const Math::Point3D &p) const
+Math::Vector3D Math::Point3D::operator+(const Math::IPoint3D &p) const
 {
     return Math::Vector3D(x + p.x, y + p.y, z + p.z);
 }
 
-void Math::Point3D::translate(const Math::Vector3D &translation)
+void Math::Point3D::translate(const Math::IVector3D &translation)
 {
     x += translation.x;
     y += translation.y;

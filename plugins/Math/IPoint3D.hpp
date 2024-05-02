@@ -8,7 +8,7 @@
 #ifndef IPOINT3D_HPP_
 #define IPOINT3D_HPP_
 
-#include "Vector3D.hpp"
+#include "IVector3D.hpp"
 
 namespace Math
 {
@@ -22,7 +22,7 @@ namespace Math
         IPoint3D(double x, double y, double z) {};
         virtual ~IPoint3D() {};
 
-        virtual void translate(const Math::Vector3D &translation) = 0;
+        virtual void translate(const Math::IVector3D &translation) = 0;
     };
 }
 

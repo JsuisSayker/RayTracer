@@ -27,17 +27,17 @@ namespace Math {
         void rotateZ(double angle);
 
         // Operator overloading
-        Vector3D operator+(const Vector3D& v) const;
-        Vector3D operator+=(const Vector3D& v);
-        Vector3D operator-(const Vector3D& v) const;
-        Vector3D operator-= (const Vector3D& v);
+        Vector3D operator+(const IVector3D& v) const;
+        Vector3D operator+=(const IVector3D& v);
+        Vector3D operator-(const IVector3D& v) const;
+        Vector3D operator-= (const IVector3D& v);
 
         Vector3D operator*(double k) const;
         Vector3D operator*= (double k);
         Vector3D operator/(double k) const;
         Vector3D operator/= (double k);
 
-        double dot(const Vector3D& v) const;
+        double dot(const IVector3D& v) const;
 
 
         template <int N>
