@@ -5,13 +5,13 @@
 ** APrimitives
 */
 
-#include "APrimitives.hpp"
+#include <APrimitives.hpp>
 
 APrimitives::APrimitives() {}
 
 APrimitives::~APrimitives() {}
 
-void APrimitives::translate(const Math::IVector3D &translation)
+void APrimitives::translate(const Math::Vector3D &translation)
 {
   this->center = this->center + translation;
 }

@@ -1,0 +1,10 @@
+/home/sayker/Tek2/OOP/RayTracer/build/CMakeFiles/raytracer.dir
+/home/sayker/Tek2/OOP/RayTracer/build/CMakeFiles/edit_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/CMakeFiles/rebuild_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/interface/CMakeFiles/edit_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/interface/CMakeFiles/rebuild_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/plugins/CMakeFiles/edit_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/plugins/CMakeFiles/rebuild_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/plugins/Math/CMakeFiles/raytracer_math.dir
+/home/sayker/Tek2/OOP/RayTracer/build/plugins/Math/CMakeFiles/edit_cache.dir
+/home/sayker/Tek2/OOP/RayTracer/build/plugins/Math/CMakeFiles/rebuild_cache.dir

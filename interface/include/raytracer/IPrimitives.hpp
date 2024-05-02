@@ -8,12 +8,12 @@
 #ifndef IPRIMITIVES_HPP_
 #define IPRIMITIVES_HPP_
 
-#include "Ray.hpp"
+#include <Ray.hpp>
 
 class IPrimitives {
   public:
-    IPrimitives();
-    ~IPrimitives();
+    IPrimitives(){};
+    ~IPrimitives(){};
 
     virtual bool hits(const RayTracer::Ray &ray) const = 0;
     virtual Math::Point3D pointAt(double u, double v) const = 0;

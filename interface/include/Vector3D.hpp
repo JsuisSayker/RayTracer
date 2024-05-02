@@ -8,7 +8,7 @@
 #ifndef VECTOR3D_HPP__
 #define VECTOR3D_HPP__
 
-#include "IVector3D.hpp"
+#include <raytracer/IVector3D.hpp>
 
 namespace Math {
 

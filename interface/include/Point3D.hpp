@@ -8,7 +8,8 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
-#include "IPoint3D.hpp"
+#include <raytracer/IPoint3D.hpp>
+#include "Vector3D.hpp"
 
 namespace Math
 {

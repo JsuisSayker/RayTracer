@@ -8,9 +8,9 @@
 #ifndef APRIMITIVES_HPP_
 #define APRIMITIVES_HPP_
 
-#include "IPrimitives.hpp"
-#include "IVector3D.hpp"
-#include "IPoint3D.hpp"
+#include <raytracer/IPrimitives.hpp>
+#include <raytracer/IVector3D.hpp>
+#include <raytracer/IPoint3D.hpp>
 
 class APrimitives : virtual public IPrimitives {
 public:
@@ -19,11 +19,11 @@ public:
 
   virtual bool hits(const RayTracer::Ray &ray) const = 0;
 
-  void translate(const Math::IVector3D &translation);
+  void translate(const Math::Vector3D &translation);
   void rotate(double x, double y, double z);
 
 protected:
-  Math::IPoint3D *center;
+  Math::Point3D *center;
   Math::IVector3D *rotation;
 private:
 };
