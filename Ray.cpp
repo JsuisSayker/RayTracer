@@ -5,7 +5,7 @@
 ** RayTracer
 */
 
-#include "RayTracer.hpp"
+#include "Ray.hpp"
 
 RayTracer::Ray::Ray()
 {

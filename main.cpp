@@ -7,7 +7,7 @@
 
 #include "Camera.hpp"
 #include "Sphere.hpp"
-#include "RayTracer.hpp"
+#include "Ray.hpp"
 #include "Point3D.hpp"
 #include <iostream>
 
@@ -28,7 +28,7 @@ int main()
         for (int x = 0; x < 400; x += 1) {
             double u = x / 400.0;
             double v = y / 400.0;
-            RayTracer ::Ray r = cam.ray(u, v);
+            RayTracer::Ray r = cam.ray(u, v);
             if (s.hits(r)) {
                 write_color(Math::Vector3D(255, 0, 0));  // Red color
             } else {
