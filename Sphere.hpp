@@ -9,7 +9,7 @@
 #define SPHERE_HPP_
 
 #include "Vector3D.hpp"
-#include "RayTracer.hpp"
+#include "Ray.hpp"
 #include "Point3D.hpp"
 
 

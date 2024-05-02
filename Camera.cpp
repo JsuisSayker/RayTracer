@@ -14,11 +14,11 @@ RayTracer::Camera::Camera()
     screen.translate(Math::Vector3D(-0.5, -0.5, -0.5));
 }
 
+RayTracer::Camera::~Camera()
+{
+}
+
 RayTracer::Ray RayTracer::Camera::ray(double u, double v) const
 {
     return RayTracer::Ray(origin, screen.pointAt(u, v) - origin);
-}
-
-RayTracer::Camera::~Camera()
-{
 }
