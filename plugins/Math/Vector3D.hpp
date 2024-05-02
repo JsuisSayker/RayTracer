@@ -8,16 +8,12 @@
 #ifndef VECTOR3D_HPP__
 #define VECTOR3D_HPP__
 
-#include <cmath>
-#include <vector>
+#include "IVector3D.hpp"
 
 namespace Math {
 
-    class Vector3D {
+    class Vector3D : virtual public IVector3D {
         public:
-        double x;
-        double y;
-        double z;
 
         Vector3D();
         Vector3D(double x, double y, double z);

@@ -7,14 +7,14 @@
 
 #include "Point3D.hpp"
 
-Math::Point3D::Point3D()
+Math::Point3D::Point3D() : Math::IPoint3D()
 {
-    x = 0;
-    y = 0;
-    z = 0;
+    this->x = 0;
+    this->y = 0;
+    this->z = 0;
 }
 
-Math::Point3D::Point3D(double x, double y, double z) : x(x), y(y), z(z)
+Math::Point3D::Point3D(double x, double y, double z) : Math::IPoint3D(x, y, z)
 {
 }
 

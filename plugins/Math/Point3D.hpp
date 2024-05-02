@@ -8,16 +8,13 @@
 #ifndef POINT3D_HPP_
 #define POINT3D_HPP_
 
+#include "IPoint3D.hpp"
 #include "Vector3D.hpp"
 
 namespace Math
 {
-    class Point3D {
+    class Point3D : virtual public Math::IPoint3D {
     public:
-        double x;
-        double y;
-        double z;
-
         Point3D();
         Point3D(double x, double y, double z);
         ~Point3D();
