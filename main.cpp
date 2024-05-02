@@ -23,11 +23,12 @@ int main()
 {
     RayTracer ::Camera cam;
     RayTracer ::Sphere s(Math::Point3D(0, 0, -1), 0.5);
-    std::cout << "P3\n" << 400 << ' ' << 400 << "\n255\n";
-    for (int y = 0; y < 400; y+= 1) {
-        for (int x = 0; x < 400; x += 1) {
-            double u = x / 400.0;
-            double v = y / 400.0;
+    int len = 400;
+    std::cout << "P3\n" << len << ' ' << len << "\n255\n";
+    for (int y = 0; y < len; y+= 1) {
+        for (int x = 0; x < len; x += 1) {
+            double u = x / (double)len;
+            double v = y / (double)len;
             RayTracer::Ray r = cam.ray(u, v);
             if (s.hits(r)) {
                 write_color(Math::Vector3D(255, 0, 0));  // Red color
