@@ -9,8 +9,9 @@
 
 RayTracer::Camera::Camera()
 {
-    origin = Math::Point3D(0.5, 0.5, 1);
-    screen = Rectangle3D(Math::Point3D(0, 0, 0), Math::Vector3D(1, 0, 0), Math::Vector3D(0, 1, 0));
+    origin = Math::Point3D(0, 0, 0);
+    screen = Rectangle3D();
+    screen.translate(Math::Vector3D(-0.5, -0.5, -0.5));
 }
 
 RayTracer::Ray RayTracer::Camera::ray(double u, double v) const
