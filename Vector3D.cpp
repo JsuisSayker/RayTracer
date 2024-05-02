@@ -82,7 +82,7 @@ Math::Vector3D Math::Vector3D::operator/=(double k)
 
 double Math::Vector3D::dot(const Math::Vector3D &v) const
 {
-    return x * v.x + y * v.y + z * v.z;
+    return (x * v.x) + (y * v.y) + (z * v.z);
 }
 
 void Math::Vector3D::rotateX(double angle)
