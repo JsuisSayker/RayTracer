@@ -8,12 +8,17 @@
 #ifndef VECTOR3D_HPP__
 #define VECTOR3D_HPP__
 
-#include <raytracer/IVector3D.hpp>
+#include <cmath>
+#include <vector>
 
 namespace Math {
 
-    class Vector3D : virtual public IVector3D {
+    class Vector3D {
         public:
+
+        double x;
+        double y;
+        double z;
 
         Vector3D();
         Vector3D(double x, double y, double z);
@@ -27,17 +32,17 @@ namespace Math {
         void rotateZ(double angle);
 
         // Operator overloading
-        Vector3D operator+(const IVector3D& v) const;
-        Vector3D operator+=(const IVector3D& v);
-        Vector3D operator-(const IVector3D& v) const;
-        Vector3D operator-= (const IVector3D& v);
+        Vector3D operator+(const Vector3D& v) const;
+        Vector3D operator+=(const Vector3D& v);
+        Vector3D operator-(const Vector3D& v) const;
+        Vector3D operator-= (const Vector3D& v);
 
         Vector3D operator*(double k) const;
         Vector3D operator*= (double k);
         Vector3D operator/(double k) const;
         Vector3D operator/= (double k);
 
-        double dot(const IVector3D& v) const;
+        double dot(const Vector3D& v) const;
 
 
         template <int N>

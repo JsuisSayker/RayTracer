@@ -27,5 +27,26 @@ add_executable(raytracer app/main.cpp)
 add_subdirectory(interface)
 add_subdirectory(plugins)
 
-target_link_libraries(raytracer raytracer_interfaces)
+target_link_libraries(raytracer
+  raytracer_interfaces
+  raytracer_math
+  raytracer_primitives
+  raytracer_core_rendrers
+  raytracer_sphere
+)
 
+# # Move .so files out of the build folder
+set(DESTINATION ${CMAKE_SOURCE_DIR}/plugins)
+
+add_custom_command(
+  TARGET raytracer
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:raytracer> ${CMAKE_SOURCE_DIR})
+
+set(WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/plugins/Primitives/Sphere)
+add_custom_command(
+  TARGET raytracer
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:raytracer_sphere>
+          ${DESTINATION}/raytracer_sphere.so
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})

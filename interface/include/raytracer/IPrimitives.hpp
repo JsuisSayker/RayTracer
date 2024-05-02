@@ -18,7 +18,7 @@ class IPrimitives {
     virtual bool hits(const RayTracer::Ray &ray) const = 0;
     virtual Math::Point3D pointAt(double u, double v) const = 0;
     virtual void rotate(double x, double y, double z) = 0;
-    virtual void translate(const Math::IVector3D &translation) = 0;
+    virtual void translate(const Math::Vector3D &translation) = 0;
 
 
   protected:

@@ -5,7 +5,7 @@
 ** Sphere
 */
 
-#include "Sphere.hpp"
+#include <Sphere.hpp>
 
 RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius)
 {

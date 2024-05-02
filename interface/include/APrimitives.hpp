@@ -9,22 +9,21 @@
 #define APRIMITIVES_HPP_
 
 #include <raytracer/IPrimitives.hpp>
-#include <raytracer/IVector3D.hpp>
-#include <raytracer/IPoint3D.hpp>
 
 class APrimitives : virtual public IPrimitives {
 public:
   APrimitives();
   ~APrimitives();
 
-  virtual bool hits(const RayTracer::Ray &ray) const = 0;
+  virtual bool hits(const RayTracer::Ray &ray) const {};
+  virtual Math::Point3D pointAt(double u, double v) const {};
 
   void translate(const Math::Vector3D &translation);
   void rotate(double x, double y, double z);
 
 protected:
-  Math::Point3D *center;
-  Math::IVector3D *rotation;
+  Math::Point3D center;
+  Math::Vector3D *rotation;
 private:
 };
 

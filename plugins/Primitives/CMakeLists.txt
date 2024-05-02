@@ -1,3 +1,9 @@
 add_library(raytracer_primitives SHARED
-    Sphere.cpp
+    APrimitives.cpp
 )
+
+target_link_libraries(raytracer_primitives
+    raytracer_interfaces
+)
+
+add_subdirectory(Sphere)

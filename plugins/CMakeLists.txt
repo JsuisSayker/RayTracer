@@ -1,1 +1,3 @@
 add_subdirectory(Math)
+add_subdirectory(CoreRenderers)
+add_subdirectory(Primitives)

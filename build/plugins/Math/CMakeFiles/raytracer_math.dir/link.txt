@@ -1,1 +1,0 @@
-/usr/lib64/ccache/c++ -fPIC  -ggdb3 -shared -Wl,-soname,libraytracer_math.so -o libraytracer_math.so CMakeFiles/raytracer_math.dir/Point3D.cpp.o CMakeFiles/raytracer_math.dir/Vector3D.cpp.o 

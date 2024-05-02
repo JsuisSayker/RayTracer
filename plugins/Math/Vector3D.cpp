@@ -7,15 +7,18 @@
 
 #include "Vector3D.hpp"
 
-Math::Vector3D::Vector3D() : IVector3D()
+Math::Vector3D::Vector3D()
 {
     x = 0;
     y = 0;
     z = 0;
 }
 
-Math::Vector3D::Vector3D(double x, double y, double z) : IVector3D(x, y, z)
+Math::Vector3D::Vector3D(double x, double y, double z)
 {
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 Math::Vector3D::~Vector3D()
@@ -27,12 +30,12 @@ double Math::Vector3D::length()
     return sqrt(x * x + y * y + z * z);
 }
 
-Math::Vector3D Math::Vector3D::operator+(const Math::IVector3D &v) const
+Math::Vector3D Math::Vector3D::operator+(const Math::Vector3D &v) const
 {
     return Math::Vector3D(x + v.x, y + v.y, z + v.z);
 }
 
-Math::Vector3D Math::Vector3D::operator+=(const Math::IVector3D &v)
+Math::Vector3D Math::Vector3D::operator+=(const Math::Vector3D &v)
 {
     x += v.x;
     y += v.y;
@@ -40,12 +43,12 @@ Math::Vector3D Math::Vector3D::operator+=(const Math::IVector3D &v)
     return *this;
 }
 
-Math::Vector3D Math::Vector3D::operator-(const Math::IVector3D &v) const
+Math::Vector3D Math::Vector3D::operator-(const Math::Vector3D &v) const
 {
     return Math::Vector3D(x - v.x, y - v.y, z - v.z);
 }
 
-Math::Vector3D Math::Vector3D::operator-=(const Math::IVector3D &v)
+Math::Vector3D Math::Vector3D::operator-=(const Math::Vector3D &v)
 {
     x -= v.x;
     y -= v.y;
@@ -80,7 +83,7 @@ Math::Vector3D Math::Vector3D::operator/=(double k)
 }
 
 
-double Math::Vector3D::dot(const Math::IVector3D &v) const
+double Math::Vector3D::dot(const Math::Vector3D &v) const
 {
     return (x * v.x) + (y * v.y) + (z * v.z);
 }

@@ -5,7 +5,7 @@
 ** Camera
 */
 
-#include "Camera.hpp"
+#include <Camera.hpp>
 
 RayTracer::Camera::Camera()
 {

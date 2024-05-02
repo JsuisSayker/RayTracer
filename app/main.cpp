@@ -5,10 +5,10 @@
 ** main
 */
 
-#include "Camera.hpp"
-#include "Sphere.hpp"
-#include "Ray.hpp"
-#include "Point3D.hpp"
+#include <Camera.hpp>
+#include <Sphere.hpp>
+#include <Ray.hpp>
+#include <Point3D.hpp>
 #include <iostream>
 
 void write_color(const Math::Vector3D& color)
