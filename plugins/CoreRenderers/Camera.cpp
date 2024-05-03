@@ -11,7 +11,7 @@ RayTracer::Camera::Camera()
 {
     origin = Math::Point3D(0, 0, 0);
     screen = Rectangle3D();
-    screen.translate(Math::Vector3D(-0.5, -0.5, -0.5));
+    screen.translate(Math::Vector3D(0, 0, -0.5));
 }
 
 RayTracer::Camera::~Camera()

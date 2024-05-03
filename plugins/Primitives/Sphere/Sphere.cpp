@@ -19,7 +19,7 @@ RayTracer::Sphere::~Sphere()
 
 bool RayTracer::Sphere::hits(const Ray &ray) const
 {
-    Math::Vector3D oc = ray.origin - center;
+    Math::Vector3D oc = this->center - ray.origin;
     double a = ray.direction.dot(ray.direction);
     double b = 2.0 * oc.dot(ray.direction);
     double c = oc.dot(oc) - (radius * radius);
