@@ -58,16 +58,16 @@ int RayTracer::Raytracer::run(std::string scene_file)
     cam.screen.bottom_side = Math::Vector3D(viewport_width,0, 0);
 
     // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-    Math::Vector3D pixel_delta_u = viewport_u / image_width;
-    Math::Vector3D pixel_delta_v = viewport_v / image_height;
+    double pixel_delta_u = viewport_u.x / image_width;
+    double pixel_delta_v = viewport_v.y / image_height;
 
     double variation = 255 / (double)image_width;
     RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
-    for (int y = 0; y < image_height; y+= 1) {
+    for (int y = 0; y < image_height; y += 1) {
         for (int x = 0; x < image_width; x += 1) {
-            double u = x * (pixel_delta_u.x);
-            double v = y * (pixel_delta_v.y);
+            double u = x * (pixel_delta_u);
+            double v = y * (pixel_delta_v);
             RayTracer::Ray r = cam.ray(u, v);
             if (s.hits(r)) {
                 write_color(Math::Vector3D(255, 0, 0));  // Red color
