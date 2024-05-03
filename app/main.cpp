@@ -10,6 +10,7 @@
 #include <Ray.hpp>
 #include <Point3D.hpp>
 #include <iostream>
+#include <Raytracer.hpp>
 
 void write_color(const Math::Vector3D& color)
 {
@@ -19,8 +20,26 @@ void write_color(const Math::Vector3D& color)
     std::cout << ir << ' ' << ig << ' ' << ib << '\n';
 }
 
-int main()
+void help()
 {
+    std::cout << "USAGE: ./raytracer <SCENE_FILE>" << std::endl;
+    std::cout << "\tSCENE_FILE: scene configuration" << std::endl;
+}
+
+int main(int ac, char **av)
+{
+    if (ac != 2) {
+        help();
+        return 84;
+    }
+    std::string arg = av[1];
+    if (arg == "--help") {
+        help();
+        return 0;
+    }
+    std::shared_ptr<RayTracer::Raytracer> raytracer = std::make_shared<RayTracer::Raytracer>();
+
+
     RayTracer::Camera cam;
     RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
     int len = 400;

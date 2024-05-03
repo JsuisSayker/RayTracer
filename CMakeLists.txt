@@ -22,7 +22,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ggdb3")
 endif()
 
-add_executable(raytracer app/main.cpp)
+add_executable(raytracer app/main.cpp src/Raytracer.cpp)
 
 add_subdirectory(interface)
 add_subdirectory(plugins)
