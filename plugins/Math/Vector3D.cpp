@@ -56,6 +56,16 @@ Math::Vector3D Math::Vector3D::operator-=(const Math::Vector3D &v)
     return *this;
 }
 
+Math::Vector3D Math::Vector3D::operator+(double k) const
+{
+    return Math::Vector3D(x + k, y + k, z + k);
+}
+
+Math::Vector3D Math::Vector3D::operator-(double k) const
+{
+    return Math::Vector3D(x - k, y - k, z - k);
+}
+
 Math::Vector3D Math::Vector3D::operator*(double k) const
 {
     return Math::Vector3D(x * k, y * k, z * k);

@@ -5,8 +5,8 @@
 ** RayTracer
 */
 
-#ifndef RAYTRACER_HPP_
-#define RAYTRACER_HPP_
+#ifndef RAY_HPP_
+#define RAY_HPP_
 
 #include "Vector3D.hpp"
 #include "Point3D.hpp"
@@ -22,4 +22,4 @@ namespace RayTracer {
     };
 }
 
-#endif /* !RAYTRACER_HPP_ */
+#endif /* !RAY_HPP_ */
