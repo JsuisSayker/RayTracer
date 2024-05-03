@@ -16,9 +16,6 @@ class Raytracer {
         Raytracer();
         ~Raytracer();
         int run(std::string scene_file);
-
-    protected:
-    private:
 };
 }
 
