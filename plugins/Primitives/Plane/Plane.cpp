@@ -6,11 +6,12 @@
 */
 
 #include <Plane.hpp>
+#include <cstdio>
 
-RayTracer::Plane::Plane(const Math::Point3D &position, const Math::Vector3D &normal)
+RayTracer::Plane::Plane(double position, const char axe)
 {
     this->position = position;
-    this->normal = normal;
+    this->axe = axe;
 }
 
 RayTracer::Plane::~Plane()
@@ -19,16 +20,29 @@ RayTracer::Plane::~Plane()
 
 bool RayTracer::Plane::hits(const Ray &ray) const
 {
-    double denominator = normal.dot(ray.direction);
-    if (denominator > 1e-6) {
-        Math::Vector3D oc = position - ray.origin;
-        double t = oc.dot(normal) / denominator;
-        return (t >= 0);
+    if (axe == 'x') {
+        if (ray.direction.x == 0)
+            return false;
+        double t = (position - ray.origin.x) / ray.direction.x;
+        if (t < 0)
+            return false;
+        return true;
+    }
+    if (axe == 'y') {
+        if (ray.direction.y == 0)
+            return false;
+        double t = (position - ray.origin.y) / ray.direction.y;
+        if (t < 0)
+            return false;
+        return true;
+    }
+    if (axe == 'z') {
+        if (ray.direction.z == 0)
+            return false;
+        double t = (position - ray.origin.z) / ray.direction.z;
+        if (t < 0)
+            return false;
+        return true;
     }
     return false;
-}
-
-void RayTracer::Plane::translate(const Math::Vector3D &translation)
-{
-    position = position + translation;
 }

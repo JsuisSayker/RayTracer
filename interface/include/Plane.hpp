@@ -12,14 +12,13 @@
 namespace RayTracer {
 class Plane : virtual public APrimitives {
 public:
-  Math::Point3D position;
-  Math::Vector3D normal;
+  double position;
+  char axe;
 
-  Plane(const Math::Point3D &position, const Math::Vector3D &normal);
+  Plane(double position, const char axe);
   ~Plane();
 
   bool hits(const Ray &ray) const;
-  void translate(const Math::Vector3D &translation);
 
 protected:
 private:
