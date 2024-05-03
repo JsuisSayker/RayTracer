@@ -7,16 +7,16 @@
 
 #include <APrimitives.hpp>
 
-APrimitives::APrimitives() {}
+RayTracer::APrimitives::APrimitives() {}
 
-APrimitives::~APrimitives() {}
+RayTracer::APrimitives::~APrimitives() {}
 
-void APrimitives::translate(const Math::Vector3D &translation)
+void RayTracer::APrimitives::translate(const Math::Vector3D &translation)
 {
   this->center = this->center + translation;
 }
 
-void APrimitives::rotate(double x, double y, double z)
+void RayTracer::APrimitives::rotate(double x, double y, double z)
 {
   this->rotation->rotateX(x);
   this->rotation->rotateY(y);

@@ -31,3 +31,8 @@ void RayTracer::Sphere::translate(const Math::Vector3D &translation)
 {
     center = center + translation;
 }
+
+extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
+{
+    return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1);
+}
