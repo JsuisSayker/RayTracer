@@ -33,6 +33,7 @@ target_link_libraries(raytracer
   raytracer_primitives
   raytracer_core_rendrers
   raytracer_sphere
+  raytracer_plane
 )
 
 # # Move .so files out of the build folder

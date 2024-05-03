@@ -16,8 +16,7 @@
 namespace RayTracer
 {
 
-    class Sphere: virtual public APrimitives
-    {
+    class Sphere: virtual public APrimitives {
     public:
         Math::Point3D center;
         double radius;

@@ -9,6 +9,8 @@
 #include <Sphere.hpp>
 #include <Ray.hpp>
 #include <Point3D.hpp>
+#include <Plane.hpp>
+
 #include <iostream>
 
 void write_color(const Math::Vector3D& color)
@@ -23,6 +25,7 @@ int main()
 {
     RayTracer::Camera cam;
     RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
+    RayTracer::Plane p(Math::Point3D(0, -0.5, 0), Math::Vector3D(0, 1, 0));
     int len = 400;
     std::cout << "P3\n" << len << ' ' << len << "\n255\n";
     for (int y = 0; y < len; y+= 1) {
@@ -30,6 +33,10 @@ int main()
             double u = x / (double)len;
             double v = y / (double)len;
             RayTracer::Ray r = cam.ray(u, v);
+            if (p.hits(r)) {
+                write_color(Math::Vector3D(0, 255, 0));  // Green color
+                continue;
+            }
             if (s.hits(r)) {
                 write_color(Math::Vector3D(255, 0, 0));  // Red color
             } else {
