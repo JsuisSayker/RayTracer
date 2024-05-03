@@ -4,6 +4,7 @@
 .vscode
 *.sh
 *.so
+*.json
 
 # CMake template
 CMakeLists.txt.user
