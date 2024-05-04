@@ -17,14 +17,18 @@ RayTracer::Sphere::~Sphere()
 {
 }
 
-bool RayTracer::Sphere::hits(const Ray &ray) const
+double RayTracer::Sphere::hits(const Ray &ray) const
 {
     Math::Vector3D oc = this->center - ray.origin;
     double a = ray.direction.dot(ray.direction);
-    double b = 2.0 * oc.dot(ray.direction);
-    double c = oc.dot(oc) - (radius * radius);
+    double b = -2.0 * oc.dot(ray.direction);
+    double c = oc.length() - (radius * radius);
     double discriminant = (b * b) - (4 * a * c);
-    return (discriminant > 0);
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(discriminant)) / (2.0 * a);
+    }
 }
 
 void RayTracer::Sphere::translate(const Math::Vector3D &translation)

@@ -18,31 +18,31 @@ RayTracer::Plane::~Plane()
 {
 }
 
-bool RayTracer::Plane::hits(const Ray &ray) const
+double RayTracer::Plane::hits(const Ray &ray) const
 {
     if (axe == 'x') {
         if (ray.direction.x == 0)
-            return false;
+            return -1;
         double t = (position - ray.origin.x) / ray.direction.x;
         if (t < 0)
-            return false;
-        return true;
+            return -1;
+        return t;
     }
     if (axe == 'y') {
         if (ray.direction.y == 0)
-            return false;
+            return -1;
         double t = (position - ray.origin.y) / ray.direction.y;
         if (t < 0)
-            return false;
-        return true;
+            return -1;
+        return t;
     }
     if (axe == 'z') {
         if (ray.direction.z == 0)
-            return false;
+            return -1;
         double t = (position - ray.origin.z) / ray.direction.z;
         if (t < 0)
-            return false;
-        return true;
+            return -1;
+        return t;
     }
-    return false;
+    return -1;
 }

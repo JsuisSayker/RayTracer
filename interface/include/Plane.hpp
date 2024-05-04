@@ -18,7 +18,7 @@ public:
   Plane(double position, const char axe);
   ~Plane();
 
-  bool hits(const Ray &ray) const;
+  double hits(const Ray &ray) const;
 
 protected:
 private:

@@ -11,6 +11,7 @@
 #include <Ray.hpp>
 #include <Point3D.hpp>
 #include <iostream>
+#include <Plane.hpp>
 
 RayTracer::Raytracer::Raytracer()
 {
@@ -63,17 +64,23 @@ int RayTracer::Raytracer::run(std::string scene_file)
 
     double variation = 255 / (double)image_width;
     RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
+    // RayTracer::Sphere s2(Math::Point3D(0,-100.5,-1), 100);
+    // RayTracer::Plane p(0, 'z');
+    // RayTracer::Plane p2(0, 'y');
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
     for (int y = 0; y < image_height; y += 1) {
         for (int x = 0; x < image_width; x += 1) {
             double u = x * (pixel_delta_u);
             double v = y * (pixel_delta_v);
             RayTracer::Ray r = cam.ray(u, v);
-            if (s.hits(r)) {
+            double tkt = s.hits(r);
+            if (tkt > 0.0) {
                 write_color(Math::Vector3D(255, 0, 0));  // Red color
+            // } else if (s2.hits(r)) {
+                // write_color(Math::Vector3D(0, 255, 0));  // Green color
             } else {
-                write_color(Math::Vector3D(y * variation, y * variation, 255));  // Blue color
-            }
+                write_color(Math::Vector3D(0, 0, 0));  // Black color
+            } 
         }
     }
     (void)scene_file;
