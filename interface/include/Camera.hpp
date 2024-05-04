@@ -24,6 +24,19 @@ namespace RayTracer
         ~Camera();
 
         Ray ray(double u, double v) const;
+
+        int getHeigth();
+        int getWidth();
+        int getFov();
+
+        void setFov(int fov);
+        void setHeigth(int heigth);
+        void setWidth(int width);
+
+    protected:
+        int _width;
+        int _height;
+        int _fov;
     };
 }
 
