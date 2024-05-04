@@ -18,7 +18,8 @@ RayTracer::Plane::~Plane()
 {
 }
 
-double RayTracer::Plane::hits(const Ray &ray) const
+double RayTracer::Plane::hits(const RayTracer::Ray &ray, double ray_tmin,
+           double ray_tmax, RayTracer::Primitives_record &rec) const
 {
     if (axe == 'x') {
         if (ray.direction.x == 0)

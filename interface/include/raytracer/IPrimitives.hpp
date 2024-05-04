@@ -10,12 +10,15 @@
 
 #include <Ray.hpp>
 
+#include "Primitives_record.hpp"
+
 class IPrimitives {
   public:
     IPrimitives(){};
     ~IPrimitives(){};
 
-    virtual double hits(const RayTracer::Ray &ray) const = 0;
+    virtual double hits(const RayTracer::Ray &ray, double ray_tmin,
+           double ray_tmax, RayTracer::Primitives_record &rec) const = 0;
     virtual void rotate(double x, double y, double z) = 0;
     virtual void translate(const Math::Vector3D &translation) = 0;
 

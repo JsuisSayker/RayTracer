@@ -24,7 +24,8 @@ namespace RayTracer
         Sphere(const Math::Point3D &center, double radius);
         ~Sphere();
 
-        double hits(const Ray &ray) const;
+        double hits(const RayTracer::Ray &ray, double ray_tmin,
+           double ray_tmax, RayTracer::Primitives_record &rec) const;
         void translate(const Math::Vector3D &translation);
     };
 

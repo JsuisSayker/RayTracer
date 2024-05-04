@@ -6,12 +6,13 @@
 */
 
 #include "Raytracer.hpp"
-#include <Camera.hpp>
-#include <Sphere.hpp>
-#include <Ray.hpp>
-#include <Point3D.hpp>
+#include "Camera.hpp"
+#include "Plane.hpp"
+#include "Point3D.hpp"
+#include "Ray.hpp"
+#include "Scene.hpp"
+#include "Sphere.hpp"
 #include <iostream>
-#include <Plane.hpp>
 
 RayTracer::Raytracer::Raytracer()
 {
@@ -21,7 +22,9 @@ RayTracer::Raytracer::~Raytracer()
 {
 }
 
-Math::Vector3D ray_color(const RayTracer::Ray& r) {
+Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
+    if (wolrd.hits(r))
+        return Math::Vector3D(255, 0, 0);
     Math::Vector3D unit_direction = r.direction;
     double a = 0.5*(unit_direction.y + 1.0);
     return Math::Vector3D(1.0, 1.0, 1.0) * (1.0-a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
@@ -63,6 +66,10 @@ int RayTracer::Raytracer::run(std::string scene_file)
     double pixel_delta_v = viewport_v.y / image_height;
 
     double variation = 255 / (double)image_width;
+
+    // World
+    Scene scene;
+    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
     RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
     // RayTracer::Sphere s2(Math::Point3D(0,-100.5,-1), 100);
     // RayTracer::Plane p(0, 'z');
@@ -73,14 +80,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
             double u = x * (pixel_delta_u);
             double v = y * (pixel_delta_v);
             RayTracer::Ray r = cam.ray(u, v);
-            double tkt = s.hits(r);
-            if (tkt > 0.0) {
-                write_color(Math::Vector3D(255, 0, 0));  // Red color
-            // } else if (s2.hits(r)) {
-                // write_color(Math::Vector3D(0, 255, 0));  // Green color
-            } else {
-                write_color(Math::Vector3D(0, 0, 0));  // Black color
-            } 
+            write_color(ray_color(r, scene));
         }
     }
     (void)scene_file;
