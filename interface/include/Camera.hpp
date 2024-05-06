@@ -12,31 +12,29 @@
 #include "Vector3D.hpp"
 #include "Rectangle3D.hpp"
 #include "Ray.hpp"
+#include "Scene.hpp"
+#include <fstream>
 
 namespace RayTracer
 {
     class Camera {
     public:
-        Math::Point3D origin;
-        Rectangle3D screen;
+        int _image_width = 100;
+        double _aspect_ratio = 1.0;
+        Rectangle3D _screen;
+        Math::Point3D _origin;
+        void render(const Scene& world);
+        void initialize();
 
         Camera();
         ~Camera();
 
         Ray ray(double u, double v) const;
 
-        int getHeigth();
-        int getWidth();
-        int getFov();
-
-        void setFov(int fov);
-        void setHeigth(int heigth);
-        void setWidth(int width);
-
     protected:
-        int _width;
-        int _height;
-        int _fov;
+        int _image_height;
+        double _pixel_delta_u;
+        double _pixel_delta_v;
     };
 }
 

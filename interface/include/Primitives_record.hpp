@@ -25,8 +25,8 @@ class Primitives_record {
     //   // Sets the hit record normal vector.
     //   // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
-    //   front_face = ray.direction.dot(outward_normal) < 0;
-    //   normal = front_face ? outward_normal : -outward_normal;
+      front_face = ray.direction.dot(outward_normal) < 0;
+      normal = front_face ? outward_normal : outward_normal * (-1);
     }
 };
 }
