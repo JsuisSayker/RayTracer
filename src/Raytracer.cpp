@@ -13,6 +13,7 @@
 #include "Scene.hpp"
 #include "Sphere.hpp"
 #include <iostream>
+#include <fstream>
 
 RayTracer::Raytracer::Raytracer()
 {
@@ -27,17 +28,15 @@ Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
     if (world.hits(r, 0, 1000, rec)) {
         return Math::Vector3D(255, 0, 0);
     }
-    Math::Vector3D unit_direction = r.direction;
-    double a = 0.5*(unit_direction.y + 1.0);
-    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0-a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
+    return Math::Vector3D(0, 0, 0);
 }
 
-void write_color(const Math::Vector3D& color)
+void write_color(std::ostream &out, const Math::Vector3D& color)
 {
     int ir = static_cast<int>(color.x);
     int ig = static_cast<int>(color.y);
     int ib = static_cast<int>(color.z);
-    std::cout << ir << ' ' << ig << ' ' << ib << '\n';
+    out << ir << ' ' << ig << ' ' << ib << '\n';
 }
 
 int RayTracer::Raytracer::run(std::string scene_file)
@@ -76,13 +75,14 @@ int RayTracer::Raytracer::run(std::string scene_file)
     // RayTracer::Sphere s2(Math::Point3D(0,-100.5,-1), 100);
     // RayTracer::Plane p(0, 'z');
     // RayTracer::Plane p2(0, 'y');
-    std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
+    std::ofstream output_file("output.ppm");
+    output_file << "P3\n" << image_width << ' ' << image_height << "\n255\n";
     for (int y = 0; y < image_height; y += 1) {
         for (int x = 0; x < image_width; x += 1) {
             double u = x * (pixel_delta_u);
             double v = y * (pixel_delta_v);
             RayTracer::Ray r = cam.ray(u, v);
-            write_color(ray_color(r, scene));
+            write_color(output_file, ray_color(r, scene));
         }
     }
     (void)scene_file;
