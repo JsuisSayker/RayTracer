@@ -71,7 +71,8 @@ int RayTracer::Raytracer::run(std::string scene_file)
     // World
     Scene scene;
     scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
-    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100, -1), 100));
+    scene.addPrimitive(std::make_shared<RayTracer::Plane>(-4, 'z'));
+    scene.addPrimitive(std::make_shared<RayTracer::Plane>(-4, 'z'));
     // RayTracer::Sphere s2(Math::Point3D(0,-100.5,-1), 100);
     // RayTracer::Plane p(0, 'z');
     // RayTracer::Plane p2(0, 'y');
