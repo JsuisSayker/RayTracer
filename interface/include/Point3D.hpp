@@ -30,4 +30,6 @@ namespace Math
     };
 }
 
+std::ostream &operator<<(std::ostream &s, const Math::Point3D &other);
+
 #endif /* !POINT3D_HPP_ */

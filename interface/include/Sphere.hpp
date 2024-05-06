@@ -25,10 +25,9 @@ namespace RayTracer
         ~Sphere();
 
         double hits(const RayTracer::Ray &ray, double ray_tmin,
-           double ray_tmax, RayTracer::Primitives_record &rec) const;
+            double ray_tmax, RayTracer::Primitives_record &rec) const;
         void translate(const Math::Vector3D &translation);
     };
-
 }
 
 #endif /* !SPHERE_HPP_ */

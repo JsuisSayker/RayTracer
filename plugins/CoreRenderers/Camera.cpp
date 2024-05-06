@@ -7,8 +7,9 @@
 
 #include <Camera.hpp>
 
-Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
-    RayTracer::Primitives_record rec;
+Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world)
+{
+    RayTracer::Primitives_record rec = {};
     if (world.hits(r, 0, std::numeric_limits<double>::infinity(), rec)) {
         return (rec.normal + Math::Vector3D(1,1,1)) * 0.5;
     }
@@ -22,7 +23,6 @@ RayTracer::Camera::Camera()
 {
     _origin = Math::Point3D(0, 0, 0);
     _screen = Rectangle3D();
-    _screen.translate(Math::Vector3D(-0.5, -0.5, -0.5));
 }
 
 RayTracer::Camera::~Camera()
@@ -49,7 +49,8 @@ RayTracer::Ray RayTracer::Camera::ray(double u, double v) const
     return RayTracer::Ray(_origin, _screen.pointAt(u, v) - _origin);
 }
 
-void RayTracer::Camera::render(const Scene& world) {
+void RayTracer::Camera::render(const Scene& world)
+{
     this->initialize();
 
     std::ofstream output_file("output.ppm");
@@ -64,7 +65,8 @@ void RayTracer::Camera::render(const Scene& world) {
     }
 }
 
-void RayTracer::Camera::initialize() {
+void RayTracer::Camera::initialize()
+{
     _image_height = int(_image_width / _aspect_ratio);
     _image_height = (_image_height < 1) ? 1 : _image_height;
 
@@ -73,7 +75,8 @@ void RayTracer::Camera::initialize() {
 
     Math::Vector3D viewport_u = Math::Vector3D(viewport_width, 0, 0);
     Math::Vector3D viewport_v = Math::Vector3D(0, -viewport_height, 0);
-    this->_screen.origin = Math::Point3D(-(viewport_width/(double)2), (viewport_height/(double)2), -0.5);
+    this->_screen.origin = Math::Point3D(-(viewport_width/(double)2),
+        (viewport_height/(double)2), -0.5);
     this->_screen.left_side = Math::Vector3D(0, viewport_height, 0);
     this->_screen.bottom_side = Math::Vector3D(viewport_width,0, 0);
 

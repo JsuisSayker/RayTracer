@@ -51,3 +51,9 @@ void Math::Point3D::translate(const Math::Vector3D &translation)
     y += translation.y;
     z += translation.z;
 }
+
+std::ostream &operator<<(std::ostream &s, const Math::Point3D &other)
+{
+    s << "x: " << other.x << " y: " << other.y << " z: " << other.z;
+    return s;
+}
