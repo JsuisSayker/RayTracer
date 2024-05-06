@@ -23,8 +23,10 @@ RayTracer::Raytracer::~Raytracer()
 }
 
 Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
-    if (wolrd.hits(r))
+    RayTracer::Primitives_record rec;
+    if (world.hits(r, 0, 10, rec)) {
         return Math::Vector3D(255, 0, 0);
+    }
     Math::Vector3D unit_direction = r.direction;
     double a = 0.5*(unit_direction.y + 1.0);
     return Math::Vector3D(1.0, 1.0, 1.0) * (1.0-a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
