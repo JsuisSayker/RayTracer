@@ -24,7 +24,8 @@ namespace Math {
         Vector3D(double x, double y, double z);
         ~Vector3D();
 
-        double length();
+        double length() const;
+        double length_squared() const;
 
         //rotate functions
         void rotateX(double angle);

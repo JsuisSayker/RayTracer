@@ -24,7 +24,7 @@ RayTracer::Raytracer::~Raytracer()
 
 Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
     RayTracer::Primitives_record rec;
-    if (world.hits(r, 0, 10, rec)) {
+    if (world.hits(r, 0, 1000, rec)) {
         return Math::Vector3D(255, 0, 0);
     }
     Math::Vector3D unit_direction = r.direction;
@@ -72,7 +72,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     // World
     Scene scene;
     scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
-    RayTracer::Sphere s(Math::Point3D(0, 0, -1), 0.5);
+    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100, -1), 100));
     // RayTracer::Sphere s2(Math::Point3D(0,-100.5,-1), 100);
     // RayTracer::Plane p(0, 'z');
     // RayTracer::Plane p2(0, 'y');

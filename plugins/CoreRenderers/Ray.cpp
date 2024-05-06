@@ -22,3 +22,8 @@ RayTracer::Ray::Ray(const Math::Point3D &origin, const Math::Vector3D &direction
 RayTracer::Ray::~Ray()
 {
 }
+
+Math::Point3D RayTracer::Ray::at(double t) const
+{
+    return origin + direction * t;
+}

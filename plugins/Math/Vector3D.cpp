@@ -25,9 +25,14 @@ Math::Vector3D::~Vector3D()
 {
 }
 
-double Math::Vector3D::length()
+double Math::Vector3D::length() const
 {
-    return sqrt(x * x + y * y + z * z);
+    return sqrt(length_squared());
+}
+
+double Math::Vector3D::length_squared() const
+{
+    return (this->x * this->x) + (this->y * this->y) + (this->z * this->z);
 }
 
 Math::Vector3D Math::Vector3D::operator+(const Math::Vector3D &v) const
