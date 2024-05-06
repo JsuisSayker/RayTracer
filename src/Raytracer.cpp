@@ -54,8 +54,8 @@ int RayTracer::Raytracer::run(std::string scene_file)
 
     // World
     Scene scene;
-    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
     scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100, -1), 100));
+    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
 
     cam._image_width = 400;
     cam._aspect_ratio = 16.0 / 9.0;

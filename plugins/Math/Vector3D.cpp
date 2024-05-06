@@ -123,3 +123,13 @@ void Math::Vector3D::rotateZ(double angle)
     double new_x = this->x * cos(rad) - this->y * sin(rad);
     double new_y = this->x * sin(rad) + this->y * cos(rad);
 }
+
+Math::Vector3D  unit_vector(const Math::Vector3D &v) {
+    return v / v.length();
+}
+
+std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other)
+{
+    s << "Vector3D(" << other.x << ", " << other.y << ", " << other.z << ")";
+    return s;
+}

@@ -31,7 +31,7 @@ bool Scene::hits(const RayTracer::Ray &r, double ray_tmin, double ray_tmax, RayT
     bool hit_anything = false;
     double closest_so_far = ray_tmax;
 
-    for (const auto &primitive : _primitives) {
+    for (const std::shared_ptr<IPrimitives> &primitive : _primitives) {
         if (primitive->hits(r, ray_tmin, closest_so_far, temp_rec)) {
             hit_anything = true;
             closest_so_far = temp_rec.t;

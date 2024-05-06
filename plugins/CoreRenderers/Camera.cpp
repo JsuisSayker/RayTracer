@@ -10,9 +10,12 @@
 Math::Vector3D ray_color(const RayTracer::Ray& r, const Scene& world) {
     RayTracer::Primitives_record rec;
     if (world.hits(r, 0, std::numeric_limits<double>::infinity(), rec)) {
-        return Math::Vector3D(255, 0, 0);
+        return (rec.normal + Math::Vector3D(1,1,1)) * 0.5;
     }
-    return Math::Vector3D(0, 0, 0);
+
+    Math::Vector3D unit_direction = unit_vector(r.direction);
+    auto a = 0.5*(unit_direction.y + 1.0);
+    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0-a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
 }
 
 RayTracer::Camera::Camera()
@@ -28,10 +31,17 @@ RayTracer::Camera::~Camera()
 
 void write_color(std::ostream &out, const Math::Vector3D& color)
 {
-    int ir = static_cast<int>(color.x);
-    int ig = static_cast<int>(color.y);
-    int ib = static_cast<int>(color.z);
-    out << ir << ' ' << ig << ' ' << ib << '\n';
+    double r = color.x;
+    double g = color.y;
+    double b = color.z;
+
+    // Translate the [0,1] component values to the byte range [0,255].
+    int rbyte = int(255.999 * r);
+    int gbyte = int(255.999 * g);
+    int bbyte = int(255.999 * b);
+
+    // Write out the pixel color components.
+    out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
 RayTracer::Ray RayTracer::Camera::ray(double u, double v) const

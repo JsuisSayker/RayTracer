@@ -10,6 +10,7 @@
 
 #include <cmath>
 #include <vector>
+#include <ostream>
 
 namespace Math {
 
@@ -46,7 +47,6 @@ namespace Math {
         Vector3D operator/= (double k);
 
         double dot(const Vector3D& v) const;
-
 
         template <int N>
         class Vector {
@@ -128,6 +128,8 @@ namespace Math {
     };
 }
 
+Math::Vector3D  unit_vector(const Math::Vector3D &v);
+std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other);
 
 #endif /* !VECTOR3D */
 
