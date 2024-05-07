@@ -17,7 +17,7 @@ public:
   APrimitives();
   ~APrimitives();
 
-  virtual double hits(const RayTracer::Ray &ray, double ray_tmin,
+  virtual bool hits(const RayTracer::Ray &ray, double ray_tmin,
            double ray_tmax, RayTracer::Primitives_record &rec)  const = 0;
 
   void translate(const Math::Vector3D &translation);

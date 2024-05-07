@@ -18,7 +18,7 @@ RayTracer::Plane::~Plane()
 {
 }
 
-double RayTracer::Plane::hits(const RayTracer::Ray &ray, double ray_tmin,
+bool RayTracer::Plane::hits(const RayTracer::Ray &ray, double ray_tmin,
            double ray_tmax, RayTracer::Primitives_record &rec) const
 {
     if (axe == 'X' || axe == 'x') {

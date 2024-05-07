@@ -17,7 +17,7 @@ RayTracer::Sphere::~Sphere()
 {
 }
 
-double RayTracer::Sphere::hits(const RayTracer::Ray &ray, double ray_tmin,
+bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, double ray_tmin,
     double ray_tmax, RayTracer::Primitives_record &rec) const
 {
     Math::Vector3D oc = center - ray.origin;

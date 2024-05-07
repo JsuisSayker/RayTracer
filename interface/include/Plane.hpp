@@ -18,7 +18,7 @@ public:
   Plane(const char axe, double position);
   ~Plane();
 
-  double hits(const RayTracer::Ray &ray, double ray_tmin,
+  bool hits(const RayTracer::Ray &ray, double ray_tmin,
            double ray_tmax, RayTracer::Primitives_record &rec) const;
 
 protected:
