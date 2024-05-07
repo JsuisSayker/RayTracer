@@ -37,6 +37,14 @@ Math::Vector3D Math::Point3D::operator+(const Math::Point3D &p) const {
   return Math::Vector3D(x + p.x, y + p.y, z + p.z);
 }
 
+Math::Point3D Math::Point3D::operator+(const double &p) const {
+  return Math::Point3D(x + p, y + p, z + p);
+}
+
+Math::Point3D Math::Point3D::operator-(const double &p) const {
+  return Math::Point3D(x - p, y - p, z - p);
+}
+
 void Math::Point3D::translate(const Math::Vector3D &translation) {
   x += translation.x;
   y += translation.y;

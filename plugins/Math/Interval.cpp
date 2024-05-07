@@ -9,7 +9,9 @@
 
 Math::Interval::Interval()
     : _min(+std::numeric_limits<double>::infinity()),
-      _max(-std::numeric_limits<double>::infinity()) {}
+      _max(-std::numeric_limits<double>::infinity())
+{
+}
 
 Math::Interval::~Interval() {}
 
@@ -20,3 +22,12 @@ double Math::Interval::size() const { return _max - _min; }
 bool Math::Interval::contains(double x) const { return _min <= x && x <= _max; }
 
 bool Math::Interval::surrounds(double x) const { return _min < x && x < _max; }
+
+double Math::Interval::clamp(double x) const
+{
+  if (x < _min)
+    return _min;
+  if (x > _max)
+    return _max;
+  return x;
+}

@@ -20,20 +20,24 @@ class Camera {
 public:
   int _image_width = 100;
   double _aspect_ratio = 1.0;
+  int _samples_per_pixel = 10;
   Rectangle3D _screen;
   Math::Point3D _origin;
-  void render(const Scene &world);
-  void initialize();
 
   Camera();
   ~Camera();
 
-  Ray ray(double u, double v) const;
+  void render(const Scene &world);
+  void initialize();
+  RayTracer::Ray get_ray(int i, int j) const;
+  Math::Vector3D sample_square() const;
+  RayTracer::Ray ray(double u, double v) const;
 
 protected:
   int _image_height;
-  double _pixel_delta_u;
-  double _pixel_delta_v;
+  double _pixel_samples_scale;
+  Math::Vector3D _pixel_delta_u;
+  Math::Vector3D _pixel_delta_v;
 };
 } // namespace RayTracer
 

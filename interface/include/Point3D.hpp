@@ -25,6 +25,8 @@ public:
   Point3D operator-(const Vector3D &v) const;
   Vector3D operator-(const Math::Point3D &p) const;
   Vector3D operator+(const Math::Point3D &p) const;
+  Point3D operator+(const double &p) const;
+  Point3D operator-(const double &p) const;
   void translate(const Math::Vector3D &translation);
 };
 } // namespace Math
