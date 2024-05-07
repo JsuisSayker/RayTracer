@@ -9,127 +9,124 @@
 #define VECTOR3D_HPP__
 
 #include <cmath>
-#include <vector>
 #include <ostream>
+#include <vector>
 
 namespace Math {
 
-    class Vector3D {
-        public:
+class Vector3D {
+public:
+  double x;
+  double y;
+  double z;
 
-        double x;
-        double y;
-        double z;
+  Vector3D();
+  Vector3D(double x, double y, double z);
+  ~Vector3D();
 
-        Vector3D();
-        Vector3D(double x, double y, double z);
-        ~Vector3D();
+  double length() const;
+  double length_squared() const;
 
-        double length() const;
-        double length_squared() const;
+  // rotate functions
+  void rotateX(double angle);
+  void rotateY(double angle);
+  void rotateZ(double angle);
 
-        //rotate functions
-        void rotateX(double angle);
-        void rotateY(double angle);
-        void rotateZ(double angle);
+  // Operator overloading
+  Vector3D operator+(const Vector3D &v) const;
+  Vector3D operator+=(const Vector3D &v);
+  Vector3D operator-(const Vector3D &v) const;
+  Vector3D operator-=(const Vector3D &v);
 
-        // Operator overloading
-        Vector3D operator+(const Vector3D& v) const;
-        Vector3D operator+=(const Vector3D& v);
-        Vector3D operator-(const Vector3D& v) const;
-        Vector3D operator-= (const Vector3D& v);
+  Vector3D operator+(double k) const;
+  Vector3D operator-(double k) const;
+  Vector3D operator*(double k) const;
+  Vector3D operator*=(double k);
+  Vector3D operator/(double k) const;
+  Vector3D operator/=(double k);
 
-        Vector3D operator+(double k) const;
-        Vector3D operator-(double k) const;
-        Vector3D operator*(double k) const;
-        Vector3D operator*= (double k);
-        Vector3D operator/(double k) const;
-        Vector3D operator/= (double k);
+  double dot(const Vector3D &v) const;
 
-        double dot(const Vector3D& v) const;
+  template <int N> class Vector {
+  public:
+    std::vector<double> values;
 
-        template <int N>
-        class Vector {
-            public:
-                std::vector<double> values;
+    Vector() : values(N, 0){};
+    Vector(const std::vector<double> &components){};
 
-                Vector() : values(N, 0) {};
-                Vector(const std::vector<double>& components){};
-
-                // Operator overloading
-                Vector<N> operator+(const Vector& v) const {
-                    Vector result;
-                    for (int i = 0; i < N; i++) {
-                        result.values[i] = values[i] + v.values[i];
-                    }
-                    return result;
-                };
-
-                Vector<N> operator+=(const Vector& v) {
-                    for (int i = 0; i < N; i++) {
-                        values[i] += v.values[i];
-                    }
-                    return *this;
-                };
-
-                Vector<N> operator-(const Vector& v) const {
-                    Vector result;
-                    for (int i = 0; i < N; i++) {
-                        result.values[i] = values[i] - v.values[i];
-                    }
-                    return result;
-                };
-
-                Vector<N> operator-=(const Vector& v) {
-                    for (int i = 0; i < N; i++) {
-                        values[i] -= v.values[i];
-                    }
-                    return *this;
-                };
-
-                Vector<N> operator*(double k) const {
-                    Vector result;
-                    for (int i = 0; i < N; i++) {
-                        result.values[i] = values[i] * k;
-                    }
-                    return result;
-                };
-
-                Vector<N> operator*=(double k) {
-                    for (int i = 0; i < N; i++) {
-                        values[i] *= k;
-                    }
-                    return *this;
-                };
-
-                Vector<N> operator/(double k) const {
-                    Vector result;
-                    for (int i = 0; i < N; i++) {
-                        result.values[i] = values[i] / k;
-                    }
-                    return result;
-                };
-
-                Vector<N> operator/=(double k) {
-                    for (int i = 0; i < N; i++) {
-                        values[i] /= k;
-                    }
-                    return *this;
-                };
-
-                double dot(const Vector& v) const {
-                    double result = 0;
-                    for (int i = 0; i < N; i++) {
-                        result += values[i] * v.values[i];
-                    }
-                    return result;
-                };
-        };
+    // Operator overloading
+    Vector<N> operator+(const Vector &v) const {
+      Vector result;
+      for (int i = 0; i < N; i++) {
+        result.values[i] = values[i] + v.values[i];
+      }
+      return result;
     };
-}
 
-Math::Vector3D  unit_vector(const Math::Vector3D &v);
+    Vector<N> operator+=(const Vector &v) {
+      for (int i = 0; i < N; i++) {
+        values[i] += v.values[i];
+      }
+      return *this;
+    };
+
+    Vector<N> operator-(const Vector &v) const {
+      Vector result;
+      for (int i = 0; i < N; i++) {
+        result.values[i] = values[i] - v.values[i];
+      }
+      return result;
+    };
+
+    Vector<N> operator-=(const Vector &v) {
+      for (int i = 0; i < N; i++) {
+        values[i] -= v.values[i];
+      }
+      return *this;
+    };
+
+    Vector<N> operator*(double k) const {
+      Vector result;
+      for (int i = 0; i < N; i++) {
+        result.values[i] = values[i] * k;
+      }
+      return result;
+    };
+
+    Vector<N> operator*=(double k) {
+      for (int i = 0; i < N; i++) {
+        values[i] *= k;
+      }
+      return *this;
+    };
+
+    Vector<N> operator/(double k) const {
+      Vector result;
+      for (int i = 0; i < N; i++) {
+        result.values[i] = values[i] / k;
+      }
+      return result;
+    };
+
+    Vector<N> operator/=(double k) {
+      for (int i = 0; i < N; i++) {
+        values[i] /= k;
+      }
+      return *this;
+    };
+
+    double dot(const Vector &v) const {
+      double result = 0;
+      for (int i = 0; i < N; i++) {
+        result += values[i] * v.values[i];
+      }
+      return result;
+    };
+  };
+};
+} // namespace Math
+
+Math::Vector3D unit_vector(const Math::Vector3D &v);
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other);
 
 #endif /* !VECTOR3D */
-

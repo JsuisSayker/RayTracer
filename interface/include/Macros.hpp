@@ -12,5 +12,4 @@
 #define KO 84
 #define ERROR (-1)
 
-
 #endif /* !MACROS_HPP_ */
