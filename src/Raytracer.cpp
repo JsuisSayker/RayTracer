@@ -32,6 +32,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     RayTracer::Camera cam;
     cam._image_width = 400;
     cam._aspect_ratio = 16.0 / 9.0;
+    cam._samples_per_pixel = 100;
 
     cam.render(scene);
 
