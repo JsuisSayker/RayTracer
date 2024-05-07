@@ -15,7 +15,7 @@ public:
   double position;
   char axe;
 
-  Plane(double position, const char axe);
+  Plane(const char axe, double position);
   ~Plane();
 
   double hits(const RayTracer::Ray &ray, double ray_tmin,

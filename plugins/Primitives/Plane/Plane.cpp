@@ -8,7 +8,7 @@
 #include <Plane.hpp>
 #include <cstdio>
 
-RayTracer::Plane::Plane(double position, const char axe)
+RayTracer::Plane::Plane(const char axe, double position)
 {
     this->position = position;
     this->axe = axe;
