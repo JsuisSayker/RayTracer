@@ -5,14 +5,14 @@
 ** Raytracer
 */
 
-#include "Raytracer.hpp"
-#include "Camera.hpp"
-#include "Plane.hpp"
-#include "Point3D.hpp"
-#include "Ray.hpp"
-#include "Scene.hpp"
-#include "Sphere.hpp"
-#include "Cylinder.hpp"
+#include <Raytracer.hpp>
+#include <Camera.hpp>
+#include <Plane.hpp>
+#include <Point3D.hpp>
+#include <Ray.hpp>
+#include <Scene.hpp>
+#include <Sphere.hpp>
+#include <Cylinder.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -27,9 +27,9 @@ RayTracer::Raytracer::~Raytracer()
 int RayTracer::Raytracer::run(std::string scene_file)
 {
     Scene scene;
-    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -1.5, -1.1), 1));
-    scene.addPrimitive(std::make_shared<RayTracer::Cylinder>(Math::Point3D(0, 0, -1), 0.5));
-    // scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -0.3, -1.1), 0.7));
+    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
+    // scene.addPrimitive(std::make_shared<RayTracer::Cylinder>(Math::Point3D(0, 0, -1), 0.5));
+    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100.5, -1), 100));
 
     RayTracer::Camera cam;
     cam._image_width = 400;
