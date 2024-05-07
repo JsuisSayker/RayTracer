@@ -18,7 +18,10 @@ public:
   char axe;
   Cylinder(const Math::Point3D &center,
            double radius,
-           double height = std::numeric_limits<double>::infinity(),
+           double height,
+           const char axe = 'y');
+  Cylinder(const Math::Point3D &center,
+           double radius,
            const char axe = 'y');
   ~Cylinder();
   bool hits(const RayTracer::Ray &ray,

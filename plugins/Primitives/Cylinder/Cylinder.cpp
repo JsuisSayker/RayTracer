@@ -18,6 +18,16 @@ RayTracer::Cylinder::Cylinder(const Math::Point3D &center,
   this->axe = axe;
 }
 
+RayTracer::Cylinder::Cylinder(const Math::Point3D &center,
+                              double radius,
+                              const char axe)
+{
+  this->center = center;
+  this->radius = radius;
+  this->height = std::numeric_limits<double>::infinity();
+  this->axe = axe;
+}
+
 RayTracer::Cylinder::~Cylinder() {}
 
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
@@ -35,11 +45,11 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   Math::Vector3D oc = ray.origin - center;
   Math::Vector3D direction = ray.direction;
 
-  if (axe == 'x') {
+  if (axe == 'x' || axe == 'X') {
     a = pow(direction.y, 2) + pow(direction.z, 2);
     b = 2 * (direction.y * oc.y + direction.z * oc.z);
     c = pow(oc.y, 2) + pow(oc.z, 2) - pow(radius, 2);
-  } else if (axe == 'y') {
+  } else if (axe == 'y' || axe == 'Y') {
     a = pow(direction.x, 2) + pow(direction.z, 2);
     b = 2 * (direction.x * oc.x + direction.z * oc.z);
     c = pow(oc.x, 2) + pow(oc.z, 2) - pow(radius, 2);
@@ -69,14 +79,16 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
 
   rec.p = ray.at(t);
   if (height != std::numeric_limits<double>::infinity()) {
-    if (axe == 'x' &&
+    if ((axe == 'x' || axe == 'X') &&
         (rec.p.x < center.x - height / 2 || rec.p.x > center.x + height / 2)) {
       return false;
-    } else if (axe == 'y' && (rec.p.y < center.y - height / 2 ||
-                              rec.p.y > center.y + height / 2)) {
+    } else if ((axe == 'y' || axe == 'Y') &&
+               (rec.p.y < center.y - height / 2 ||
+                rec.p.y > center.y + height / 2)) {
       return false;
-    } else if (axe == 'z' && (rec.p.z < center.z - height / 2 ||
-                              rec.p.z > center.z + height / 2)) {
+    } else if ((axe == 'z' || axe == 'Z') &&
+               (rec.p.z < center.z - height / 2 ||
+                rec.p.z > center.z + height / 2)) {
       return false;
     }
   }
