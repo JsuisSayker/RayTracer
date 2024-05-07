@@ -13,8 +13,9 @@
 #include <iostream>
 #include <vector>
 #include "Scene.hpp"
+#include <raytracer/ISceneBuilder.hpp>
 
-class SceneBuilder {
+class SceneBuilder : virtual public ISceneBuilder{
     public:
         enum SceneType {
             PRIMITIVE,
@@ -23,17 +24,32 @@ class SceneBuilder {
             MATERIAL
         };
 
-        SceneBuilder(libconfig::Setting &list);
+        struct CameraElement {
+            int width;
+            int height;
+            int positionX;
+            int positionY;
+            int positionZ;
+            int rotationX;
+            int rotationY;
+            int rotationZ;
+            double fov;
+        };
+
+        SceneBuilder() = default;
+        SceneBuilder(const libconfig::Setting &list);
         ~SceneBuilder();
 
         void loadPlugins();
         void buildObject(libconfig::Setting &setting);
         void createSphere(libconfig::Setting &setting);
+        void saveSceneData(const libconfig::Setting &list);
+        std::shared_ptr<IScene> getScene();
 
     protected:
-        std::shared_ptr<Scene> _scene;
+        std::shared_ptr<IScene> _scene;
         std::vector<std::string> _pathToPlugins;
-        libconfig::Setting &_scenesLists;
+        const libconfig::Setting &_scenesLists;
     private:
 };
 

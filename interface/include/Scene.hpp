@@ -8,16 +8,9 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
-#include <memory>
-#include <raytracer/IPrimitives.hpp>
-#include <raytracer/ICamera.hpp>
-#include <Sphere.hpp>
-#include <Point3D.hpp>
-#include <vector>
-#include <iostream>
+#include <raytracer/IScene.hpp>
 
-
-class Scene {
+class Scene : virtual public IScene {
     public:
         Scene();
         ~Scene();

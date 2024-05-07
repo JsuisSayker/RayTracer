@@ -5,13 +5,14 @@
 ** Raytracer
 */
 
-#include "Raytracer.hpp"
-#include "Camera.hpp"
-#include "Plane.hpp"
-#include "Point3D.hpp"
-#include "Ray.hpp"
-#include "Scene.hpp"
-#include "Sphere.hpp"
+#include <Raytracer.hpp>
+#include <Camera.hpp>
+#include <Plane.hpp>
+#include <Point3D.hpp>
+#include <Ray.hpp>
+#include <Scene.hpp>
+#include <Sphere.hpp>
+#include <LoadFile.hpp>
 #include <iostream>
 #include <fstream>
 
@@ -37,6 +38,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     // double focal_length = 1.0;
     // double viewport_height = 2.0;
     // double viewport_width = viewport_height * (double(image_width)/image_height);
+    LoadFile loader(scene_file);
     RayTracer::Camera cam;
 
     // // Calculate the vectors across the horizontal and down the vertical viewport edges.

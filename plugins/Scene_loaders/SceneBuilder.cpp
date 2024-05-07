@@ -7,12 +7,41 @@
 
 #include "SceneBuilder.hpp"
 #include <dlfcn.h>
+#include <iostream>
+#include <cstring>
 
-SceneBuilder::SceneBuilder(libconfig::Setting &list) : _scenesLists(list)
+SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
 {
-    loadPlugins();
-    for (int i = 0; i < _scenesLists.getLength(); i++) {
-        buildObject(_scenesLists[i]);
+    _scene = std::make_shared<Scene>();
+    // loadPlugins();
+
+    if (strcmp(_scenesLists.getName(), "primitives") == 0) {
+        // std::cout << "primitives exist" << std::endl;
+        for (int i = 0; i < _scenesLists.getLength(); i++) {
+            const libconfig::Setting& element = _scenesLists[i];
+            // std::cout << "element IN SCENEBUILDER: " << element.getName() << std::endl;
+            for (int j = 0; j < element.getLength(); j++) {
+                if (element[j].exists("type")) {
+                    // std::cout << "je suis la" << std::endl;
+                    std::string type;
+                    element[j].lookupValue("type", type);
+                    std::cout << "element VALUE : " << type << std::endl;
+                    saveSceneData(_scenesLists[i]);
+                }
+            }
+        }
+
+    } else {
+        for (int i = 0; i < _scenesLists.getLength(); i++) {
+            // std::cout << "SceneBuilder : " << _scenesLists[i].getName() << std::endl;
+            if (strcmp(_scenesLists[i].getName(), "type") == 0) {
+                // std::cout << "it exists" << std::endl;
+                std::string type;
+                list.lookupValue("type", type);
+                std::cout << "type value : " << type << std::endl;
+                saveSceneData(_scenesLists[i]);
+            }
+        }
     }
 }
 
@@ -24,7 +53,7 @@ void SceneBuilder::loadPlugins()
     for (const auto &entryFiles : std::filesystem::directory_iterator(path)) {
         if (entryFiles.path().extension() == fileWantedExtensions) {
             const std::string actualFilePath = entryFiles.path().string();
-            auto pluginTypeFunc = SceneType::PRIMITIVE;
+            auto pluginTypeFunc = SceneType::PRIMITIVE; // here we need to load the function from the plugin
             // if (pluginTypeFunc == nullptr)
             //     throw std::runtime_error("Error while loading plugin type");
             if (pluginTypeFunc == SceneType::PRIMITIVE)
@@ -51,13 +80,24 @@ void SceneBuilder::createSphere(libconfig::Setting &setting)
 }
 
 
-void SceneBuilder::buildObject(libconfig::Setting& setting)
+void SceneBuilder::saveSceneData(const libconfig::Setting &list)
 {
-    // SceneType type = static_cast<SceneType>(setting["type"]);
-    std::string type = setting["type"];
-    std::cout << type << std::endl;
+    for (int i = 0; i < list.getLength(); i++) {
+        const libconfig::Setting& element = list[i];
+        std::cout << "element IN SCENEBUILDER: " << element.getName() << std::endl;
+    }
 }
 
+void SceneBuilder::buildObject(libconfig::Setting &setting)
+{
+
+}
+
+
+std::shared_ptr<IScene> SceneBuilder::getScene()
+{
+    return _scene;
+}
 
 
 SceneBuilder::~SceneBuilder()
