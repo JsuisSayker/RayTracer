@@ -35,6 +35,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     cam._image_width = 500;
     cam._aspect_ratio = 16.0 / 9.0;
     cam._samples_per_pixel = 20;
+    cam._max_depth = 50;
 
     cam.render(scene);
     (void)scene_file;

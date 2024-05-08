@@ -21,6 +21,7 @@ public:
   int _image_width = 100;
   double _aspect_ratio = 1.0;
   int _samples_per_pixel = 10;
+  int _max_depth = 10;
   Rectangle3D _screen;
   Math::Point3D _origin;
 
@@ -31,7 +32,6 @@ public:
   void initialize();
   RayTracer::Ray get_ray(int i, int j) const;
   Math::Vector3D sample_square() const;
-  RayTracer::Ray ray(double u, double v) const;
 
 protected:
   int _image_height;

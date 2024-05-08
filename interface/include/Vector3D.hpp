@@ -128,7 +128,7 @@ public:
 };
 } // namespace Math
 
-Math::Vector3D unit_vector(const Math::Vector3D &v);
+  Math::Vector3D unit_vector(const Math::Vector3D &v);
   Math::Vector3D random_vector();
   Math::Vector3D random_vector(double min, double max);
   Math::Vector3D random_in_unit_sphere();
