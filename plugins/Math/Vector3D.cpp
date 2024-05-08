@@ -79,10 +79,6 @@ Math::Vector3D Math::Vector3D::operator/=(double k) {
   return *this;
 }
 
-double Math::Vector3D::dot(const Math::Vector3D &v) const {
-  return (x * v.x) + (y * v.y) + (z * v.z);
-}
-
 void Math::Vector3D::rotateX(double angle) {
   double rad = angle * M_PI / 180;
   double new_y = this->y * cos(rad) - this->z * sin(rad);
@@ -101,7 +97,39 @@ void Math::Vector3D::rotateZ(double angle) {
   double new_y = this->x * sin(rad) + this->y * cos(rad);
 }
 
+double Math::Vector3D::dot(const Math::Vector3D &v) const {
+  return (x * v.x) + (y * v.y) + (z * v.z);
+}
+
+Math::Vector3D random_vector() {
+    return Math::Vector3D(random_double(), random_double(), random_double());
+}
+
+Math::Vector3D random_vector(double min, double max) {
+    return Math::Vector3D(random_double(min,max), random_double(min,max), random_double(min,max));
+}
+
 Math::Vector3D unit_vector(const Math::Vector3D &v) { return v / v.length(); }
+
+Math::Vector3D random_in_unit_sphere() {
+    while (true) {
+        auto p = random_vector(-1,1);
+        if (p.length_squared() < 1)
+            return p;
+    }
+}
+
+Math::Vector3D random_unit_vector() {
+    return unit_vector(random_in_unit_sphere());
+}
+
+Math::Vector3D random_on_hemisphere(const Math::Vector3D& normal) {
+    Math::Vector3D on_unit_sphere = random_unit_vector();
+    if (on_unit_sphere.dot(normal) > 0.0) // In the same hemisphere as the normal
+        return on_unit_sphere;
+    else
+        return on_unit_sphere * -1;
+}
 
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other) {
   s << "Vector3D(" << other.x << ", " << other.y << ", " << other.z << ")";

@@ -7,9 +7,7 @@
 
 #include <Interval.hpp>
 
-Math::Interval::Interval()
-    : _min(+std::numeric_limits<double>::infinity()),
-      _max(-std::numeric_limits<double>::infinity())
+Math::Interval::Interval() : _min(+infinity), _max(-infinity)
 {
 }
 

@@ -24,7 +24,7 @@ RayTracer::Cylinder::Cylinder(const Math::Point3D &center,
 {
   this->center = center;
   this->radius = radius;
-  this->height = std::numeric_limits<double>::infinity();
+  this->height = infinity;
   this->axe = axe;
 }
 
@@ -78,7 +78,7 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   t = t0;
 
   rec.p = ray.at(t);
-  if (height != std::numeric_limits<double>::infinity()) {
+  if (height != infinity) {
     if ((axe == 'x' || axe == 'X') &&
         (rec.p.x < center.x - height / 2 || rec.p.x > center.x + height / 2)) {
       return false;

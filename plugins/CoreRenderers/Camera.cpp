@@ -34,9 +34,9 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
 Math::Vector3D ray_color(const RayTracer::Ray &r, const Scene &world)
 {
   RayTracer::Primitives_record rec = {};
-  if (world.hits(
-          r, Math::Interval(0, std::numeric_limits<double>::infinity()), rec)) {
-    return (rec.normal + Math::Vector3D(1, 1, 1)) * 0.5;
+  if (world.hits(r, Math::Interval(0, infinity), rec)) {
+    Math::Vector3D direction = random_on_hemisphere(rec.normal);
+    return ray_color(RayTracer::Ray(rec.p, direction), world) * 0.5 ;
   }
 
   Math::Vector3D unit_direction = unit_vector(r.direction);
@@ -103,11 +103,6 @@ RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
   Math::Vector3D ray_direction = pixel_sample - ray_origin;
 
   return RayTracer::Ray(ray_origin, ray_direction);
-}
-
-double random_double() {
-    // Returns a random real in [0,1).
-    return rand() / (RAND_MAX + 1.0);
 }
 
 Math::Vector3D RayTracer::Camera::sample_square() const

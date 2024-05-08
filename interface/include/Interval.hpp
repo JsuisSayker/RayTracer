@@ -8,6 +8,7 @@
 #ifndef INTERVAL_HPP_
 #define INTERVAL_HPP_
 
+#include "ToolBox.hpp"
 #include <limits>
 
 namespace Math {
@@ -27,12 +28,10 @@ public:
   double _max;
 
   static const Math::Interval empty() {
-    return Math::Interval(+std::numeric_limits<double>::infinity(),
-                          -std::numeric_limits<double>::infinity());
+    return Math::Interval(+infinity, -infinity);
   }
   static const Math::Interval universe() {
-    return Math::Interval(-std::numeric_limits<double>::infinity(),
-                          +std::numeric_limits<double>::infinity());
+    return Math::Interval(-infinity, +infinity);
   }
 };
 } // namespace Math

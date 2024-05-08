@@ -28,16 +28,15 @@ int RayTracer::Raytracer::run(std::string scene_file)
 {
     Scene scene;
     scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
-    // scene.addPrimitive(std::make_shared<RayTracer::Cylinder>(Math::Point3D(0, 0, -1), 0.5));
     scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100.5, -1), 100));
+    // scene.addPrimitive(std::make_shared<RayTracer::Cylinder>(Math::Point3D(0, 0, -1), 0.5));
 
     RayTracer::Camera cam;
-    cam._image_width = 400;
+    cam._image_width = 500;
     cam._aspect_ratio = 16.0 / 9.0;
-    cam._samples_per_pixel = 100;
+    cam._samples_per_pixel = 20;
 
     cam.render(scene);
-    printf("Raytracer running\n");
     (void)scene_file;
     return 0;
 }
