@@ -20,8 +20,8 @@ void Scene::addCamera(std::shared_ptr<ICamera> camera) {
 }
 
 bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
-                 PrimitivesRecord &rec) const {
-  PrimitivesRecord temp_rec;
+                 Material::Material *rec) const {
+  Material::Material *temp_rec;
   bool hit_anything = false;
   double closest_so_far = ray_t._max;
 
@@ -31,7 +31,7 @@ bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
     if (primitive->hits(r, Math::Interval(ray_t._min, closest_so_far),
                         temp_rec)) {
       hit_anything = true;
-      closest_so_far = temp_rec.t;
+      closest_so_far = temp_rec->t;
       rec = temp_rec;
     }
   }

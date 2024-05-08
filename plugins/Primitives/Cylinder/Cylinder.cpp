@@ -33,7 +33,7 @@ RayTracer::Cylinder::~Cylinder() {}
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
                                double ray_tmin,
                                double ray_tmax,
-                               PrimitivesRecord &rec) const
+                               Material::Material *rec) const
 {
   double a;
   double b;
@@ -77,24 +77,24 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   }
   t = t0;
 
-  rec.p = ray.at(t);
+  rec->p = ray.at(t);
   if (height != infinity) {
     if ((axe == 'x' || axe == 'X') &&
-        (rec.p.x < center.x - height / 2 || rec.p.x > center.x + height / 2)) {
+        (rec->p.x < center.x - height / 2 || rec->p.x > center.x + height / 2)) {
       return false;
     } else if ((axe == 'y' || axe == 'Y') &&
-               (rec.p.y < center.y - height / 2 ||
-                rec.p.y > center.y + height / 2)) {
+               (rec->p.y < center.y - height / 2 ||
+                rec->p.y > center.y + height / 2)) {
       return false;
     } else if ((axe == 'z' || axe == 'Z') &&
-               (rec.p.z < center.z - height / 2 ||
-                rec.p.z > center.z + height / 2)) {
+               (rec->p.z < center.z - height / 2 ||
+                rec->p.z > center.z + height / 2)) {
       return false;
     }
   }
 
-  rec.t = t;
-  rec.normal = (rec.p - center) / radius;
+  rec->t = t;
+  rec->normal = (rec->p - center) / radius;
 
   return true;
 }

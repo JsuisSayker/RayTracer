@@ -18,6 +18,7 @@
 #include <Sphere.hpp>
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 RayTracer::Raytracer::Raytracer() {}
 
@@ -27,24 +28,24 @@ int RayTracer::Raytracer::run(std::string scene_file)
 {
   Scene scene;
 
-  shared_ptr<Material::Material> material_ground =
-      make_shared<Material::Lambertian>(color(0.8, 0.8, 0.0));
-  shared_ptr<Material::Material> material_center =
-      make_shared<Material::Lambertian>(color(0.1, 0.2, 0.5));
-  shared_ptr<Material::Material> material_left =
-      make_shared<Material::Metal>(color(0.8, 0.8, 0.8));
-  shared_ptr<Material::Material> material_right =
-      make_shared<Material::Metal>(color(0.8, 0.6, 0.2));
+//   shared_ptr<Material::Material> material_ground =
+//       make_shared<Material::Lambertian>(color(0.8, 0.8, 0.0));
+//   shared_ptr<Material::Material> material_center =
+//       make_shared<Material::Lambertian>(color(0.1, 0.2, 0.5));
+//   shared_ptr<Material::Material> material_left =
+//       make_shared<Material::Metal>(color(0.8, 0.8, 0.8));
+//   shared_ptr<Material::Material> material_right =
+//       make_shared<Material::Metal>(color(0.8, 0.6, 0.2));
 
-  world.add(
-      make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
-  world.add(make_shared<sphere>(point3(0.0, 0.0, -1.2), 0.5, material_center));
-  world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
-  world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
-  scene.addPrimitive(
-      std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
-  scene.addPrimitive(
-      std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100.5, -1), 100));
+//   world.add(
+//       make_shared<RayTracer::Sphere>(Math::Point3D(0.0, -100.5, -1.0), 100.0, material_ground));
+//   world.add(make_shared<RayTracer::Sphere>(Math::Point3D(0.0, 0.0, -1.2), 0.5, material_center));
+//   world.add(make_shared<RayTracer::Sphere>(Math::Point3D(-1.0, 0.0, -1.0), 0.5, material_left));
+//   world.add(make_shared<RayTracer::Sphere>(Math::Point3D(1.0, 0.0, -1.0), 0.5, material_right));
+//   scene.addPrimitive(
+//       std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
+//   scene.addPrimitive(
+//       std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100.5, -1), 100));
   // scene.addPrimitive(std::make_shared<RayTracer::Cylinder>(Math::Point3D(0,
   // 0, -1), 0.5));
 

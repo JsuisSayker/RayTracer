@@ -32,7 +32,7 @@ target_link_libraries(raytracer
   raytracer_math
   raytracer_materials
   raytracer_metal
-  raytracer_lamberian
+  raytracer_lambertian
   raytracer_primitives
   raytracer_core_rendrers
   raytracer_sphere

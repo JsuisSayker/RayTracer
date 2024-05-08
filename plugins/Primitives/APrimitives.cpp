@@ -12,11 +12,11 @@ RayTracer::APrimitives::APrimitives() {}
 RayTracer::APrimitives::~APrimitives() {}
 
 void RayTracer::APrimitives::translate(const Math::Vector3D &translation) {
-  this->center = this->center + translation;
+  this->_center = this->_center + translation;
 }
 
 void RayTracer::APrimitives::rotate(double x, double y, double z) {
-  this->rotation->rotateX(x);
-  this->rotation->rotateY(y);
-  this->rotation->rotateZ(z);
+  this->_rotation->rotateX(x);
+  this->_rotation->rotateY(y);
+  this->_rotation->rotateZ(z);
 }

@@ -7,12 +7,12 @@
 
 #include "Material.hpp"
 
-Material::Material::Material() {}
+// Material::Material::Material() {}
 
-Material::Material::~Material() {}
+// Material::Material::~Material() {}
 
 bool Material::Material::scatter(const RayTracer::Ray &r_in,
-                                 const PrimitivesRecord &rec,
+                                 Material *rec,
                                  Math::Vector3D &attenuation,
                                  RayTracer::Ray &scattered) const
 {

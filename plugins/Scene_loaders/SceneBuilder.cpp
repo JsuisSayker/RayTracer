@@ -43,9 +43,10 @@ void SceneBuilder::createSphere(libconfig::Setting &setting) {
   int red = color.lookup("r");
   int green = color.lookup("g");
   int blue = color.lookup("b");
-  std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(
-      Math::Point3D((double)x, (double)y, (double)z), r);
-  _scene->addPrimitive(sphere);
+  // std::shared_ptr<Material::Material> mat = std::make_shared<Material::Material>();
+  // std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(
+  //     Math::Point3D((double)x, (double)y, (double)z), r, mat);
+  // _scene->addPrimitive(sphere);
 }
 
 void SceneBuilder::buildObject(libconfig::Setting &setting) {
