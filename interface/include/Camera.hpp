@@ -13,6 +13,7 @@
 #include "Rectangle3D.hpp"
 #include "Scene.hpp"
 #include "Vector3D.hpp"
+#include "Material.hpp"
 #include <fstream>
 
 namespace RayTracer {

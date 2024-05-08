@@ -17,10 +17,10 @@ RayTracer::Camera::~Camera() {}
 
 double linear_to_gamma(double linear_component)
 {
-    if (linear_component > 0)
-        return sqrt(linear_component);
+  if (linear_component > 0)
+    return sqrt(linear_component);
 
-    return 0;
+  return 0;
 }
 
 void write_color(std::ostream &out, const Math::Vector3D &color)
@@ -44,15 +44,17 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
   out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
-Math::Vector3D
-ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
+Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 {
   if (depth <= 0)
     return Math::Vector3D(0, 0, 0);
-  RayTracer::Primitives_record rec = {};
+  PrimitivesRecord rec = {};
   if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
-    Math::Vector3D direction = rec.normal + random_unit_vector();
-    return ray_color(RayTracer::Ray(rec.p, direction), depth-1, world) * 0.1;
+    RayTracer::Ray scattered;
+    Math::Vector3D attenuation;
+    if (rec.mat->scatter(r, rec, attenuation, scattered))
+      return attenuation * ray_color(scattered, depth - 1, world);
+    return Math::Vector3D(0, 0, 0);
   }
 
   Math::Vector3D unit_direction = unit_vector(r.direction);

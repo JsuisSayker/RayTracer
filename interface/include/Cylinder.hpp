@@ -27,7 +27,7 @@ public:
   bool hits(const RayTracer::Ray &ray,
             double ray_tmin,
             double ray_tmax,
-            RayTracer::Primitives_record &rec) const;
+            PrimitivesRecord &rec) const;
 
 protected:
 private:

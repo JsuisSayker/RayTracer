@@ -20,8 +20,8 @@ void Scene::addCamera(std::shared_ptr<ICamera> camera) {
 }
 
 bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
-                 RayTracer::Primitives_record &rec) const {
-  RayTracer::Primitives_record temp_rec;
+                 PrimitivesRecord &rec) const {
+  PrimitivesRecord temp_rec;
   bool hit_anything = false;
   double closest_so_far = ray_t._max;
 

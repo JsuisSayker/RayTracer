@@ -1,4 +1,5 @@
 add_subdirectory(Math)
 add_subdirectory(CoreRenderers)
+add_subdirectory(Materials)
 add_subdirectory(Primitives)
 add_subdirectory(Scene_loaders)

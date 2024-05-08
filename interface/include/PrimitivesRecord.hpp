@@ -2,26 +2,31 @@
 ** EPITECH PROJECT, 2024
 ** RayTracer
 ** File description:
-** Primitives_record
+** PrimitivesRecord
 */
 
-#ifndef PRIMITIVES_RECORD_HPP_
-#define PRIMITIVES_RECORD_HPP_
+#ifndef PRIMITIVESRECORD_HPP_
+#define PRIMITIVESRECORD_HPP_
 
+#include "Material.hpp"
 #include "Point3D.hpp"
 #include "Ray.hpp"
 #include "Vector3D.hpp"
+#include <memory>
 
-namespace RayTracer {
-class Primitives_record {
+class PrimitivesRecord {
 public:
+  PrimitivesRecord(){};
+  ~PrimitivesRecord(){};
   Math::Point3D p;
   Math::Vector3D normal;
+  std::shared_ptr<Material::Material> mat;
   double t;
   bool front_face;
 
   void set_face_normal(const RayTracer::Ray &ray,
-                       const Math::Vector3D &outward_normal) {
+                       const Math::Vector3D &outward_normal)
+  {
     // Sets the hit record normal vector.
     // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
@@ -29,6 +34,5 @@ public:
     normal = front_face ? outward_normal : outward_normal * (-1);
   }
 };
-} // namespace RayTracer
 
-#endif /* !PRIMITIVES_RECORD_HPP_ */
+#endif /* !PRIMITIVESRECORD_HPP_ */

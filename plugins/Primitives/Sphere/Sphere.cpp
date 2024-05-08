@@ -7,15 +7,19 @@
 
 #include <Sphere.hpp>
 
-RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius) {
-  this->center = center;
-  this->radius = radius;
+RayTracer::Sphere::Sphere(const Math::Point3D &center,
+                          double radius,
+                          std::shared_ptr<Material::Material> mat)
+    : _center(center), _radius(fmax(0, radius)), _material(mat)
+{
 }
 
 RayTracer::Sphere::~Sphere() {}
 
-bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                             RayTracer::Primitives_record &rec) const {
+bool RayTracer::Sphere::hits(const RayTracer::Ray &ray,
+                             Math::Interval ray_t,
+                             PrimitivesRecord &rec) const
+{
   Math::Vector3D oc = center - ray.origin;
   double a = ray.direction.length_squared();
   double h = ray.direction.dot(oc);
@@ -42,10 +46,12 @@ bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
   return true;
 }
 
-void RayTracer::Sphere::translate(const Math::Vector3D &translation) {
+void RayTracer::Sphere::translate(const Math::Vector3D &translation)
+{
   center = center + translation;
 }
 
-extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint() {
+extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
+{
   return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1);
 }

@@ -33,7 +33,7 @@ RayTracer::Cylinder::~Cylinder() {}
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
                                double ray_tmin,
                                double ray_tmax,
-                               RayTracer::Primitives_record &rec) const
+                               PrimitivesRecord &rec) const
 {
   double a;
   double b;

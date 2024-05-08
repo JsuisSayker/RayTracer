@@ -8,10 +8,10 @@
 #ifndef VECTOR3D_HPP__
 #define VECTOR3D_HPP__
 
+#include "ToolBox.hpp"
 #include <cmath>
 #include <ostream>
 #include <vector>
-#include "ToolBox.hpp"
 
 namespace Math {
 
@@ -27,6 +27,7 @@ public:
 
   double length() const;
   double length_squared() const;
+  bool near_zero() const;
 
   // rotate functions
   void rotateX(double angle);
@@ -47,7 +48,6 @@ public:
   Vector3D operator*=(double k);
   Vector3D operator/(double k) const;
   Vector3D operator/=(double k);
-
 
   // template <int N> class Vector {
   // public:
@@ -128,12 +128,14 @@ public:
 };
 } // namespace Math
 
-  Math::Vector3D unit_vector(const Math::Vector3D &v);
-  Math::Vector3D random_vector();
-  Math::Vector3D random_vector(double min, double max);
-  Math::Vector3D random_in_unit_sphere();
-  Math::Vector3D random_unit_vector();
-  Math::Vector3D random_on_hemisphere(const Math::Vector3D& normal);
+Math::Vector3D unit_vector(const Math::Vector3D &v);
+Math::Vector3D random_vector();
+Math::Vector3D random_vector(double min, double max);
+Math::Vector3D random_in_unit_sphere();
+Math::Vector3D random_unit_vector();
+Math::Vector3D random_on_hemisphere(const Math::Vector3D &normal);
+Math::Vector3D reflect(const Math::Vector3D &v, const Math::Vector3D &n);
+
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other);
 
 #endif /* !VECTOR3D */

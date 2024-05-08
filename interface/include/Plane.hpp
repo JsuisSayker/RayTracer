@@ -19,7 +19,7 @@ public:
   ~Plane();
 
   bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-            RayTracer::Primitives_record &rec) const;
+            PrimitivesRecord &rec) const;
 
 protected:
 private:
