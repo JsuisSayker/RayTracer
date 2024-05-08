@@ -24,16 +24,32 @@ class SceneBuilder : virtual public ISceneBuilder{
             MATERIAL
         };
 
+        struct coordinates {
+            int x;
+            int y;
+            int z;
+        };
+
+        struct color {
+            int r;
+            int g;
+            int b;
+        };
+
         struct CameraElement {
             int width;
             int height;
-            int positionX;
-            int positionY;
-            int positionZ;
+            coordinates position;
             int rotationX;
             int rotationY;
             int rotationZ;
             double fov;
+        };
+
+        struct SphereElement {
+            coordinates position;
+            int radius;
+            color colorValues;
         };
 
         SceneBuilder() = default;
@@ -43,13 +59,17 @@ class SceneBuilder : virtual public ISceneBuilder{
         void loadPlugins();
         void buildObject(libconfig::Setting &setting);
         void createSphere(libconfig::Setting &setting);
-        void saveSceneData(const libconfig::Setting &list);
+        void saveSceneData(const libconfig::Setting &list, std::string type);
+        void saveCameraData(const libconfig::Setting &list);
+        void saveSphereData(const libconfig::Setting &element);
         std::shared_ptr<IScene> getScene();
 
     protected:
         std::shared_ptr<IScene> _scene;
         std::vector<std::string> _pathToPlugins;
         const libconfig::Setting &_scenesLists;
+        std::vector<std::string> _typeList;
+        std::vector<SphereElement> _spheresList;
     private:
 };
 
