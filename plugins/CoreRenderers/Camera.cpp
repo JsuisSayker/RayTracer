@@ -6,7 +6,7 @@
 */
 
 #include <Camera.hpp>
-#include <Metal.hpp>
+#include <Lambertian.hpp>
 
 RayTracer::Camera::Camera()
 {
@@ -49,7 +49,7 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 {
   if (depth <= 0)
     return Math::Vector3D(0, 0, 0);
-  Material::Metal rec(Math::Vector3D(0, 0, 0));
+  Material::Lambertian rec(Math::Vector3D(0, 0, 0));
   if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
     RayTracer::Ray scattered;
     Math::Vector3D attenuation;
@@ -93,7 +93,10 @@ void RayTracer::Camera::initialize()
 
   _pixel_samples_scale = 1.0 / _samples_per_pixel;
 
-  double viewport_height = 2.0;
+  double focal_length = 1.0;
+  double theta = degrees_to_radians(_vfov);
+  double h = tan(theta/2);
+  double viewport_height = 2 * h * focal_length;
   double viewport_width =
       viewport_height * (double(_image_width) / _image_height);
 

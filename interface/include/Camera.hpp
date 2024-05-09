@@ -23,6 +23,7 @@ public:
   double _aspect_ratio = 1.0;
   int _samples_per_pixel = 10;
   int _max_depth = 10;
+  double _vfov = 90;
   Rectangle3D _screen;
   Math::Point3D _origin;
 

@@ -6,7 +6,7 @@
 */
 
 #include "Scene.hpp"
-#include "Metal.hpp"
+#include "Lambertian.hpp"
 
 Scene::Scene() {}
 
@@ -22,7 +22,7 @@ void Scene::addCamera(std::shared_ptr<ICamera> camera) {
 
 bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
                  Material::Material &rec) const {
-  Material::Metal temp_rec(Math::Vector3D(0, 0, 0));
+  Material::Lambertian temp_rec(Math::Vector3D(0, 0, 0));
   bool hit_anything = false;
   double closest_so_far = ray_t._max;
 

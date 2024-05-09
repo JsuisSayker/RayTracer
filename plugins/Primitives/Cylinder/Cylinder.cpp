@@ -80,15 +80,15 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   rec.p = ray.at(t);
   if (height != infinity) {
     if ((axe == 'x' || axe == 'X') &&
-        (rec.p.x < center.x - height / 2 || rec.p.x > center.x + height / 2)) {
+        (rec.p._x < center._x - height / 2 || rec.p._x > center._x + height / 2)) {
       return false;
     } else if ((axe == 'y' || axe == 'Y') &&
-               (rec.p.y < center.y - height / 2 ||
-                rec.p.y > center.y + height / 2)) {
+               (rec.p._y < center._y - height / 2 ||
+                rec.p._y > center._y + height / 2)) {
       return false;
     } else if ((axe == 'z' || axe == 'Z') &&
-               (rec.p.z < center.z - height / 2 ||
-                rec.p.z > center.z + height / 2)) {
+               (rec.p._z < center._z - height / 2 ||
+                rec.p._z > center._z + height / 2)) {
       return false;
     }
   }

@@ -147,7 +147,7 @@ Math::Vector3D unit_vector(const Math::Vector3D &v) { return v / v.length(); }
 Math::Vector3D random_in_unit_sphere()
 {
   while (true) {
-    auto p = random_vector(-1, 1);
+    Math::Vector3D p = random_vector(-1, 1);
     if (p.length_squared() < 1)
       return p;
   }
@@ -171,6 +171,14 @@ Math::Vector3D reflect(const Math::Vector3D &v, const Math::Vector3D &n)
 {
   return v - n * 2 * v.dot(n);
 }
+
+Math::Vector3D refract(const Math::Vector3D& uv, const Math::Vector3D& n, double etai_over_etat) {
+    double cos_theta = fmin(-uv.dot(n), 1.0);
+    Math::Vector3D r_out_perp =  (uv + n * cos_theta) * etai_over_etat;
+    Math::Vector3D r_out_parallel = n * -sqrt(fabs(1.0 - r_out_perp.length_squared()));
+    return r_out_perp + r_out_parallel;
+}
+
 
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other)
 {

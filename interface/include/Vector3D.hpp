@@ -136,6 +136,7 @@ Math::Vector3D random_in_unit_sphere();
 Math::Vector3D random_unit_vector();
 Math::Vector3D random_on_hemisphere(const Math::Vector3D &normal);
 Math::Vector3D reflect(const Math::Vector3D &v, const Math::Vector3D &n);
+Math::Vector3D refract(const Math::Vector3D& uv, const Math::Vector3D& n, double etai_over_etat);
 
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other);
 

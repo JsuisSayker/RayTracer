@@ -38,7 +38,7 @@ public:
     normal = front_face ? outward_normal : outward_normal * (-1);
   }
   protected:
-    Math::Vector3D albedo;
+    Math::Vector3D _albedo;
 };
 }
 

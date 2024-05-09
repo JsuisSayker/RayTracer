@@ -9,7 +9,7 @@
 
 Material::Lambertian::Lambertian(const Math::Vector3D &albedo)
 {
-  this->albedo = albedo;
+  this->_albedo = albedo;
 }
 Material::Lambertian::~Lambertian() {}
 
@@ -24,6 +24,6 @@ bool Material::Lambertian::scatter(const RayTracer::Ray &r_in,
     scatter_direction = rec.normal;
 
   scattered = RayTracer::Ray(rec.p, scatter_direction);
-  attenuation = albedo;
+  attenuation = _albedo;
   return true;
 }

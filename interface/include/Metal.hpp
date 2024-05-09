@@ -13,14 +13,14 @@
 namespace Material {
 class Metal : virtual public Material {
 public:
-  Metal(const Math::Vector3D &albedo);
+  Metal(const Math::Vector3D &albedo, double fuzz);
   ~Metal();
-
   bool scatter(const RayTracer::Ray &r_in,
                Material &rec,
                Math::Vector3D &attenuation,
                RayTracer::Ray &scattered) const;
-
+protected:
+ double _fuzz;
 };
 } // namespace Material
 
