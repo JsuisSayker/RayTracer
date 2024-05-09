@@ -23,7 +23,7 @@ RayTracer::Sphere::~Sphere() {}
 
 bool RayTracer::Sphere::hits(const RayTracer::Ray &ray,
                              Math::Interval ray_t,
-                             Material::Material *rec) const
+                             Material::Material &rec) const
 {
   Math::Vector3D oc = _center - ray.origin;
   double a = ray.direction.length_squared();
@@ -44,10 +44,11 @@ bool RayTracer::Sphere::hits(const RayTracer::Ray &ray,
       return false;
   }
 
-  rec->t = root;
-  rec->p = ray.at(rec->t);
-  Math::Vector3D outward_normal = (rec->p - _center) / _radius;
-  rec->set_face_normal(ray, outward_normal);
+  rec.t = root;
+  rec.p = ray.at(rec.t);
+  Math::Vector3D outward_normal = (rec.p - _center) / _radius;
+  rec.set_face_normal(ray, outward_normal);
+  rec.mat = _material;
   return true;
 }
 

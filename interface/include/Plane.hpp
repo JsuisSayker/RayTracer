@@ -19,7 +19,7 @@ public:
   ~Plane();
 
   bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-            Material::Material *rec) const;
+            Material::Material &rec) const;
 
 protected:
 private:

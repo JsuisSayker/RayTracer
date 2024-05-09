@@ -20,7 +20,7 @@ public:
   virtual ~Material() = default;
 
   virtual bool scatter(const RayTracer::Ray &r_in,
-                       Material *rec,
+                       Material &rec,
                        Math::Vector3D &attenuation,
                        RayTracer::Ray &scattered) const = 0;
   std::shared_ptr<Material> mat;

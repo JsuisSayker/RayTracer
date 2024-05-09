@@ -27,7 +27,7 @@ public:
   bool hits(const RayTracer::Ray &ray,
             double ray_tmin,
             double ray_tmax,
-            Material::Material *rec) const;
+            Material::Material &rec) const;
 
 protected:
 private:

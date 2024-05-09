@@ -17,7 +17,7 @@ public:
   ~APrimitives();
 
   virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                    Material::Material *rec) const = 0;
+                    Material::Material &rec) const = 0;
 
   void translate(const Math::Vector3D &translation);
   void rotate(double x, double y, double z);

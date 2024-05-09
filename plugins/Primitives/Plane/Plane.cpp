@@ -16,7 +16,7 @@ RayTracer::Plane::Plane(const char axe, double position) {
 RayTracer::Plane::~Plane() {}
 
 bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                            Material::Material *rec) const {
+                            Material::Material &rec) const {
   if (axe == 'X' || axe == 'x') {
     if (ray.direction.x == 0)
       return -1;

@@ -17,7 +17,7 @@ public:
   ~Lambertian();
 
   bool scatter(const RayTracer::Ray &r_in,
-               Material *rec,
+               Material &rec,
                Math::Vector3D &attenuation,
                RayTracer::Ray &scattered) const;
 
