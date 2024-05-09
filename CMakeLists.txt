@@ -9,7 +9,7 @@ project(Raytracer
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# set(CMAKE_BUILD_TYPE Debug)  # Set build type to Debug
+set(CMAKE_BUILD_TYPE Debug)  # Set build type to Debug
 
 # Enable AddressSanitizer
 # set(CMAKE_CXX_FLAGS

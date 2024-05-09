@@ -15,6 +15,8 @@
 #include "Scene.hpp"
 #include "Sphere.hpp"
 #include <raytracer/ISceneBuilder.hpp>
+#include <map>
+#include <functional>
 
 class SceneBuilder : virtual public ISceneBuilder{
     public:
@@ -65,28 +67,35 @@ class SceneBuilder : virtual public ISceneBuilder{
             coordinates points;
         };
 
+        std::shared_ptr<IScene> _scene;
+        std::vector<std::string> _pathToPlugins;
+        const libconfig::Setting &_scenesLists;
+        std::vector<std::string> _typeList;
+        struct completeFile {
+            std::vector<SphereElement> _spheresList;
+            std::vector<PlaneElement> _planeList;
+            std::vector<LightElement> _lightList;
+            CameraElement _camera;
+        };
+        std::map<std::string, std::function<void(completeFile &, int)>> _object = {
+        {"Sphere", std::bind(&SceneBuilder::createSphere, this, std::placeholders::_1, std::placeholders::_2)}
+        };
+
         SceneBuilder() = default;
         SceneBuilder(const libconfig::Setting &list);
         ~SceneBuilder();
 
         void loadPlugins();
-        void buildObject(libconfig::Setting &setting);
-        void createSphere(libconfig::Setting &setting);
-        void saveSceneData(const libconfig::Setting &list, std::string type, int count);
-        void saveCameraData(const libconfig::Setting &list);
-        void saveSphereData(const libconfig::Setting &element, int start);
-        void savePlaneData(const libconfig::Setting &element, int start);
-        void saveLightData(const libconfig::Setting &element);
+        void buildObject(std::string type, completeFile data, int index) const;
+        void createSphere(completeFile &data, int index);
+        void saveSceneData(const libconfig::Setting &list, std::string type,
+            int count, completeFile &data, SceneBuilder::LightElement lightElement) const;
+        void saveCameraData(const libconfig::Setting &list, completeFile data);
+        void saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const;
+        void savePlaneData(const libconfig::Setting &element, int start, completeFile data);
+        void saveLightData(const libconfig::Setting &element, completeFile data, SceneBuilder::LightElement lightElement);
         std::shared_ptr<IScene> getScene();
 
-    protected:
-        std::shared_ptr<IScene> _scene;
-        std::vector<std::string> _pathToPlugins;
-        const libconfig::Setting &_scenesLists;
-        std::vector<std::string> _typeList;
-        std::vector<SphereElement> _spheresList;
-        std::vector<PlaneElement> _planeList;
-        std::vector<LightElement> _lightList;
     private:
 };
 
