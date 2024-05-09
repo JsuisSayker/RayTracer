@@ -129,6 +129,7 @@ public:
 };
 } // namespace Math
 
+Math::Vector3D cross(const Math::Vector3D &u, const Math::Vector3D &v);
 Math::Vector3D unit_vector(const Math::Vector3D &v);
 Math::Vector3D random_vector();
 Math::Vector3D random_vector(double min, double max);
@@ -137,6 +138,7 @@ Math::Vector3D random_unit_vector();
 Math::Vector3D random_on_hemisphere(const Math::Vector3D &normal);
 Math::Vector3D reflect(const Math::Vector3D &v, const Math::Vector3D &n);
 Math::Vector3D refract(const Math::Vector3D& uv, const Math::Vector3D& n, double etai_over_etat);
+Math::Vector3D random_in_unit_disk();
 
 std::ostream &operator<<(std::ostream &s, const Math::Vector3D &other);
 

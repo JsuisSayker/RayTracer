@@ -93,24 +93,39 @@ void RayTracer::Camera::initialize()
 
   _pixel_samples_scale = 1.0 / _samples_per_pixel;
 
-  double focal_length = 1.0;
+  _origin = _lookfrom;
+
   double theta = degrees_to_radians(_vfov);
-  double h = tan(theta/2);
-  double viewport_height = 2 * h * focal_length;
+  double h = tan(theta / 2);
+  double viewport_height = 2 * h * _focus_dist;
   double viewport_width =
       viewport_height * (double(_image_width) / _image_height);
 
-  Math::Vector3D viewport_u = Math::Vector3D(viewport_width, 0, 0);
-  Math::Vector3D viewport_v = Math::Vector3D(0, -viewport_height, 0);
+  _w = unit_vector(_lookfrom - _lookat);
+  _u = unit_vector(cross(_vup, _w));
+  _v = cross(_w, _u);
 
-  this->_screen.origin = Math::Point3D(
-      -(viewport_width / (double)2), (viewport_height / (double)2), -0.5);
-  this->_screen.left_side = Math::Vector3D(0, viewport_height, 0);
-  this->_screen.bottom_side = Math::Vector3D(viewport_width, 0, 0);
+  Math::Vector3D viewport_u = _u * viewport_width;
+  Math::Vector3D viewport_v = (_v * -1) * viewport_height;
 
   // Calculate the horizontal and vertical delta vectors from pixel to pixel.
   _pixel_delta_u = viewport_u / _image_width;
   _pixel_delta_v = viewport_v / _image_height;
+
+  Math::Point3D viewport_upper_left =
+      _origin - (_w * _focus_dist) - viewport_u / 2 - viewport_v / 2;
+  Math::Point3D pixel00_loc =
+      viewport_upper_left + (_pixel_delta_u + _pixel_delta_v) * 0.5;
+
+  this->_screen.origin =
+      Math::Point3D(pixel00_loc._x, pixel00_loc._y, pixel00_loc._z);
+  this->_screen.left_side = Math::Vector3D(0, viewport_height, 0);
+  this->_screen.bottom_side = Math::Vector3D(viewport_width, 0, 0);
+
+  double defocus_radius =
+      _focus_dist * tan(degrees_to_radians(_defocus_angle / 2));
+  _defocus_disk_u = _u * defocus_radius;
+  _defocus_disk_v = _v * defocus_radius;
 }
 
 RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
@@ -123,7 +138,7 @@ RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
                                (_pixel_delta_u * (x + offset.x)) +
                                (_pixel_delta_v * (y + offset.y));
 
-  Math::Point3D ray_origin = _origin;
+  Math::Point3D ray_origin = (_defocus_angle <= 0) ? _origin : defocus_disk_sample();
   Math::Vector3D ray_direction = pixel_sample - ray_origin;
 
   return RayTracer::Ray(ray_origin, ray_direction);
@@ -134,4 +149,11 @@ Math::Vector3D RayTracer::Camera::sample_square() const
   // Returns the vector to a random point in the [-.5,-.5]-[+.5,+.5] unit
   // square.
   return Math::Vector3D(random_double() - 0.5, random_double() - 0.5, 0);
+}
+
+Math::Point3D RayTracer::Camera::defocus_disk_sample() const
+{
+  // Returns a random point in the camera defocus disk.
+  Math::Vector3D p = random_in_unit_disk();
+  return _origin + (_defocus_disk_u * p.x) + (_defocus_disk_v * p.y);
 }
