@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include "Scene.hpp"
+#include "Sphere.hpp"
 #include <raytracer/ISceneBuilder.hpp>
 
 class SceneBuilder : virtual public ISceneBuilder{
@@ -52,6 +53,18 @@ class SceneBuilder : virtual public ISceneBuilder{
             color colorValues;
         };
 
+        struct PlaneElement {
+            std::string axis;
+            int position;
+            color colorValues;
+        };
+
+        struct LightElement {
+            double ambient;
+            double diffuse;
+            coordinates points;
+        };
+
         SceneBuilder() = default;
         SceneBuilder(const libconfig::Setting &list);
         ~SceneBuilder();
@@ -59,9 +72,11 @@ class SceneBuilder : virtual public ISceneBuilder{
         void loadPlugins();
         void buildObject(libconfig::Setting &setting);
         void createSphere(libconfig::Setting &setting);
-        void saveSceneData(const libconfig::Setting &list, std::string type);
+        void saveSceneData(const libconfig::Setting &list, std::string type, int count);
         void saveCameraData(const libconfig::Setting &list);
-        void saveSphereData(const libconfig::Setting &element);
+        void saveSphereData(const libconfig::Setting &element, int start);
+        void savePlaneData(const libconfig::Setting &element, int start);
+        void saveLightData(const libconfig::Setting &element);
         std::shared_ptr<IScene> getScene();
 
     protected:
@@ -70,6 +85,8 @@ class SceneBuilder : virtual public ISceneBuilder{
         const libconfig::Setting &_scenesLists;
         std::vector<std::string> _typeList;
         std::vector<SphereElement> _spheresList;
+        std::vector<PlaneElement> _planeList;
+        std::vector<LightElement> _lightList;
     private:
 };
 
