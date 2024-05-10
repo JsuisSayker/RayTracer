@@ -8,29 +8,37 @@
 #ifndef SCENEBUILDER_HPP_
 #define SCENEBUILDER_HPP_
 
-#include "Scene.hpp"
 #include <filesystem>
 #include <iostream>
 #include <libconfig.h++>
 #include <vector>
 
-class SceneBuilder {
-public:
-  enum SceneType { PRIMITIVE, CAMERA, LIGHT, MATERIAL };
+#include "Scene.hpp"
 
-  SceneBuilder(libconfig::Setting &list);
-  ~SceneBuilder();
+class SceneBuilder
+{
+  public:
+    enum SceneType
+    {
+        PRIMITIVE,
+        CAMERA,
+        LIGHT,
+        MATERIAL
+    };
 
-  void loadPlugins();
-  void buildObject(libconfig::Setting &setting);
-  void createSphere(libconfig::Setting &setting);
+    SceneBuilder(libconfig::Setting &list);
+    ~SceneBuilder();
 
-protected:
-  std::shared_ptr<Scene> _scene;
-  std::vector<std::string> _pathToPlugins;
-  libconfig::Setting &_scenesLists;
+    void loadPlugins();
+    void buildObject(libconfig::Setting &setting);
+    void createSphere(libconfig::Setting &setting);
 
-private:
+  protected:
+    std::shared_ptr<Scene> _scene;
+    std::vector<std::string> _pathToPlugins;
+    libconfig::Setting &_scenesLists;
+
+  private:
 };
 
 #endif /* !SCENEBUILDER_HPP_ */

@@ -10,14 +10,15 @@
 
 #include <iostream>
 
-class ILoadFile {
-    public:
-        ILoadFile(){};
-        ILoadFile(std::string path){};
-        virtual ~ILoadFile(){};
+class ILoadFile
+{
+  public:
+    ILoadFile(){};
+    ILoadFile(std::string path){};
+    virtual ~ILoadFile(){};
 
-    protected:
-    private:
+  protected:
+  private:
 };
 
 #endif /* !ILOADFILE_HPP_ */

@@ -10,15 +10,15 @@
 
 #include <libconfig.h++>
 
+class ISceneBuilder
+{
+  public:
+    ISceneBuilder(){};
+    ISceneBuilder(libconfig::Setting &list){};
+    virtual ~ISceneBuilder(){};
 
-class ISceneBuilder {
-    public:
-        ISceneBuilder(){};
-        ISceneBuilder(libconfig::Setting &list){};
-        virtual ~ISceneBuilder(){};
-
-    protected:
-    private:
+  protected:
+  private:
 };
 
 #endif /* !ISCENEBUILDER_HPP_ */

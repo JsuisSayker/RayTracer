@@ -8,18 +8,17 @@
 #ifndef PRIMITIVESRECORD_HPP_
 #define PRIMITIVESRECORD_HPP_
 
+#include <memory>
+
 #include "Point3D.hpp"
 #include "Ray.hpp"
 #include "Vector3D.hpp"
-#include <memory>
 
-class PrimitivesRecord {
-public:
-  PrimitivesRecord(){};
-  ~PrimitivesRecord(){};
-  
-
-
+class PrimitivesRecord
+{
+  public:
+    PrimitivesRecord(){};
+    ~PrimitivesRecord(){};
 };
 
 #endif /* !PRIMITIVESRECORD_HPP_ */
