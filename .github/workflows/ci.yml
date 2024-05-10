@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: ci
 run-name: ${{github.actor}} verifying my code
 
 on:
