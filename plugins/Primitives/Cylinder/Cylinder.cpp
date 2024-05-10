@@ -40,13 +40,7 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
                                Math::Interval ray_t,
                                Material::Material &rec) const
 {
-  double a;
-  double b;
-  double c;
-  double discriminant;
-  double t;
-  double t0;
-  double t1;
+  double a, b, c, discriminant, t, t0, t1;
   Math::Vector3D oc = ray.origin - _center;
   Math::Vector3D direction = ray.direction;
 
