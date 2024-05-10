@@ -14,6 +14,7 @@
 #include <vector>
 #include "Scene.hpp"
 #include "Sphere.hpp"
+// #include "Plane.hpp"
 #include <raytracer/ISceneBuilder.hpp>
 #include <map>
 #include <functional>
@@ -79,15 +80,17 @@ class SceneBuilder : virtual public ISceneBuilder{
         };
         std::map<std::string, std::function<void(completeFile &, int)>> _object = {
         {"Sphere", std::bind(&SceneBuilder::createSphere, this, std::placeholders::_1, std::placeholders::_2)}
+        // {"Plane", std::bind(&SceneBuilder::createPlane, this, std::placeholders::_1, std::placeholders::_2)}
         };
 
         SceneBuilder() = default;
         SceneBuilder(const libconfig::Setting &list);
         ~SceneBuilder();
 
-        void loadPlugins();
+        // void loadPlugins();
         void buildObject(std::string type, completeFile data, int index) const;
         void createSphere(completeFile &data, int index);
+        void createPlane(completeFile &data, int index);
         void saveSceneData(const libconfig::Setting &list, std::string type,
             int count, completeFile &data, SceneBuilder::LightElement lightElement);
         void saveCameraData(const libconfig::Setting &list, completeFile data);

@@ -61,53 +61,42 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
     }
 }
 
-void SceneBuilder::loadPlugins()
-{
-    std::string path = "./plugins";
-    std::string fileWantedExtensions = ".so";
+// void SceneBuilder::loadPlugins()
+// {
+//     std::string path = "./plugins";
+//     std::string fileWantedExtensions = ".so";
 
-    for (const auto &entryFiles : std::filesystem::directory_iterator(path)) {
-        if (entryFiles.path().extension() == fileWantedExtensions) {
-            const std::string actualFilePath = entryFiles.path().string();
-            auto pluginTypeFunc = SceneType::PRIMITIVE; // here we need to load the function from the plugin
+//     for (const auto &entryFiles : std::filesystem::directory_iterator(path)) {
+//         if (entryFiles.path().extension() == fileWantedExtensions) {
+//             const std::string actualFilePath = entryFiles.path().string();
+//             auto pluginTypeFunc = SceneType::PRIMITIVE; // here we need to load the function from the plugin
             // if (pluginTypeFunc == nullptr)
             //     throw std::runtime_error("Error while loading plugin type");
-            if (pluginTypeFunc == SceneType::PRIMITIVE)
-                _pathToPlugins.push_back(actualFilePath);
-            _pathToPlugins.push_back(actualFilePath);
-        }
-    }
-}
+//             if (pluginTypeFunc == SceneType::PRIMITIVE)
+//                 _pathToPlugins.push_back(actualFilePath);
+//             _pathToPlugins.push_back(actualFilePath);
+//         }
+//     }
+// }
 
 void SceneBuilder::createSphere(completeFile &data, int index)
 {
     std::cout << "Sphere created" << std::endl;
-    // int x, y, z;
-    // std::string type = setting.lookup("type");
-    // x = setting.lookup("x");
-    // y = setting.lookup("y");
-    // z = setting.lookup("z");
-    // int r = setting.lookup("r");
-    // const libconfig::Setting& color = setting.lookup("color");
-    // int red = color.lookup("r");
-    // int green = color.lookup("g");
-    // int blue = color.lookup("b");
-    std::cout << "BOUILLANT" << std::endl;
-    std::cout << index << std::endl;
-    std::cout << data._spheresList[index].position.x << std::endl;
-    std::cout << data._spheresList[index].position.y << std::endl;
-    std::cout << data._spheresList[index].position.z << std::endl;
-    std::cout << data._spheresList[index].radius << std::endl;
-    std::cout << data._spheresList[index].colorValues.r << std::endl;
-    std::cout << data._spheresList[index].colorValues.g << std::endl;
-    std::cout << data._spheresList[index].colorValues.b << std::endl;
     std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
         (double)data._spheresList[index].position.x,
         (double)data._spheresList[index].position.y,
         (double)data._spheresList[index].position.z),
         data._spheresList[index].radius);
     _scene->addPrimitive(sphere);
+    std::cout << "BOUILLANT" << std::endl;
 }
+
+// void SceneBuilder::createPlane(completeFile &data, int index)
+// {
+//     std::cout << "Plane created" << std::endl;
+//     std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>();
+//     _scene->addPrimitive(plane);
+// }
 
 void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile data)
 {
@@ -283,37 +272,25 @@ void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string 
 {
     // if (type == "Camera") {
     //     saveCameraData(element, data);
-    //     buildObject(type, data);
+    //     buildObject(type, data, count);
     // }
     if (type == "Sphere") {
         saveSphereData(element, count, data);
-        std::cout << "Sphere data" << std::endl;
-        for (int i = 0; i < data._spheresList.size(); i++) {
-            std::cout << "Sphere " << i << std::endl;
-            std::cout << "x : " << data._spheresList[i].position.x << std::endl;
-            std::cout << "y : " << data._spheresList[i].position.y << std::endl;
-            std::cout << "z : " << data._spheresList[i].position.z << std::endl;
-            std::cout << "radius : " << data._spheresList[i].radius << std::endl;
-            std::cout << "r : " << data._spheresList[i].colorValues.r << std::endl;
-            std::cout << "g : " << data._spheresList[i].colorValues.g << std::endl;
-            std::cout << "b : " << data._spheresList[i].colorValues.b << std::endl;
-        }
         buildObject(type, data, count);
     }
-    // if (type == "Plane") {
-    //     savePlaneData(element, count, data);
-    //     buildObject(type, data);
-    // }
+    if (type == "Plane") {
+        savePlaneData(element, count, data);
+        buildObject(type, data, count);
+    }
     // if (type == "Lights") {
     //     saveLightData(element, data, lightElement);
-    //     buildObject(type, data);
+    //     buildObject(type, data, count);
     // }
 
 }
 
 void SceneBuilder::buildObject(std::string type, completeFile data, int index) const
 {
-    std::cout << "Building object" << std::endl;
     _object.at(type)(data, index);
 }
 
