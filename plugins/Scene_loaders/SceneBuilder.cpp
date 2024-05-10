@@ -82,12 +82,12 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
 void SceneBuilder::createSphere(completeFile &data, int index)
 {
     std::cout << "Sphere created" << std::endl;
-    std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
-        (double)data._spheresList[index].position.x,
-        (double)data._spheresList[index].position.y,
-        (double)data._spheresList[index].position.z),
-        data._spheresList[index].radius);
-    _scene->addPrimitive(sphere);
+    // std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
+    //     (double)data._spheresList[index].position.x,
+    //     (double)data._spheresList[index].position.y,
+    //     (double)data._spheresList[index].position.z),
+    //     data._spheresList[index].radius);
+    // _scene->addPrimitive(sphere);
     std::cout << "BOUILLANT" << std::endl;
 }
 

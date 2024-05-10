@@ -6,52 +6,59 @@
 */
 
 #include <Sphere.hpp>
+#include <memory>
+#include <Material.hpp>
+#include <Lambertian.hpp>
 
-RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius)
+RayTracer::Sphere::Sphere(const Math::Point3D &center,
+                          double radius,
+                          std::shared_ptr<Material::Material> mat)
+    : _radius(fmax(0, radius))
 {
-    this->center = center;
-    this->radius = radius;
+  _center = center;
+  _material = mat;
 }
 
-RayTracer::Sphere::~Sphere()
-{
-}
+RayTracer::Sphere::~Sphere() {}
 
-double RayTracer::Sphere::hits(const RayTracer::Ray &r, double ray_tmin,
-        double ray_tmax, RayTracer::Primitives_record &rec) const
+bool RayTracer::Sphere::hits(const RayTracer::Ray &ray,
+                             Math::Interval ray_t,
+                             Material::Material &rec) const
 {
-    Math::Vector3D oc = center - r.origin;
-    double a = r.direction.length_squared();
-    double h = r.direction.dot(oc);
-    double c = oc.length_squared() - radius * radius;
+  Math::Vector3D oc = _center - ray.origin;
+  double a = ray.direction.length_squared();
+  double h = ray.direction.dot(oc);
+  double c = oc.length_squared() - _radius * _radius;
 
-    double discriminant = h * h - a * c;
-    if (discriminant < 0)
+  double discriminant = h * h - a * c;
+  if (discriminant < 0)
+    return false;
+
+  double sqrt_discriminant = sqrt(discriminant);
+
+  // Find the nearest root that lies in the acceptable range.
+  double root = (h - sqrt_discriminant) / a;
+  if (!ray_t.surrounds(root)) {
+    root = (h + sqrt_discriminant) / a;
+    if (!ray_t.surrounds(root))
       return false;
+  }
 
-    double sqrtd = sqrt(discriminant);
-
-    // Find the nearest root that lies in the acceptable range.
-    double root = (h - sqrtd) / a;
-    if (root <= ray_tmin || ray_tmax <= root) {
-      root = (h + sqrtd) / a;
-      if (root <= ray_tmin || ray_tmax <= root)
-        return false;
-    }
-
-    rec.t = root;
-    rec.p = r.at(rec.t);
-    Math::Vector3D outward_normal = (rec.p - center) / radius;
-    rec.set_face_normal(r, outward_normal);
-    return true;
+  rec.t = root;
+  rec.p = ray.at(rec.t);
+  Math::Vector3D outward_normal = (rec.p - _center) / _radius;
+  rec.set_face_normal(ray, outward_normal);
+  rec.mat = _material;
+  return true;
 }
 
 void RayTracer::Sphere::translate(const Math::Vector3D &translation)
 {
-    center = center + translation;
+  _center = _center + translation;
 }
 
 extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
 {
-    return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1);
+  std::shared_ptr<Material::Material> material_ground = std::make_shared<Material::Lambertian>(Math::Vector3D(0.8, 0.8, 0.0));
+  return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1, material_ground);
 }

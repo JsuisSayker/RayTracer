@@ -5,65 +5,65 @@
 ** Raytracer
 */
 
-#include <Raytracer.hpp>
 #include <Camera.hpp>
+#include <Cylinder.hpp>
+#include <Dielectric.hpp>
+#include <Lambertian.hpp>
+#include <Material.hpp>
+#include <Metal.hpp>
 #include <Plane.hpp>
 #include <Point3D.hpp>
 #include <Ray.hpp>
+#include <Raytracer.hpp>
 #include <Scene.hpp>
 #include <Sphere.hpp>
-#include <LoadFile.hpp>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <memory>
 
-RayTracer::Raytracer::Raytracer()
-{
-}
+RayTracer::Raytracer::Raytracer() {}
 
-RayTracer::Raytracer::~Raytracer()
-{
-}
+RayTracer::Raytracer::~Raytracer() {}
 
 int RayTracer::Raytracer::run(std::string scene_file)
 {
-    // Image
-    // double aspect_ratio = 16.0 / 9.0;
-    // int image_width = 400;
+  Scene world;
 
-    // // Calculate the image height, and ensure that it's at least 1.
-    // int image_height = int(image_width / aspect_ratio);
-    // image_height = (image_height < 1) ? 1 : image_height;
+  auto material_ground =
+      std::make_shared<Material::Lambertian>(Math::Vector3D(0.8, 0.8, 0.0));
+  auto material_center =
+      std::make_shared<Material::Lambertian>(Math::Vector3D(0.1, 0.2, 0.5));
+  auto material_left = std::make_shared<Material::Dielectric>(1.50);
+  auto material_bubble = std::make_shared<Material::Dielectric>(1.00 / 1.50);
+  auto material_right =
+      std::make_shared<Material::Metal>(Math::Vector3D(0.8, 0.6, 0.2), 1.0);
 
-    // // Camera
-    // double focal_length = 1.0;
-    // double viewport_height = 2.0;
-    // double viewport_width = viewport_height * (double(image_width)/image_height);
-    LoadFile loader(scene_file);
-    RayTracer::Camera cam;
+  world.addPrimitive(std::make_shared<RayTracer::Sphere>(
+      Math::Point3D(0.0, -100.5, -1.0), 100.0, material_ground));
+  world.addPrimitive(std::make_shared<RayTracer::Sphere>(
+      Math::Point3D(0.0, 0.0, -1.2), 0.5, material_center));
+  world.addPrimitive(std::make_shared<RayTracer::Sphere>(
+      Math::Point3D(-1.0, 0.0, -1.0), 0.5, material_left));
+  world.addPrimitive(std::make_shared<RayTracer::Sphere>(
+      Math::Point3D(-1.0, 0.0, -1.0), 0.4, material_bubble));
+  world.addPrimitive(std::make_shared<RayTracer::Sphere>(
+      Math::Point3D(1.0, 0.0, -1.0), 0.5, material_right));
 
-    // // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    // Math::Vector3D viewport_u = Math::Vector3D(viewport_width, 0, 0);
-    // Math::Vector3D viewport_v = Math::Vector3D(0, -viewport_height, 0);
-    // cam.screen.origin = Math::Point3D(-(viewport_width/(double)2), (viewport_height/(double)2), -0.5);
-    // cam.screen.left_side = Math::Vector3D(0, viewport_height, 0);
-    // cam.screen.bottom_side = Math::Vector3D(viewport_width,0, 0);
+  RayTracer::Camera cam;
+  cam._aspect_ratio = 16.0 / 9.0;
+  cam._image_width = 400;
+  cam._samples_per_pixel = 20;
+  cam._max_depth = 50;
 
-    // // Calculate the horizontal and vertical delta vectors from pixel to pixel.
-    // double pixel_delta_u = viewport_u.x / image_width;
-    // double pixel_delta_v = viewport_v.y / image_height;
+  cam._vfov = 20;
+  cam._lookfrom = Math::Point3D(-2, 2, 1);
+  cam._lookat = Math::Point3D(0, 0, -1);
+  cam._vup = Math::Vector3D(0, 1, 0);
 
-    // double variation = 255 / (double)image_width;
+  cam._defocus_angle = 10.0;
+  cam._focus_dist = 3.4;
 
-    // World
-    Scene scene;
-    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -100, -1), 100));
-    scene.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, -1), 0.5));
-
-    cam._image_width = 400;
-    cam._aspect_ratio = 16.0 / 9.0;
-
-    cam.render(scene);
-
-    (void)scene_file;
-    return 0;
+  cam.render(world);
+  (void)scene_file;
+  return 0;
 }

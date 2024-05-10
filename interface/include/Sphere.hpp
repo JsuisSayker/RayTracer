@@ -8,27 +8,23 @@
 #ifndef SPHERE_HPP_
 #define SPHERE_HPP_
 
-#include "Vector3D.hpp"
-#include "Ray.hpp"
-#include "Point3D.hpp"
 #include "APrimitives.hpp"
+#include "Point3D.hpp"
+#include "Ray.hpp"
+#include "Vector3D.hpp"
 
-namespace RayTracer
-{
+namespace RayTracer {
+class Sphere : virtual public APrimitives {
+public:
+  double _radius;
 
-    class Sphere: virtual public APrimitives {
-    public:
-        Math::Point3D center;
-        double radius;
+  Sphere(const Math::Point3D& center, double radius, std::shared_ptr<Material::Material> mat);
+  ~Sphere();
 
-        Sphere(const Math::Point3D &center, double radius);
-        ~Sphere();
-
-        double hits(const RayTracer::Ray &ray, double ray_tmin,
-           double ray_tmax, RayTracer::Primitives_record &rec) const;
-        void translate(const Math::Vector3D &translation);
-    };
-
-}
+  bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
+            Material::Material &rec) const;
+  void translate(const Math::Vector3D &translation);
+};
+} // namespace RayTracer
 
 #endif /* !SPHERE_HPP_ */

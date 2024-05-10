@@ -90,7 +90,7 @@ class SceneBuilder : virtual public ISceneBuilder{
         // void loadPlugins();
         void buildObject(std::string type, completeFile data, int index) const;
         void createSphere(completeFile &data, int index);
-        void createPlane(completeFile &data, int index);
+        // void createPlane(completeFile &data, int index);
         void saveSceneData(const libconfig::Setting &list, std::string type,
             int count, completeFile &data, SceneBuilder::LightElement lightElement);
         void saveCameraData(const libconfig::Setting &list, completeFile data);
