@@ -31,8 +31,7 @@ RayTracer::Cylinder::Cylinder(const Math::Point3D &center,
 RayTracer::Cylinder::~Cylinder() {}
 
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
-                               double ray_tmin,
-                               double ray_tmax,
+                               Math::Interval ray_t,
                                RayTracer::Primitives_record &rec) const
 {
   double a;
