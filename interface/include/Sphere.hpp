@@ -19,6 +19,7 @@ public:
   double _radius;
   bool _is_moving;
   Math::Vector3D _center_vec;
+  RayTracer::Aabb _bbox;
 
   Sphere(const Math::Point3D &center,
          double radius,
@@ -34,6 +35,7 @@ public:
             Material::Material &rec) const;
   void translate(const Math::Vector3D &translation);
   Math::Point3D sphere_center(double time) const;
+  RayTracer::Aabb bounding_box() const;
 };
 } // namespace RayTracer
 

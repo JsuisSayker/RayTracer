@@ -17,6 +17,8 @@ RayTracer::Sphere::Sphere(const Math::Point3D &center,
 {
   _center = center;
   _material = mat;
+  Math::Vector3D rvec = Math::Vector3D(radius, radius, radius);
+  _bbox = RayTracer::Aabb(center - rvec, center + rvec);
 }
 
 RayTracer::Sphere::Sphere(const Math::Point3D &center1,
@@ -28,6 +30,11 @@ RayTracer::Sphere::Sphere(const Math::Point3D &center1,
   _center = center1;
   _material = mat;
   _center_vec = center2 - center1;
+
+  Math::Vector3D rvec = Math::Vector3D(radius, radius, radius);
+  RayTracer::Aabb aabb1 = RayTracer::Aabb(center1 - rvec, center1 + rvec);
+  RayTracer::Aabb aabb2 = RayTracer::Aabb(center2 - rvec, center2 + rvec);
+  _bbox = RayTracer::Aabb(aabb1, aabb2);
 }
 
 RayTracer::Sphere::~Sphere() {}
@@ -75,6 +82,8 @@ Math::Point3D RayTracer::Sphere::sphere_center(double time) const
   // yields center1, and t=1 yields center2.
   return _center + _center_vec * time;
 }
+
+RayTracer::Aabb RayTracer::Sphere::bounding_box() const { return _bbox; }
 
 extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
 {

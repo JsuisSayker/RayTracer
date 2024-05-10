@@ -18,6 +18,7 @@
 #include <Scene.hpp>
 #include <Sphere.hpp>
 #include <fstream>
+#include <Bvh.hpp>
 #include <iostream>
 #include <memory>
 
@@ -27,7 +28,8 @@ RayTracer::Raytracer::~Raytracer() {}
 
 int RayTracer::Raytracer::run(std::string scene_file)
 {
-  Scene world;
+  
+  Scene world = Scene(std::make_shared<RayTracer::Bvh>(world));
 
   std::shared_ptr<Material::Lambertian> ground_material =
       std::make_shared<Material::Lambertian>(Math::Vector3D(0.5, 0.5, 0.5));
@@ -82,6 +84,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
       Math::Point3D(4, 1, 0), 1.0, material3));
 
   RayTracer::Camera cam;
+
 
   cam._aspect_ratio = 16.0 / 9.0;
   cam._image_width = 400;

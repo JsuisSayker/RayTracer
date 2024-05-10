@@ -12,16 +12,21 @@ Scene::Scene() {}
 
 Scene::~Scene() {}
 
-void Scene::addPrimitive(std::shared_ptr<IPrimitives> primitive) {
+void Scene::addPrimitive(std::shared_ptr<IPrimitives> primitive)
+{
   _primitives.push_back(primitive);
+  _bbox = RayTracer::Aabb(_bbox, primitive.get()->bounding_box());
 }
 
-void Scene::addCamera(std::shared_ptr<ICamera> camera) {
+void Scene::addCamera(std::shared_ptr<ICamera> camera)
+{
   _camera.push_back(camera);
 }
 
-bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
-                 Material::Material &rec) const {
+bool Scene::hits(const RayTracer::Ray &r,
+                 Math::Interval ray_t,
+                 Material::Material &rec) const
+{
   Material::Lambertian temp_rec(Math::Vector3D(0, 0, 0));
   bool hit_anything = false;
   double closest_so_far = ray_t._max;
@@ -29,8 +34,8 @@ bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
   for (const std::shared_ptr<IPrimitives> &primitive : _primitives) {
     RayTracer::Sphere *temp_sphere =
         dynamic_cast<RayTracer::Sphere *>(primitive.get());
-    if (primitive->hits(r, Math::Interval(ray_t._min, closest_so_far),
-                        temp_rec)) {
+    if (primitive->hits(
+            r, Math::Interval(ray_t._min, closest_so_far), temp_rec)) {
       hit_anything = true;
       closest_so_far = temp_rec.t;
       rec = temp_rec;
@@ -38,3 +43,5 @@ bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
   }
   return hit_anything;
 }
+
+RayTracer::Aabb Scene::bounding_box() const { return _bbox; }

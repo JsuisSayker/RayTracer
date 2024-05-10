@@ -22,3 +22,7 @@ double random_double(double min, double max) {
     return min + (max-min)*random_double();
 }
 
+int random_int(int min, int max) {
+    // Returns a random integer in [min,max].
+    return int(random_double(min, max+1));
+}

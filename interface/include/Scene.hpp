@@ -11,6 +11,7 @@
 #include "Interval.hpp"
 #include "Point3D.hpp"
 #include "Sphere.hpp"
+#include "Aabb.hpp"
 #include <iostream>
 #include <memory>
 #include <raytracer/ICamera.hpp>
@@ -26,12 +27,11 @@ public:
   void addCamera(std::shared_ptr<ICamera> camera);
   bool hits(const RayTracer::Ray &r, Math::Interval ray_t,
             Material::Material &rec) const;
+  RayTracer::Aabb bounding_box() const;
 
-protected:
   std::vector<std::shared_ptr<ICamera>> _camera;
   std::vector<std::shared_ptr<IPrimitives>> _primitives;
-
-private:
+  RayTracer::Aabb _bbox;
 };
 
 #endif /* !SCENE_HPP_ */

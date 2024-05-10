@@ -34,6 +34,8 @@ target_link_libraries(raytracer
   raytracer_lambertian
   raytracer_metal
   raytracer_dielectric
+  raytracer_aabb
+  raytracer_bvh
   raytracer_primitives
   raytracer_core_rendrers
   raytracer_sphere

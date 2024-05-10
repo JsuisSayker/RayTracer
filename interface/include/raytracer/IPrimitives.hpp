@@ -9,22 +9,23 @@
 #define IPRIMITIVES_HPP_
 
 #include <Ray.hpp>
-
 #include <Interval.hpp>
+#include <Material.hpp>
+#include <Aabb.hpp>
 #include <PrimitivesRecord.hpp>
 #include <memory>
-#include <Material.hpp>
 
 class IPrimitives {
 public:
   IPrimitives(){};
   ~IPrimitives(){};
 
-  virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
+  virtual bool hits(const RayTracer::Ray &ray,
+                    Math::Interval ray_t,
                     Material::Material &rec) const = 0;
+  virtual RayTracer::Aabb bounding_box() const = 0;
   virtual void rotate(double x, double y, double z) = 0;
   virtual void translate(const Math::Vector3D &translation) = 0;
-
 };
 
 #endif /* !IPRIMITIVES_HPP_ */

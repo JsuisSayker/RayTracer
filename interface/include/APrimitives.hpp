@@ -16,8 +16,10 @@ public:
   APrimitives();
   ~APrimitives();
 
-  virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
+  virtual bool hits(const RayTracer::Ray &ray,
+                    Math::Interval ray_t,
                     Material::Material &rec) const = 0;
+  virtual RayTracer::Aabb bounding_box() const = 0;
 
   void translate(const Math::Vector3D &translation);
   void rotate(double x, double y, double z);
@@ -25,7 +27,7 @@ public:
 protected:
   Math::Point3D _center;
   Math::Vector3D *_rotation;
-  std::shared_ptr<Material::Material> _material; // Fixed: Added template parameter to shared_ptr
+  std::shared_ptr<Material::Material> _material;
 };
 } // namespace RayTracer
 
