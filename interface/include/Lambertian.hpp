@@ -11,17 +11,16 @@
 #include "Material.hpp"
 
 namespace Material {
-class Lambertian : virtual public Material::Material {
-public:
-  Lambertian(const Math::Vector3D &albedo);
-  ~Lambertian();
+class Lambertian : virtual public Material::Material
+{
+  public:
+    Lambertian(const Math::Vector3D &albedo);
+    ~Lambertian();
 
-  bool scatter(const RayTracer::Ray &r_in,
-               Material &rec,
-               Math::Vector3D &attenuation,
-               RayTracer::Ray &scattered) const;
+    bool scatter(const RayTracer::Ray &r_in, Material &rec, Math::Vector3D &attenuation,
+                 RayTracer::Ray &scattered) const;
 
-protected:
+  protected:
 };
 } // namespace Material
 

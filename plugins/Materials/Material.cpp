@@ -11,10 +11,8 @@
 
 // Material::Material::~Material() {}
 
-bool Material::Material::scatter(const RayTracer::Ray &r_in,
-                                 Material &rec,
-                                 Math::Vector3D &attenuation,
-                                 RayTracer::Ray &scattered) const
+bool Material::Material::scatter(const RayTracer::Ray &r_in, Material &rec,
+                                 Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
-  return false;
+    return false;
 }
