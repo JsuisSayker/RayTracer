@@ -24,7 +24,6 @@ jobs:
       - name: Push changes
         if: steps.git-check.outputs.modified == 'true'
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GIT_SSH_PRIVATE_KEY }}@github.com/${{ github.repository }}
           git commit -am "Automated changes"
           git push
           exit 1
