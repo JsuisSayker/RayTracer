@@ -30,7 +30,7 @@ bool Material::Dielectric::scatter(const RayTracer::Ray &r_in,
   attenuation = Math::Vector3D(1.0, 1.0, 1.0);
   double ri = rec.front_face ? (1.0 / _refraction_index) : _refraction_index;
 
-  Math::Vector3D unit_direction = unit_vector(r_in.direction);
+  Math::Vector3D unit_direction = unit_vector(r_in._direction);
   double cos_theta = fmin(-unit_direction.dot(rec.normal), 1.0);
   double sin_theta = sqrt(1.0 - cos_theta * cos_theta);
 
@@ -42,6 +42,6 @@ bool Material::Dielectric::scatter(const RayTracer::Ray &r_in,
   else
     direction = refract(unit_direction, rec.normal, ri);
 
-  scattered = RayTracer::Ray(rec.p, direction);
+  scattered = RayTracer::Ray(rec.p, direction, r_in.time());
   return true;
 }
