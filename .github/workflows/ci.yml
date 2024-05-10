@@ -1,5 +1,6 @@
-name: ci
+name: Continuous Integration
 run-name: ${{github.actor}} verifying my code
+
 on:
   push:
     branches-ignore:
@@ -7,6 +8,7 @@ on:
   pull_request:
     branches-ignore:
       - " ga-ignore-"
+
 jobs:
   auto_format:
     # Check if the PR is not from a fork
