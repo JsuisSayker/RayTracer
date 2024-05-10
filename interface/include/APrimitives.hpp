@@ -8,7 +8,6 @@
 #ifndef APRIMITIVES_HPP_
 #define APRIMITIVES_HPP_
 
-#include <memory>
 #include <raytracer/IPrimitives.hpp>
 
 namespace RayTracer {
@@ -18,16 +17,15 @@ public:
   ~APrimitives();
 
   virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                    RayTracer::Primitives_record &rec) const = 0;
+                    Material::Material &rec) const = 0;
 
   void translate(const Math::Vector3D &translation);
   void rotate(double x, double y, double z);
 
 protected:
-  Math::Point3D center;
-  Math::Vector3D *rotation;
-
-private:
+  Math::Point3D _center;
+  Math::Vector3D *_rotation;
+  std::shared_ptr<Material::Material> _material; // Fixed: Added template parameter to shared_ptr
 };
 } // namespace RayTracer
 

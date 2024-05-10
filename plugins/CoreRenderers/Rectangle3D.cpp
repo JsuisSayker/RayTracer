@@ -23,7 +23,7 @@ Rectangle3D::Rectangle3D(const Math::Point3D &origin,
 }
 
 Math::Point3D Rectangle3D::pointAt(double u, double v) const {
-  return Math::Point3D(this->origin.x + u, this->origin.y + v, this->origin.z);
+  return Math::Point3D(this->origin._x + u, this->origin._y + v, this->origin._z);
 }
 
 void Rectangle3D::translate(const Math::Vector3D &translation) {

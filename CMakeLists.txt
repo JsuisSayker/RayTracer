@@ -30,6 +30,10 @@ add_subdirectory(plugins)
 target_link_libraries(raytracer
   raytracer_interfaces
   raytracer_math
+  raytracer_materials
+  raytracer_lambertian
+  raytracer_metal
+  raytracer_dielectric
   raytracer_primitives
   raytracer_core_rendrers
   raytracer_sphere

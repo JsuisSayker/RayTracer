@@ -25,7 +25,7 @@ public:
            const char axe = 'y');
   ~Cylinder();
   bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                    RayTracer::Primitives_record &rec) const;
+                    Material::Material &rec) const;
 
 protected:
 private:

@@ -6,6 +6,7 @@
 */
 
 #include <Camera.hpp>
+#include <Lambertian.hpp>
 
 RayTracer::Camera::Camera()
 {
@@ -15,11 +16,24 @@ RayTracer::Camera::Camera()
 
 RayTracer::Camera::~Camera() {}
 
+double linear_to_gamma(double linear_component)
+{
+  if (linear_component > 0)
+    return sqrt(linear_component);
+
+  return 0;
+}
+
 void write_color(std::ostream &out, const Math::Vector3D &color)
 {
   double r = color.x;
   double g = color.y;
   double b = color.z;
+
+  // Apply a linear to gamma transform for gamma 2
+  r = linear_to_gamma(r);
+  g = linear_to_gamma(g);
+  b = linear_to_gamma(b);
 
   // Translate the [0,1] component values to the byte range [0,255].
   static const Math::Interval intensity(0.000, 0.999);
@@ -31,12 +45,17 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
   out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
-Math::Vector3D ray_color(const RayTracer::Ray &r, const Scene &world)
+Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 {
-  RayTracer::Primitives_record rec = {};
-  if (world.hits(
-          r, Math::Interval(0, std::numeric_limits<double>::infinity()), rec)) {
-    return (rec.normal + Math::Vector3D(1, 1, 1)) * 0.5;
+  if (depth <= 0)
+    return Math::Vector3D(0, 0, 0);
+  Material::Lambertian rec(Math::Vector3D(0, 0, 0));
+  if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
+    RayTracer::Ray scattered;
+    Math::Vector3D attenuation;
+    if (rec.mat->scatter(r, rec, attenuation, scattered))
+      return attenuation * ray_color(scattered, depth - 1, world);
+    return Math::Vector3D(0, 0, 0);
   }
 
   Math::Vector3D unit_direction = unit_vector(r.direction);
@@ -52,12 +71,13 @@ void RayTracer::Camera::render(const Scene &world)
   std::ofstream output_file("output.ppm");
   output_file << "P3\n" << _image_width << ' ' << _image_height << "\n255\n";
   for (int y = 0; y < _image_height; y += 1) {
-    std::cout << "\rScanlines remaining: " << (_image_height - y) << ' ' << std::flush;
+    std::cout << "\rScanlines remaining: " << (_image_height - y) << ' '
+              << std::flush;
     for (int x = 0; x < _image_width; x += 1) {
       Math::Vector3D pixel_color(0, 0, 0);
       for (int sample = 0; sample < _samples_per_pixel; sample++) {
         RayTracer::Ray r = get_ray(x, y);
-        pixel_color += ray_color(r, world);
+        pixel_color += ray_color(r, _max_depth, world);
       }
       write_color(output_file, pixel_color * _pixel_samples_scale);
     }
@@ -73,21 +93,39 @@ void RayTracer::Camera::initialize()
 
   _pixel_samples_scale = 1.0 / _samples_per_pixel;
 
-  double viewport_height = 2.0;
+  _origin = _lookfrom;
+
+  double theta = degrees_to_radians(_vfov);
+  double h = tan(theta / 2);
+  double viewport_height = 2 * h * _focus_dist;
   double viewport_width =
       viewport_height * (double(_image_width) / _image_height);
 
-  Math::Vector3D viewport_u = Math::Vector3D(viewport_width, 0, 0);
-  Math::Vector3D viewport_v = Math::Vector3D(0, -viewport_height, 0);
-  
-  this->_screen.origin = Math::Point3D(
-      -(viewport_width / (double)2), (viewport_height / (double)2), -0.5);
-  this->_screen.left_side = Math::Vector3D(0, viewport_height, 0);
-  this->_screen.bottom_side = Math::Vector3D(viewport_width, 0, 0);
+  _w = unit_vector(_lookfrom - _lookat);
+  _u = unit_vector(cross(_vup, _w));
+  _v = cross(_w, _u);
+
+  Math::Vector3D viewport_u = _u * viewport_width;
+  Math::Vector3D viewport_v = (_v * -1) * viewport_height;
 
   // Calculate the horizontal and vertical delta vectors from pixel to pixel.
   _pixel_delta_u = viewport_u / _image_width;
   _pixel_delta_v = viewport_v / _image_height;
+
+  Math::Point3D viewport_upper_left =
+      _origin - (_w * _focus_dist) - viewport_u / 2 - viewport_v / 2;
+  Math::Point3D pixel00_loc =
+      viewport_upper_left + (_pixel_delta_u + _pixel_delta_v) * 0.5;
+
+  this->_screen.origin =
+      Math::Point3D(pixel00_loc._x, pixel00_loc._y, pixel00_loc._z);
+  this->_screen.left_side = Math::Vector3D(0, viewport_height, 0);
+  this->_screen.bottom_side = Math::Vector3D(viewport_width, 0, 0);
+
+  double defocus_radius =
+      _focus_dist * tan(degrees_to_radians(_defocus_angle / 2));
+  _defocus_disk_u = _u * defocus_radius;
+  _defocus_disk_v = _v * defocus_radius;
 }
 
 RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
@@ -96,18 +134,14 @@ RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
   // sampled point around the pixel location i, j.
 
   Math::Vector3D offset = sample_square();
-  Math::Point3D pixel_sample = this->_screen.origin + (_pixel_delta_u * (x + offset.x))
-                    + (_pixel_delta_v * (y + offset.y));
+  Math::Point3D pixel_sample = this->_screen.origin +
+                               (_pixel_delta_u * (x + offset.x)) +
+                               (_pixel_delta_v * (y + offset.y));
 
-  Math::Point3D ray_origin = _origin;
+  Math::Point3D ray_origin = (_defocus_angle <= 0) ? _origin : defocus_disk_sample();
   Math::Vector3D ray_direction = pixel_sample - ray_origin;
 
   return RayTracer::Ray(ray_origin, ray_direction);
-}
-
-double random_double() {
-    // Returns a random real in [0,1).
-    return rand() / (RAND_MAX + 1.0);
 }
 
 Math::Vector3D RayTracer::Camera::sample_square() const
@@ -117,3 +151,9 @@ Math::Vector3D RayTracer::Camera::sample_square() const
   return Math::Vector3D(random_double() - 0.5, random_double() - 0.5, 0);
 }
 
+Math::Point3D RayTracer::Camera::defocus_disk_sample() const
+{
+  // Returns a random point in the camera defocus disk.
+  Math::Vector3D p = random_in_unit_disk();
+  return _origin + (_defocus_disk_u * p.x) + (_defocus_disk_v * p.y);
+}

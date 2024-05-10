@@ -25,7 +25,7 @@ public:
   void addPrimitive(std::shared_ptr<IPrimitives> primitive);
   void addCamera(std::shared_ptr<ICamera> camera);
   bool hits(const RayTracer::Ray &r, Math::Interval ray_t,
-            RayTracer::Primitives_record &rec) const;
+            Material::Material &rec) const;
 
 protected:
   std::vector<std::shared_ptr<ICamera>> _camera;

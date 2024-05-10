@@ -16,11 +16,11 @@ RayTracer::Plane::Plane(const char axe, double position) {
 RayTracer::Plane::~Plane() {}
 
 bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                            RayTracer::Primitives_record &rec) const {
+                            Material::Material &rec) const {
   if (axe == 'X' || axe == 'x') {
     if (ray.direction.x == 0)
       return -1;
-    double t = (position - ray.origin.x) / ray.direction.x;
+    double t = (position - ray.origin._x) / ray.direction.x;
     if (t < 0)
       return -1;
     return t;
@@ -28,7 +28,7 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
   if (axe == 'Y' || axe == 'y') {
     if (ray.direction.y == 0)
       return -1;
-    double t = (position - ray.origin.y) / ray.direction.y;
+    double t = (position - ray.origin._y) / ray.direction.y;
     if (t < 0)
       return -1;
     return t;
@@ -36,7 +36,7 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
   if (axe == 'Z' || axe == 'z') {
     if (ray.direction.z == 0)
       return -1;
-    double t = (position - ray.origin.z) / ray.direction.z;
+    double t = (position - ray.origin._z) / ray.direction.z;
     if (t < 0)
       return -1;
     return t;

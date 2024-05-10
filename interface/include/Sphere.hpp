@@ -16,14 +16,13 @@
 namespace RayTracer {
 class Sphere : virtual public APrimitives {
 public:
-  Math::Point3D center;
-  double radius;
+  double _radius;
 
-  Sphere(const Math::Point3D &center, double radius);
+  Sphere(const Math::Point3D& center, double radius, std::shared_ptr<Material::Material> mat);
   ~Sphere();
 
   bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-            RayTracer::Primitives_record &rec) const;
+            Material::Material &rec) const;
   void translate(const Math::Vector3D &translation);
 };
 } // namespace RayTracer

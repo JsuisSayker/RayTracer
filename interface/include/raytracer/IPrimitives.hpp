@@ -11,7 +11,9 @@
 #include <Ray.hpp>
 
 #include <Interval.hpp>
-#include <Primitives_record.hpp>
+#include <PrimitivesRecord.hpp>
+#include <memory>
+#include <Material.hpp>
 
 class IPrimitives {
 public:
@@ -19,12 +21,10 @@ public:
   ~IPrimitives(){};
 
   virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                    RayTracer::Primitives_record &rec) const = 0;
+                    Material::Material &rec) const = 0;
   virtual void rotate(double x, double y, double z) = 0;
   virtual void translate(const Math::Vector3D &translation) = 0;
 
-protected:
-private:
 };
 
 #endif /* !IPRIMITIVES_HPP_ */
