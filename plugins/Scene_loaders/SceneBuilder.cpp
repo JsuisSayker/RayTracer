@@ -34,8 +34,7 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
                         } else
                             count = 0;
                     }
-                    saveSceneData(_scenesLists[i], type, count, &data, lightElement);
-
+                    saveSceneData(_scenesLists[i], type, count, data, lightElement);
                 }
             }
         }
@@ -57,7 +56,7 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
                 list.lookupValue("diffuse", lightElement.diffuse);
                 std::cout << "type value : " << lightElement.diffuse << std::endl;
             }
-            saveSceneData(_scenesLists[i], type, count, &data, lightElement);
+            saveSceneData(_scenesLists[i], type, count, data, lightElement);
         }
     }
 }
@@ -102,8 +101,12 @@ void SceneBuilder::createSphere(completeFile &data, int index)
     std::cout << data._spheresList[index].colorValues.r << std::endl;
     std::cout << data._spheresList[index].colorValues.g << std::endl;
     std::cout << data._spheresList[index].colorValues.b << std::endl;
-    // std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D((double)data._spheresList, (double)y, (double)z), r);
-    // _scene->addPrimitive(sphere);
+    std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
+        (double)data._spheresList[index].position.x,
+        (double)data._spheresList[index].position.y,
+        (double)data._spheresList[index].position.z),
+        data._spheresList[index].radius);
+    _scene->addPrimitive(sphere);
 }
 
 void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile data)
@@ -276,7 +279,7 @@ void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile
 }
 
 void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string type,
-    int count, completeFile &data, SceneBuilder::LightElement lightElement) const
+    int count, completeFile &data, SceneBuilder::LightElement lightElement)
 {
     // if (type == "Camera") {
     //     saveCameraData(element, data);
