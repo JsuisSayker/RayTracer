@@ -7,6 +7,7 @@
 
 #include <Camera.hpp>
 #include <Cylinder.hpp>
+#include <LoadFile.hpp>
 #include <Dielectric.hpp>
 #include <Lambertian.hpp>
 #include <Material.hpp>
@@ -28,6 +29,7 @@ RayTracer::Raytracer::~Raytracer() {}
 int RayTracer::Raytracer::run(std::string scene_file)
 {
   Scene world;
+  LoadFile loader(scene_file);
 
   std::shared_ptr<Material::Lambertian> ground_material =
       std::make_shared<Material::Lambertian>(Math::Vector3D(0.5, 0.5, 0.5));
@@ -97,6 +99,5 @@ int RayTracer::Raytracer::run(std::string scene_file)
   cam._focus_dist = 10.0;
 
   cam.render(world);
-  (void)scene_file;
   return 0;
 }

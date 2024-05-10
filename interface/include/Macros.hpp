@@ -11,5 +11,7 @@
 #define OK 0
 #define KO 84
 #define ERROR (-1)
+#define UNUSED __attribute__((unused))
+
 
 #endif /* !MACROS_HPP_ */

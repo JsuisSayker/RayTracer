@@ -79,24 +79,65 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
 //     }
 // }
 
+std::shared_ptr<Material::Material> SceneBuilder::createMetalMaterial(UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
+{
+    Math::Vector3D albedo = random_vector(0.5, 1);
+    double fuzz = random_double(0, 0.5);
+    return std::make_shared<Material::Metal>(albedo, fuzz);
+}
+
+std::shared_ptr<Material::Material> SceneBuilder::createLambertianMaterial(UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
+{
+    Math::Vector3D albedo = random_vector() * random_vector();
+    return std::make_shared<Material::Lambertian>(albedo);
+}
+
+std::shared_ptr<Material::Material> SceneBuilder::createDielectricMaterial(UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
+{
+    return std::make_shared<Material::Dielectric>(1.5);
+}
+
+std::shared_ptr<Material::Material> SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index)
+{
+    Math::Vector3D albedo;
+    if (actualObject == SceneBuilder::ActualObject::SPHERE) {
+        albedo = Math::Vector3D(data._spheresList[index].colorValues.r,
+            data._spheresList[index].colorValues.g,
+            data._spheresList[index].colorValues.b);
+    }
+    if (actualObject == SceneBuilder::ActualObject::PLANE) {
+        albedo = Math::Vector3D(data._planeList[index].colorValues.r,
+            data._planeList[index].colorValues.g,
+            data._planeList[index].colorValues.b);
+    }
+    return std::make_shared<Material::Lambertian>(albedo);
+}
+
 void SceneBuilder::createSphere(completeFile &data, int index)
 {
     std::cout << "Sphere created" << std::endl;
-    // std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
-    //     (double)data._spheresList[index].position.x,
-    //     (double)data._spheresList[index].position.y,
-    //     (double)data._spheresList[index].position.z),
-    //     data._spheresList[index].radius);
-    // _scene->addPrimitive(sphere);
+    std::shared_ptr<Material::Material>actualMaterial = _material.at(data._spheresList[index].material)(data,
+        SceneBuilder::ActualObject::SPHERE, index);
+    std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
+        (double)data._spheresList[index].position.x,
+        (double)data._spheresList[index].position.y,
+        (double)data._spheresList[index].position.z),
+        data._spheresList[index].radius, actualMaterial);
+    _scene->addPrimitive(sphere);
     std::cout << "BOUILLANT" << std::endl;
 }
 
-// void SceneBuilder::createPlane(completeFile &data, int index)
-// {
-//     std::cout << "Plane created" << std::endl;
-//     std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>();
-//     _scene->addPrimitive(plane);
-// }
+void SceneBuilder::createPlane(completeFile &data, int index)
+{
+    std::cout << "Plane created" << std::endl;
+    std::shared_ptr<Material::Material>actualMaterial = _material.at(data._planeList[index].material)(data,
+        SceneBuilder::ActualObject::PLANE, index);
+    std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>(
+        data._planeList[index].axis[0], data._planeList[index].position, actualMaterial
+    );
+    _scene->addPrimitive(plane);
+    std::cout << "LEGENDAIRE" << std::endl;
+}
 
 void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile data)
 {
@@ -153,92 +194,90 @@ void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFil
 void SceneBuilder::saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const
 {
     SceneBuilder::SphereElement sphereElement;
-    try {
-        for (int i = start; i < element.getLength(); i++) {
-            const libconfig::Setting& sphereElementInFile = element[i];
-            std::cout << "sphereElementInFile.getLength() : " << sphereElementInFile.getLength() << std::endl;
-            for (int j = 0; j < sphereElementInFile.getLength(); j++) {
-                const libconfig::Setting& nestedSphereElement = sphereElementInFile[j];
-                if (strcmp(nestedSphereElement.getName(), "x") == 0) {
-                    sphereElementInFile.lookupValue("x", sphereElement.position.x);
-                    std::cout << "x value in sphere: " << sphereElement.position.x << std::endl;
-                }
-                if (strcmp(nestedSphereElement.getName(), "y") == 0) {
-                    sphereElementInFile.lookupValue("y", sphereElement.position.y);
-                    std::cout << "y value in sphere: " << sphereElement.position.y << std::endl;
-                }
-                if (strcmp(nestedSphereElement.getName(), "z") == 0) {
-                    sphereElementInFile.lookupValue("z", sphereElement.position.z);
-                    std::cout << "z value in sphere: " << sphereElement.position.z << std::endl;
-                }
-                if (strcmp(nestedSphereElement.getName(), "r") == 0) {
-                    sphereElementInFile.lookupValue("r", sphereElement.radius);
-                    std::cout << "radius value in sphere: " << sphereElement.radius << std::endl;
-                }
-                if (strcmp(nestedSphereElement.getName(), "color") == 0) {
-                    const libconfig::Setting& color = nestedSphereElement;
-                    for (int k = 0; k < color.getLength(); k++) {
-                        if (strcmp(color[k].getName(), "r") == 0) {
-                            nestedSphereElement.lookupValue("r", sphereElement.colorValues.r);
-                            std::cout << "r value in sphere: " << sphereElement.colorValues.r << std::endl;
-                        }
-                        if (strcmp(color[k].getName(), "g") == 0) {
-                            nestedSphereElement.lookupValue("g", sphereElement.colorValues.g);
-                            std::cout << "g value in sphere: " << sphereElement.colorValues.g << std::endl;
-                        }
-                        if (strcmp(color[k].getName(), "b") == 0) {
-                            nestedSphereElement.lookupValue("b", sphereElement.colorValues.b);
-                            std::cout << "b value in sphere: " << sphereElement.colorValues.b << std::endl;
-                        }
+    for (int i = start; i < element.getLength(); i++) {
+        const libconfig::Setting& sphereElementInFile = element[i];
+        for (int j = 0; j < sphereElementInFile.getLength(); j++) {
+            const libconfig::Setting& nestedSphereElement = sphereElementInFile[j];
+            if (strcmp(nestedSphereElement.getName(), "x") == 0) {
+                sphereElementInFile.lookupValue("x", sphereElement.position.x);
+                std::cout << "x value in sphere: " << sphereElement.position.x << std::endl;
+            }
+            if (strcmp(nestedSphereElement.getName(), "y") == 0) {
+                sphereElementInFile.lookupValue("y", sphereElement.position.y);
+                std::cout << "y value in sphere: " << sphereElement.position.y << std::endl;
+            }
+            if (strcmp(nestedSphereElement.getName(), "z") == 0) {
+                sphereElementInFile.lookupValue("z", sphereElement.position.z);
+                std::cout << "z value in sphere: " << sphereElement.position.z << std::endl;
+            }
+            if (strcmp(nestedSphereElement.getName(), "r") == 0) {
+                sphereElementInFile.lookupValue("r", sphereElement.radius);
+                std::cout << "radius value in sphere: " << sphereElement.radius << std::endl;
+            }
+            if (strcmp(nestedSphereElement.getName(), "material") == 0) {
+                sphereElementInFile.lookupValue("material", sphereElement.material);
+                std::cout << "material value in sphere: " << sphereElement.material << std::endl;
+            }
+            if (strcmp(nestedSphereElement.getName(), "color") == 0) {
+                const libconfig::Setting& color = nestedSphereElement;
+                for (int k = 0; k < color.getLength(); k++) {
+                    if (strcmp(color[k].getName(), "r") == 0) {
+                        nestedSphereElement.lookupValue("r", sphereElement.colorValues.r);
+                        std::cout << "r value in sphere: " << sphereElement.colorValues.r << std::endl;
+                    }
+                    if (strcmp(color[k].getName(), "g") == 0) {
+                        nestedSphereElement.lookupValue("g", sphereElement.colorValues.g);
+                        std::cout << "g value in sphere: " << sphereElement.colorValues.g << std::endl;
+                    }
+                    if (strcmp(color[k].getName(), "b") == 0) {
+                        nestedSphereElement.lookupValue("b", sphereElement.colorValues.b);
+                        std::cout << "b value in sphere: " << sphereElement.colorValues.b << std::endl;
                     }
                 }
             }
-            data._spheresList.push_back(sphereElement);
         }
-    } catch (const libconfig::SettingNotFoundException &e) {
-        return;
+        data._spheresList.push_back(sphereElement);
     }
 }
 
-void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start, completeFile data)
+void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start, completeFile &data) const
 {
     SceneBuilder::PlaneElement planeElement;
-    try {
-        for (int i = start; i < element.getLength(); i++) {
-            const libconfig::Setting& planeElementInFile = element[i];
-            for (int j = 0; planeElementInFile.getLength(); j++) {
-                const libconfig::Setting& nestedPlaneElement = planeElementInFile[j];
-                if (strcmp(nestedPlaneElement.getName(), "axis") == 0) {
-                    planeElementInFile.lookupValue("axis", planeElement.axis);
-                    std::cout << "axis value in plane: " << planeElement.axis << std::endl;
-                }
-                if (strcmp(nestedPlaneElement.getName(), "position") == 0) {
-                    planeElementInFile.lookupValue("position", planeElement.position);
-                    std::cout << "position value in plane: " << planeElement.position << std::endl;
-                }
-                if (strcmp(nestedPlaneElement.getName(), "color") == 0) {
-                    const libconfig::Setting& color = nestedPlaneElement;
-                    for (int k = 0; k < color.getLength(); k++) {
-                        if (strcmp(color[k].getName(), "r") == 0) {
-                            nestedPlaneElement.lookupValue("r", planeElement.colorValues.r);
-                            std::cout << "r value in plane: " << planeElement.colorValues.r << std::endl;
-                        }
-                        if (strcmp(color[k].getName(), "g") == 0) {
-                            nestedPlaneElement.lookupValue("g", planeElement.colorValues.g);
-                            std::cout << "g value in plane: " << planeElement.colorValues.g << std::endl;
-                        }
-                        if (strcmp(color[k].getName(), "b") == 0) {
-                            nestedPlaneElement.lookupValue("b", planeElement.colorValues.b);
-                            std::cout << "b value in plane: " << planeElement.colorValues.b << std::endl;
-                        }
+    for (int i = start; i < element.getLength(); i++) {
+        const libconfig::Setting& planeElementInFile = element[i];
+        for (int j = 0; j < planeElementInFile.getLength(); j++) {
+            const libconfig::Setting& nestedPlaneElement = planeElementInFile[j];
+            if (strcmp(nestedPlaneElement.getName(), "axis") == 0) {
+                planeElementInFile.lookupValue("axis", planeElement.axis);
+                std::cout << "axis value in plane: " << planeElement.axis << std::endl;
+            }
+            if (strcmp(nestedPlaneElement.getName(), "position") == 0) {
+                planeElementInFile.lookupValue("position", planeElement.position);
+                std::cout << "position value in plane: " << planeElement.position << std::endl;
+            }
+            if (strcmp(nestedPlaneElement.getName(), "material") == 0) {
+                planeElementInFile.lookupValue("material", planeElement.material);
+                std::cout << "material value in plane: " << planeElement.material << std::endl;
+            }
+            if (strcmp(nestedPlaneElement.getName(), "color") == 0) {
+                const libconfig::Setting& color = nestedPlaneElement;
+                for (int k = 0; k < color.getLength(); k++) {
+                    if (strcmp(color[k].getName(), "r") == 0) {
+                        nestedPlaneElement.lookupValue("r", planeElement.colorValues.r);
+                        std::cout << "r value in plane: " << planeElement.colorValues.r << std::endl;
+                    }
+                    if (strcmp(color[k].getName(), "g") == 0) {
+                        nestedPlaneElement.lookupValue("g", planeElement.colorValues.g);
+                        std::cout << "g value in plane: " << planeElement.colorValues.g << std::endl;
+                    }
+                    if (strcmp(color[k].getName(), "b") == 0) {
+                        nestedPlaneElement.lookupValue("b", planeElement.colorValues.b);
+                        std::cout << "b value in plane: " << planeElement.colorValues.b << std::endl;
                     }
                 }
             }
-            data._planeList.push_back(planeElement);
         }
-    }
-    catch (const libconfig::SettingNotFoundException &e) {
-        return;
+        data._planeList.push_back(planeElement);
     }
 }
 
