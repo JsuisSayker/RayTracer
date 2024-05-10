@@ -5,7 +5,7 @@
 ** Metal
 */
 
-#include "Metal.hpp"
+#include <Metal.hpp>
 
 Material::Metal::Metal(const Math::Vector3D &albedo, double fuzz)
     : Material::Material(), _fuzz(fuzz < 1 ? fuzz : 1)

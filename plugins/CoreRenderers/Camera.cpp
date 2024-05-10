@@ -53,8 +53,9 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
   if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
     RayTracer::Ray scattered;
     Math::Vector3D attenuation;
-    if (rec.mat->scatter(r, rec, attenuation, scattered))
+    if (rec.mat->scatter(r, rec, attenuation, scattered)){
       return attenuation * ray_color(scattered, depth - 1, world);
+      }
     return Math::Vector3D(0, 0, 0);
   }
 

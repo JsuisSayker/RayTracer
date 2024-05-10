@@ -5,7 +5,7 @@
 ** Lambertian
 */
 
-#include "Lambertian.hpp"
+#include <Lambertian.hpp>
 
 Material::Lambertian::Lambertian(const Math::Vector3D &albedo)
 {
@@ -19,7 +19,6 @@ bool Material::Lambertian::scatter(const RayTracer::Ray &r_in,
                                    RayTracer::Ray &scattered) const
 {
   Math::Vector3D scatter_direction = rec.normal + random_unit_vector();
-
   if (scatter_direction.near_zero())
     scatter_direction = rec.normal;
 

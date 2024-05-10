@@ -5,7 +5,7 @@
 ** Dielectric
 */
 
-#include "Dielectric.hpp"
+#include <Dielectric.hpp>
 
 Material::Dielectric::Dielectric(double refraction_index)
     : _refraction_index(refraction_index)
