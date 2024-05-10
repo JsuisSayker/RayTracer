@@ -23,7 +23,7 @@ bool Material::Lambertian::scatter(const RayTracer::Ray &r_in,
   if (scatter_direction.near_zero())
     scatter_direction = rec.normal;
 
-  scattered = RayTracer::Ray(rec.p, scatter_direction);
+  scattered = RayTracer::Ray(rec.p, scatter_direction, r_in.time());
   attenuation = _albedo;
   return true;
 }

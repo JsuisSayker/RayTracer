@@ -42,8 +42,8 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   double t;
   double t0;
   double t1;
-  Math::Vector3D oc = ray.origin - center;
-  Math::Vector3D direction = ray.direction;
+  Math::Vector3D oc = ray._origin - center;
+  Math::Vector3D direction = ray._direction;
 
   if (axe == 'x' || axe == 'X') {
     a = pow(direction.y, 2) + pow(direction.z, 2);

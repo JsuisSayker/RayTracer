@@ -20,9 +20,10 @@ bool Material::Metal::scatter(const RayTracer::Ray &r_in,
                               Math::Vector3D &attenuation,
                               RayTracer::Ray &scattered) const
 {
-  Math::Vector3D reflected = reflect(r_in.direction, rec.normal);
+  Math::Vector3D reflected = reflect(r_in._direction, rec.normal);
   reflected = unit_vector(reflected) + (random_unit_vector() * _fuzz);
-  scattered = RayTracer::Ray(rec.p, reflected);
+  scattered = RayTracer::Ray(rec.p, reflected, r_in.time());
   attenuation = _albedo;
-  return (scattered.direction.dot(rec.normal) > 0);
+
+  return (scattered._direction.dot(rec.normal) > 0);
 }

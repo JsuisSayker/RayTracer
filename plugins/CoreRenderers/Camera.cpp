@@ -58,7 +58,7 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
     return Math::Vector3D(0, 0, 0);
   }
 
-  Math::Vector3D unit_direction = unit_vector(r.direction);
+  Math::Vector3D unit_direction = unit_vector(r._direction);
   double a = 0.5 * (unit_direction.y + 1.0);
   return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) +
          Math::Vector3D(0.5, 0.7, 1.0) * a;
@@ -140,8 +140,9 @@ RayTracer::Ray RayTracer::Camera::get_ray(int x, int y) const
 
   Math::Point3D ray_origin = (_defocus_angle <= 0) ? _origin : defocus_disk_sample();
   Math::Vector3D ray_direction = pixel_sample - ray_origin;
+  double ray_time = random_double();
 
-  return RayTracer::Ray(ray_origin, ray_direction);
+  return RayTracer::Ray(ray_origin, ray_direction, ray_time);
 }
 
 Math::Vector3D RayTracer::Camera::sample_square() const

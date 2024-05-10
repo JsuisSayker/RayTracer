@@ -34,7 +34,7 @@ public:
     // Sets the hit record normal vector.
     // NOTE: the parameter `outward_normal` is assumed to have unit length.
 
-    front_face = ray.direction.dot(outward_normal) < 0;
+    front_face = ray._direction.dot(outward_normal) < 0;
     normal = front_face ? outward_normal : outward_normal * (-1);
   }
   protected:
