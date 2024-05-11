@@ -13,15 +13,15 @@ namespace RayTracer {
 class Plane : virtual public APrimitives
 {
   public:
-    double position;
-    char axe;
-
-    Plane(const char axe, double position);
+    Plane(const char axe, double position, std::shared_ptr<Material::Material> mat);
     ~Plane();
 
     bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Material::Material &rec) const;
 
   protected:
+    double _position;
+    char _axe;
+
   private:
 };
 } // namespace RayTracer

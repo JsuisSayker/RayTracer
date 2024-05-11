@@ -5,7 +5,7 @@
 ** Lambertian
 */
 
-#include "Lambertian.hpp"
+#include <Lambertian.hpp>
 
 Material::Lambertian::Lambertian(const Math::Vector3D &albedo) { this->_albedo = albedo; }
 Material::Lambertian::~Lambertian() {}
