@@ -7,10 +7,6 @@
 
 #include <Cone.hpp>
 
-Raytracer::Cone::Cone()
-{
-}
+Raytracer::Cone::Cone() {}
 
-Raytracer::Cone::~Cone()
-{
-}
+Raytracer::Cone::~Cone() {}
