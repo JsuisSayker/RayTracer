@@ -5,16 +5,29 @@
 ** Cone
 */
 
-#ifndef CONE_HPP_
-#define CONE_HPP_
+#ifndef Cone_HPP_
+#define Cone_HPP_
 #include "APrimitives.hpp"
-namespace Raytracer {
-class Cone
+
+namespace RayTracer {
+class Cone : virtual public APrimitives
 {
   public:
-    Cone();
+    Cone(const Math::Point3D &center, double radius, double height, double angle,
+         std::shared_ptr<Material::Material> mat, const char axe = 'y');
+    Cone(const Math::Point3D &center, double radius, double angle,
+         std::shared_ptr<Material::Material> mat, const char axe = 'y');
     ~Cone();
-};
-} // namespace Raytracer
+    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Material::Material &rec) const;
 
-#endif /* !CONE_HPP_ */
+  protected:
+    double _angle;
+    double _height;
+    double _radius;
+    char _axe;
+
+  private:
+};
+} // namespace RayTracer
+
+#endif /* !Cone_HPP_ */
