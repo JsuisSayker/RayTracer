@@ -28,6 +28,7 @@ class Scene
     bool hits(const RayTracer::Ray &r, Math::Interval ray_t, Material::Material &rec) const;
 
     double _ambient_light;
+
   protected:
     std::vector<std::shared_ptr<ICamera>> _camera;
     std::vector<std::shared_ptr<IPrimitives>> _primitives;

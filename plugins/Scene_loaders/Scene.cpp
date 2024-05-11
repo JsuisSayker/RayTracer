@@ -8,9 +8,7 @@
 #include "Scene.hpp"
 #include "Lambertian.hpp"
 
-Scene::Scene() {
-    _ambient_light = 0.0;
-}
+Scene::Scene() { _ambient_light = 0.0; }
 
 Scene::~Scene() {}
 
