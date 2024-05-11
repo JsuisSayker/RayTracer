@@ -71,10 +71,12 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   if (t0 < 0) {
     t0 = t1;
     if (t0 < 0) {
-      return false;
+        t0 = t1;
+        if (t0 < 0) {
+            return false;
+        }
     }
-  }
-  t = t0;
+    t = t0;
 
   rec.p = ray.at(t);
   // limite la taille du cylindre
@@ -99,5 +101,5 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray,
   rec.set_face_normal(ray, outward_normal);
   rec.mat = _material;
 
-  return true;
+    return true;
 }

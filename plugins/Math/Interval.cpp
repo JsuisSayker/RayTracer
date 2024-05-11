@@ -7,9 +7,7 @@
 
 #include <Interval.hpp>
 
-Math::Interval::Interval() : _min(+infinity), _max(-infinity)
-{
-}
+Math::Interval::Interval() : _min(+infinity), _max(-infinity) {}
 
 Math::Interval::~Interval() {}
 
@@ -23,9 +21,9 @@ bool Math::Interval::surrounds(double x) const { return _min < x && x < _max; }
 
 double Math::Interval::clamp(double x) const
 {
-  if (x < _min)
-    return _min;
-  if (x > _max)
-    return _max;
-  return x;
+    if (x < _min)
+        return _min;
+    if (x > _max)
+        return _max;
+    return x;
 }

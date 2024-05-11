@@ -23,5 +23,4 @@
 //                        RayTracer::Ray &scattered) const = 0;
 // };
 
-
 #endif /* !IMATERIAL_HPP_ */

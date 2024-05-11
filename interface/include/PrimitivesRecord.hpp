@@ -13,13 +13,11 @@
 #include "Vector3D.hpp"
 #include <memory>
 
-class PrimitivesRecord {
-public:
-  PrimitivesRecord(){};
-  ~PrimitivesRecord(){};
-  
-
-
+class PrimitivesRecord
+{
+  public:
+    PrimitivesRecord(){};
+    ~PrimitivesRecord(){};
 };
 
 #endif /* !PRIMITIVESRECORD_HPP_ */
