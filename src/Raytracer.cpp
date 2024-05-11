@@ -6,6 +6,7 @@
 */
 
 #include <Camera.hpp>
+#include <Cone.hpp>
 #include <Cylinder.hpp>
 #include <Dielectric.hpp>
 #include <Lambertian.hpp>
@@ -18,7 +19,6 @@
 #include <Scene.hpp>
 #include <Sphere.hpp>
 #include <fstream>
-#include <Cone.hpp>
 #include <iostream>
 #include <memory>
 
@@ -49,7 +49,8 @@ int RayTracer::Raytracer::run(std::string scene_file)
     //                 sphere_material = std::make_shared<Material::Lambertian>(albedo);
     //                 Math::Point3D center2 = center + Math::Vector3D(0, random_double(0, .5), 0);
     //                 world.addPrimitive(
-    //                     std::make_shared<RayTracer::Sphere>(center, center2, 0.2, sphere_material));
+    //                     std::make_shared<RayTracer::Sphere>(center, center2, 0.2,
+    //                     sphere_material));
     //             } else if (choose_mat < 0.95) {
     //                 // metal
     //                 Math::Vector3D albedo = random_vector(0.5, 1);
@@ -77,7 +78,8 @@ int RayTracer::Raytracer::run(std::string scene_file)
 
     std::shared_ptr<Material::Metal> material3 =
         std::make_shared<Material::Metal>(Math::Vector3D(0, 0.6, 0.5), 0.0);
-    world.addPrimitive(std::make_shared<RayTracer::Cone>(Math::Point3D(4, 1, 0), 1.0, 0.8, 100, material3));
+    world.addPrimitive(
+        std::make_shared<RayTracer::Cone>(Math::Point3D(4, 1, 0), 1.0, 0.8, 100, material3));
 
     world._ambient_light = 0.2;
 

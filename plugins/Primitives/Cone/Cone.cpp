@@ -20,7 +20,7 @@ RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double height,
 }
 
 RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double angle,
-                              std::shared_ptr<Material::Material> mat, const char axe)
+                      std::shared_ptr<Material::Material> mat, const char axe)
     : _radius(fmax(0, radius))
 {
     _angle = angle;
