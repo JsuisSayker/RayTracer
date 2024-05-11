@@ -73,8 +73,12 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
     }
     t = t0;
 
-    rec.p = ray.at(t);
-    // limite la taille du cylindre
+    rec.t = t;
+    rec.normal = (rec.p - _center) / _radius;
+    rec.p = ray.at(rec.t);
+    Math::Vector3D outward_normal = (rec.p - _center) / _radius;
+    rec.set_face_normal(ray, outward_normal);
+    rec.mat = _material;
     if (_height != infinity) {
         if ((_axe == 'x' || _axe == 'X') &&
             (rec.p._x < _center._x - _height / 2 || rec.p._x > _center._x + _height / 2)) {
@@ -87,12 +91,5 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
             return false;
         }
     }
-    rec.t = t;
-    rec.normal = (rec.p - _center) / _radius;
-    rec.p = ray.at(rec.t);
-    Math::Vector3D outward_normal = (rec.p - _center) / _radius;
-    rec.set_face_normal(ray, outward_normal);
-    rec.mat = _material;
-
     return true;
 }
