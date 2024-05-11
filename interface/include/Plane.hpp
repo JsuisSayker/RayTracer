@@ -10,22 +10,19 @@
 #include "APrimitives.hpp"
 
 namespace RayTracer {
-class Plane : virtual public APrimitives {
-public:
+class Plane : virtual public APrimitives
+{
+  public:
+    Plane(const char axe, double position, std::shared_ptr<Material::Material> mat);
+    ~Plane();
 
-  Plane(const char axe,
-        double position,
-        std::shared_ptr<Material::Material> mat);
-  ~Plane();
+    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Material::Material &rec) const;
 
-  bool hits(const RayTracer::Ray &ray,
-            Math::Interval ray_t,
-            Material::Material &rec) const;
+  protected:
+    double _position;
+    char _axe;
 
-protected:
-  double _position;
-  char _axe;
-private:
+  private:
 };
 } // namespace RayTracer
 
