@@ -10,8 +10,7 @@
 #include "APrimitives.hpp"
 
 namespace RayTracer {
-class Plane : virtual public APrimitives
-{
+class Plane : virtual public APrimitives {
   public:
     Plane(const char axe, double position, std::shared_ptr<Material::Material> mat);
     ~Plane();

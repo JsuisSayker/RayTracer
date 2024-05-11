@@ -14,8 +14,7 @@
 #include <libconfig.h++>
 #include <vector>
 
-class SceneBuilder
-{
+class SceneBuilder {
   public:
     enum SceneType
     {

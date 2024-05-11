@@ -11,8 +11,7 @@
 #include "Material.hpp"
 
 namespace Material {
-class Dielectric : virtual public Material::Material
-{
+class Dielectric : virtual public Material::Material {
   public:
     Dielectric(double refraction_index);
     ~Dielectric();

@@ -10,8 +10,7 @@
 
 #include <iostream>
 
-class ILoadFile
-{
+class ILoadFile {
   public:
     ILoadFile(){};
     ILoadFile(std::string path){};

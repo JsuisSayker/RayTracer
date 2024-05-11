@@ -14,8 +14,7 @@
 #include "Vector3D.hpp"
 
 namespace RayTracer {
-class Sphere : virtual public APrimitives
-{
+class Sphere : virtual public APrimitives {
   public:
     double _radius;
     bool _is_moving;

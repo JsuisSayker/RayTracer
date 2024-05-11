@@ -12,8 +12,7 @@
 #include "Vector3D.hpp"
 
 namespace RayTracer {
-class Ray
-{
+class Ray {
   public:
     Ray();
     Ray(const Math::Point3D &origin, const Math::Vector3D &direction);

@@ -10,8 +10,7 @@
 
 #include <libconfig.h++>
 
-class ISceneBuilder
-{
+class ISceneBuilder {
   public:
     ISceneBuilder(){};
     ISceneBuilder(libconfig::Setting &list){};

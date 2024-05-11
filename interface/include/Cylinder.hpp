@@ -10,8 +10,7 @@
 #include "APrimitives.hpp"
 
 namespace RayTracer {
-class Cylinder : virtual public APrimitives
-{
+class Cylinder : virtual public APrimitives {
   public:
     Cylinder(const Math::Point3D &center, double radius, double height,
              std::shared_ptr<Material::Material> mat, const char axe = 'y');

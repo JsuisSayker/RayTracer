@@ -13,8 +13,7 @@
 #include "Vector3D.hpp"
 #include <memory>
 
-class PrimitivesRecord
-{
+class PrimitivesRecord {
   public:
     PrimitivesRecord(){};
     ~PrimitivesRecord(){};

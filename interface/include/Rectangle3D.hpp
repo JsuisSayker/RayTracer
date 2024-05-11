@@ -11,8 +11,7 @@
 #include "Point3D.hpp"
 #include "Vector3D.hpp"
 
-class Rectangle3D
-{
+class Rectangle3D {
   public:
     Math::Point3D origin;
     Math::Vector3D bottom_side;

@@ -14,8 +14,7 @@
 #include <Vector3D.hpp>
 
 namespace Material {
-class Material
-{
+class Material {
   public:
     Material(){};
     virtual ~Material() = default;

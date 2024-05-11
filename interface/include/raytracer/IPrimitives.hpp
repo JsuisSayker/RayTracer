@@ -15,8 +15,7 @@
 #include <PrimitivesRecord.hpp>
 #include <memory>
 
-class IPrimitives
-{
+class IPrimitives {
   public:
     IPrimitives(){};
     ~IPrimitives(){};

@@ -11,8 +11,7 @@
 #include <raytracer/IPrimitives.hpp>
 
 namespace RayTracer {
-class APrimitives : virtual public IPrimitives
-{
+class APrimitives : virtual public IPrimitives {
   public:
     APrimitives();
     ~APrimitives();

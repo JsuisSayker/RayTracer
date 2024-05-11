@@ -11,8 +11,7 @@
 #include "Vector3D.hpp"
 
 namespace Math {
-class Point3D
-{
+class Point3D {
   public:
     double _x;
     double _y;

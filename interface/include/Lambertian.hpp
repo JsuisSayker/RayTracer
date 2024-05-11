@@ -11,8 +11,7 @@
 #include "Material.hpp"
 
 namespace Material {
-class Lambertian : virtual public Material::Material
-{
+class Lambertian : virtual public Material::Material {
   public:
     Lambertian(const Math::Vector3D &albedo);
     ~Lambertian();

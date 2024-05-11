@@ -29,7 +29,7 @@ BinPackArguments: true
 BreakBeforeBraces: Custom
 BraceWrapping:
     AfterCaseLabel: false
-    AfterClass: true
+    AfterClass: false
     AfterControlStatement: Never
     AfterEnum: true
     AfterFunction: true

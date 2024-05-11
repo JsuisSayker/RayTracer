@@ -15,8 +15,7 @@
 #include <raytracer/IPrimitives.hpp>
 #include <vector>
 
-class IScene
-{
+class IScene {
   public:
     IScene(){};
     virtual ~IScene(){};

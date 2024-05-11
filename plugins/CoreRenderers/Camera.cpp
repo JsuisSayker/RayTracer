@@ -55,12 +55,17 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
         Math::Vector3D attenuation;
         if (rec.mat->scatter(r, rec, attenuation, scattered))
             return attenuation * ray_color(scattered, depth - 1, world);
-        return Math::Vector3D(0, 0, 0);
+        return Math::Vector3D(0.0, 0.0, 0.0);
     }
 
     Math::Vector3D unit_direction = unit_vector(r._direction);
     double a = 0.5 * (unit_direction.y + 1.0);
     return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
+}
+
+Math::Vector3D light_color(const Scene &world, const Math::Vector3D &ray_color_value)
+{
+    return ray_color_value * world._ambient_light;
 }
 
 void RayTracer::Camera::render(const Scene &world)
@@ -75,7 +80,7 @@ void RayTracer::Camera::render(const Scene &world)
             Math::Vector3D pixel_color(0, 0, 0);
             for (int sample = 0; sample < _samples_per_pixel; sample++) {
                 RayTracer::Ray r = get_ray(x, y);
-                pixel_color += ray_color(r, _max_depth, world);
+                pixel_color += light_color(world, ray_color(r, _max_depth, world));
             }
             write_color(output_file, pixel_color * _pixel_samples_scale);
         }
