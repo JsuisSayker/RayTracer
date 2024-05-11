@@ -12,8 +12,7 @@
 #include <limits>
 
 namespace Math {
-class Interval
-{
+class Interval {
   public:
     Interval();
     Interval(double min, double max);

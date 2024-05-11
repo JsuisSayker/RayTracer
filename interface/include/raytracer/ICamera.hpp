@@ -8,8 +8,7 @@
 #ifndef ICAMERA_HPP_
 #define ICAMERA_HPP_
 
-class ICamera
-{
+class ICamera {
   public:
     ICamera(){};
     virtual ~ICamera() = default;

@@ -17,8 +17,7 @@
 #include <fstream>
 
 namespace RayTracer {
-class Camera
-{
+class Camera {
   public:
     Rectangle3D _screen;
     Math::Point3D _origin;

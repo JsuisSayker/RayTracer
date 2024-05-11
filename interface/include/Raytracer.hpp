@@ -11,8 +11,7 @@
 #include <iostream>
 
 namespace RayTracer {
-class Raytracer
-{
+class Raytracer {
   public:
     Raytracer();
     ~Raytracer();

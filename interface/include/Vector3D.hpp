@@ -15,8 +15,7 @@
 
 namespace Math {
 
-class Vector3D
-{
+class Vector3D {
   public:
     double x;
     double y;

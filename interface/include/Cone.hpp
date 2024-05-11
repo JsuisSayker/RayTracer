@@ -9,8 +9,7 @@
 #define CONE_HPP_
 #include "APrimitives.hpp"
 namespace Raytracer {
-class Cone
-{
+class Cone {
   public:
     Cone();
     ~Cone();

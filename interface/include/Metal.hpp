@@ -11,8 +11,7 @@
 #include "Material.hpp"
 
 namespace Material {
-class Metal : virtual public Material
-{
+class Metal : virtual public Material {
   public:
     Metal(const Math::Vector3D &albedo, double fuzz);
     ~Metal();

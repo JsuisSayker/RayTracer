@@ -17,8 +17,7 @@
 #include <raytracer/IPrimitives.hpp>
 #include <vector>
 
-class Scene
-{
+class Scene {
   public:
     Scene();
     ~Scene();
