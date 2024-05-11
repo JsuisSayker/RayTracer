@@ -22,23 +22,23 @@ bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
 {
     double t;
     if (_axe == 'X' || _axe == 'x') {
-        if (ray.direction.x == 0)
+        if (ray._direction.x == 0)
             return false;
-        t = (_position - ray.origin._x) / ray.direction.x;
+        t = (_position - ray._origin._x) / ray._direction.x;
         if (t < 0)
             return false;
     }
     if (_axe == 'Y' || _axe == 'y') {
-        if (ray.direction.y == 0)
+        if (ray._direction.y == 0)
             return false;
-        t = (_position - ray.origin._y) / ray.direction.y;
+        t = (_position - ray._origin._y) / ray._direction.y;
         if (t < 0)
             return false;
     }
     if (_axe == 'Z' || _axe == 'z') {
-        if (ray.direction.z == 0)
+        if (ray._direction.z == 0)
             return false;
-        t = (_position - ray.origin._z) / ray.direction.z;
+        t = (_position - ray._origin._z) / ray._direction.z;
         if (t < 0)
             return false;
     }
