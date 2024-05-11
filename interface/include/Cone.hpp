@@ -10,8 +10,7 @@
 #include "APrimitives.hpp"
 
 namespace RayTracer {
-class Cone : virtual public APrimitives
-{
+class Cone : virtual public APrimitives {
   public:
     Cone(const Math::Point3D &center, double radius, double height, double angle,
          std::shared_ptr<Material::Material> mat, const char axe = 'y');
