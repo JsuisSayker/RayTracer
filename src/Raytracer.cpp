@@ -28,7 +28,11 @@ RayTracer::Raytracer::~Raytracer() {}
 
 int RayTracer::Raytracer::run(std::string scene_file)
 {
+<<<<<<< HEAD
     Scene world = Scene(std::make_shared<RayTracer::Bvh>(world));
+=======
+    Scene world;
+>>>>>>> dev
 
     std::shared_ptr<Material::Lambertian> ground_material =
         std::make_shared<Material::Lambertian>(Math::Vector3D(0.5, 0.5, 0.5));
