@@ -10,6 +10,7 @@
 
 #include <libconfig.h++>
 #include <Macros.hpp>
+#include <Camera.hpp>
 #include <filesystem>
 #include <iostream>
 #include <vector>
@@ -30,7 +31,8 @@ class SceneBuilder : virtual public ISceneBuilder{
             CAMERA,
             LIGHT,
             SPHERE,
-            PLANE
+            PLANE,
+            DONE
         };
 
         struct coordinates {
@@ -85,9 +87,11 @@ class SceneBuilder : virtual public ISceneBuilder{
             std::vector<LightElement> _lightList;
             CameraElement _camera;
         };
-        std::map<std::string, std::function<void(completeFile &, int)>> _object = {
-        {"Sphere", std::bind(&SceneBuilder::createSphere, this, std::placeholders::_1, std::placeholders::_2)},
-        {"Plane", std::bind(&SceneBuilder::createPlane, this, std::placeholders::_1, std::placeholders::_2)}
+        std::map<std::string, std::function<void(completeFile &, int, Scene &, RayTracer::Camera &)>> _object = {
+            {"Sphere", std::bind(&SceneBuilder::createSphere, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+            {"Plane", std::bind(&SceneBuilder::createPlane, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+            {"Camera", std::bind(&SceneBuilder::createCamera, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+            {"Lights", std::bind(&SceneBuilder::createLight, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)}
         };
 
         std::map<std::string, std::function<std::shared_ptr<Material::Material>(completeFile &, SceneBuilder::ActualObject, int)>> _material = {
@@ -98,25 +102,27 @@ class SceneBuilder : virtual public ISceneBuilder{
         };
 
         SceneBuilder() = default;
-        SceneBuilder(const libconfig::Setting &list);
+        SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTracer::Camera &cam);
         ~SceneBuilder();
 
-        // void loadPlugins();
-        void buildObject(std::string type, completeFile data, int index) const;
+        void buildObject(std::string type, completeFile data, int index, Scene &scene, RayTracer::Camera &cam) const;
         std::shared_ptr<Material::Material> createMetalMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
         std::shared_ptr<Material::Material> createLambertianMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
         std::shared_ptr<Material::Material> createDielectricMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
         std::shared_ptr<Material::Material> createFlatMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
 
-        void createSphere(completeFile &data, int index);
-        void createPlane(completeFile &data, int index);
+        void createCamera(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+        void createSphere(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+        void createPlane(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+        void createLight(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+
         void saveSceneData(const libconfig::Setting &list, std::string type,
-            int count, completeFile &data, SceneBuilder::LightElement lightElement);
-        void saveCameraData(const libconfig::Setting &list, completeFile data);
+            int count, completeFile &data, SceneBuilder::LightElement lightElement, Scene &scene, RayTracer::Camera &cam) const;
+        void saveCameraData(const libconfig::Setting &list, completeFile &data) const;
         void saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const;
         void savePlaneData(const libconfig::Setting &element, int start, completeFile &data) const;
-        void saveLightData(const libconfig::Setting &element, completeFile data, SceneBuilder::LightElement lightElement);
-        std::shared_ptr<IScene> getScene();
+        void saveLightData(const libconfig::Setting &element, completeFile &data, SceneBuilder::LightElement lightElement) const;
+        // std::shared_ptr<IScene> getScene();
 
     private:
 };

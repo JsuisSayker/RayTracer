@@ -10,15 +10,13 @@
 #include <iostream>
 #include <cstring>
 
-SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
+SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTracer::Camera &cam) : _scenesLists(list)
 {
-    _scene = std::make_shared<Scene>();
+    // scene = std::make_shared<IScene>();
     std::string type;
-    int count = 0;
+    int index = 0;
     completeFile data;
     SceneBuilder::LightElement lightElement;
-
-
 
     if (strcmp(_scenesLists.getName(), "primitives") == 0) {
         for (int i = 0; i < _scenesLists.getLength(); i++) {
@@ -26,15 +24,14 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
             for (int j = 0; j < element.getLength(); j++) {
                 if (element[j].exists("type")) {
                     element[j].lookupValue("type", type);
-                    std::cout << "element VALUE : " << type << std::endl;
                     _typeList.push_back(type);
                     if (_typeList.size() > 1) {
-                        if (_typeList[count] == _typeList[count + 1]) {
-                            count += 1;
+                        if (_typeList[index] == _typeList[index + 1]) {
+                            index += 1;
                         } else
-                            count = 0;
+                            index = 0;
                     }
-                    saveSceneData(_scenesLists[i], type, count, data, lightElement);
+                    saveSceneData(_scenesLists[i], type, index, data, lightElement, scene, cam);
                 }
             }
         }
@@ -46,38 +43,19 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list) : _scenesLists(list)
             }
             if (strcmp(_scenesLists[i].getName(), "fieldOfView") == 0) {
                 list.lookupValue("fieldOfView", data._camera.fov);
-                std::cout << "type value : " << data._camera.fov << std::endl;
             }
             if (strcmp(_scenesLists[i].getName(), "ambient") == 0) {
                 list.lookupValue("ambient", lightElement.ambient);
-                std::cout << "type value : " << lightElement.ambient << std::endl;
             }
             if (strcmp(_scenesLists[i].getName(), "diffuse") == 0) {
                 list.lookupValue("diffuse", lightElement.diffuse);
-                std::cout << "type value : " << lightElement.diffuse << std::endl;
             }
-            saveSceneData(_scenesLists[i], type, count, data, lightElement);
+            saveSceneData(_scenesLists[i], type, index, data, lightElement, scene, cam);
         }
     }
+    std::cout << "at the end" << std::endl;
+    // cam.render(scene);
 }
-
-// void SceneBuilder::loadPlugins()
-// {
-//     std::string path = "./plugins";
-//     std::string fileWantedExtensions = ".so";
-
-//     for (const auto &entryFiles : std::filesystem::directory_iterator(path)) {
-//         if (entryFiles.path().extension() == fileWantedExtensions) {
-//             const std::string actualFilePath = entryFiles.path().string();
-//             auto pluginTypeFunc = SceneType::PRIMITIVE; // here we need to load the function from the plugin
-            // if (pluginTypeFunc == nullptr)
-            //     throw std::runtime_error("Error while loading plugin type");
-//             if (pluginTypeFunc == SceneType::PRIMITIVE)
-//                 _pathToPlugins.push_back(actualFilePath);
-//             _pathToPlugins.push_back(actualFilePath);
-//         }
-//     }
-// }
 
 std::shared_ptr<Material::Material> SceneBuilder::createMetalMaterial(UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
 {
@@ -113,9 +91,19 @@ std::shared_ptr<Material::Material> SceneBuilder::createFlatMaterial(completeFil
     return std::make_shared<Material::Lambertian>(albedo);
 }
 
-void SceneBuilder::createSphere(completeFile &data, int index)
+void SceneBuilder::createCamera(completeFile &data, UNUSED int index, Scene &scene, RayTracer::Camera &cam)
 {
-    std::cout << "Sphere created" << std::endl;
+    // std::shared_ptr<ICamera> camera = std::make_shared<RayTracer::Camera>();
+    cam.setResolution(data._camera.width, data._camera.height);
+    cam.setLookFrom(data._camera.position.x, data._camera.position.y, data._camera.position.z);
+    cam.setFov(data._camera.fov);
+    cam.setDefaultValues();
+    // scene.addCamera(cam);
+    std::cout << "MAGNIFIQUE" << std::endl;
+}
+
+void SceneBuilder::createSphere(completeFile &data, int index, Scene &scene, UNUSED RayTracer::Camera &cam)
+{
     std::shared_ptr<Material::Material>actualMaterial = _material.at(data._spheresList[index].material)(data,
         SceneBuilder::ActualObject::SPHERE, index);
     std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(Math::Point3D(
@@ -123,35 +111,43 @@ void SceneBuilder::createSphere(completeFile &data, int index)
         (double)data._spheresList[index].position.y,
         (double)data._spheresList[index].position.z),
         data._spheresList[index].radius, actualMaterial);
-    _scene->addPrimitive(sphere);
+    scene.addPrimitive(sphere);
     std::cout << "BOUILLANT" << std::endl;
 }
 
-void SceneBuilder::createPlane(completeFile &data, int index)
+void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene, UNUSED RayTracer::Camera &cam)
 {
-    std::cout << "Plane created" << std::endl;
     std::shared_ptr<Material::Material>actualMaterial = _material.at(data._planeList[index].material)(data,
         SceneBuilder::ActualObject::PLANE, index);
     std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>(
         data._planeList[index].axis[0], data._planeList[index].position, actualMaterial
     );
-    _scene->addPrimitive(plane);
+    scene.addPrimitive(plane);
     std::cout << "LEGENDAIRE" << std::endl;
 }
 
-void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile data)
+void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene, UNUSED RayTracer::Camera &cam)
 {
+    // std::shared_ptr<ILight> light = std::make_shared<RayTracer::Light>(
+    //     data._lightList[index].ambient, data._lightList[index].diffuse,
+    //     Math::Point3D(data._lightList[index].points.x,
+    //         data._lightList[index].points.y,
+    //         data._lightList[index].points.z)
+    // );
+    // scene->addLight(light);
+    std::cout << "MYTHIQUE" << std::endl;
+}
 
+void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile &data) const
+{
     if (strcmp(element.getName(), "resolution") == 0) {
         for (int j = 0; j < element.getLength(); j++) {
             const libconfig::Setting& resolutionElement = element;
             if (strcmp(resolutionElement[j].getName(), "width") == 0) {
                 element.lookupValue("width", data._camera.width);
-                std::cout << "width value : " << data._camera.width << std::endl;
             }
             if (strcmp(resolutionElement[j].getName(), "height") == 0) {
                 element.lookupValue("height", data._camera.height);
-                std::cout << "height value : " << data._camera.height << std::endl;
             }
         }
     }
@@ -160,15 +156,12 @@ void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFil
             const libconfig::Setting& positionElement = element;
             if (strcmp(positionElement[j].getName(), "x") == 0) {
                 element.lookupValue("x", data._camera.position.x);
-                std::cout << "x value : " << data._camera.position.x << std::endl;
             }
             if (strcmp(positionElement[j].getName(), "y") == 0) {
                 element.lookupValue("y", data._camera.position.y);
-                std::cout << "y value : " << data._camera.position.y << std::endl;
             }
             if (strcmp(positionElement[j].getName(), "z") == 0) {
                 element.lookupValue("z", data._camera.position.z);
-                std::cout << "z value : " << data._camera.position.z << std::endl;
             }
         }
     }
@@ -177,15 +170,12 @@ void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFil
             const libconfig::Setting& rotationElement = element;
             if (strcmp(rotationElement[j].getName(), "x") == 0) {
                 element.lookupValue("x", data._camera.rotationX);
-                std::cout << "x value : " << data._camera.rotationX << std::endl;
             }
             if (strcmp(rotationElement[j].getName(), "y") == 0) {
                 element.lookupValue("y", data._camera.rotationY);
-                std::cout << "y value : " << data._camera.rotationY << std::endl;
             }
             if (strcmp(rotationElement[j].getName(), "z") == 0) {
                 element.lookupValue("z", data._camera.rotationZ);
-                std::cout << "z value : " << data._camera.rotationZ << std::endl;
             }
         }
     }
@@ -200,38 +190,30 @@ void SceneBuilder::saveSphereData(const libconfig::Setting &element, int start, 
             const libconfig::Setting& nestedSphereElement = sphereElementInFile[j];
             if (strcmp(nestedSphereElement.getName(), "x") == 0) {
                 sphereElementInFile.lookupValue("x", sphereElement.position.x);
-                std::cout << "x value in sphere: " << sphereElement.position.x << std::endl;
             }
             if (strcmp(nestedSphereElement.getName(), "y") == 0) {
                 sphereElementInFile.lookupValue("y", sphereElement.position.y);
-                std::cout << "y value in sphere: " << sphereElement.position.y << std::endl;
             }
             if (strcmp(nestedSphereElement.getName(), "z") == 0) {
                 sphereElementInFile.lookupValue("z", sphereElement.position.z);
-                std::cout << "z value in sphere: " << sphereElement.position.z << std::endl;
             }
             if (strcmp(nestedSphereElement.getName(), "r") == 0) {
                 sphereElementInFile.lookupValue("r", sphereElement.radius);
-                std::cout << "radius value in sphere: " << sphereElement.radius << std::endl;
             }
             if (strcmp(nestedSphereElement.getName(), "material") == 0) {
                 sphereElementInFile.lookupValue("material", sphereElement.material);
-                std::cout << "material value in sphere: " << sphereElement.material << std::endl;
             }
             if (strcmp(nestedSphereElement.getName(), "color") == 0) {
                 const libconfig::Setting& color = nestedSphereElement;
                 for (int k = 0; k < color.getLength(); k++) {
                     if (strcmp(color[k].getName(), "r") == 0) {
                         nestedSphereElement.lookupValue("r", sphereElement.colorValues.r);
-                        std::cout << "r value in sphere: " << sphereElement.colorValues.r << std::endl;
                     }
                     if (strcmp(color[k].getName(), "g") == 0) {
                         nestedSphereElement.lookupValue("g", sphereElement.colorValues.g);
-                        std::cout << "g value in sphere: " << sphereElement.colorValues.g << std::endl;
                     }
                     if (strcmp(color[k].getName(), "b") == 0) {
                         nestedSphereElement.lookupValue("b", sphereElement.colorValues.b);
-                        std::cout << "b value in sphere: " << sphereElement.colorValues.b << std::endl;
                     }
                 }
             }
@@ -249,30 +231,24 @@ void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start, c
             const libconfig::Setting& nestedPlaneElement = planeElementInFile[j];
             if (strcmp(nestedPlaneElement.getName(), "axis") == 0) {
                 planeElementInFile.lookupValue("axis", planeElement.axis);
-                std::cout << "axis value in plane: " << planeElement.axis << std::endl;
             }
             if (strcmp(nestedPlaneElement.getName(), "position") == 0) {
                 planeElementInFile.lookupValue("position", planeElement.position);
-                std::cout << "position value in plane: " << planeElement.position << std::endl;
             }
             if (strcmp(nestedPlaneElement.getName(), "material") == 0) {
                 planeElementInFile.lookupValue("material", planeElement.material);
-                std::cout << "material value in plane: " << planeElement.material << std::endl;
             }
             if (strcmp(nestedPlaneElement.getName(), "color") == 0) {
                 const libconfig::Setting& color = nestedPlaneElement;
                 for (int k = 0; k < color.getLength(); k++) {
                     if (strcmp(color[k].getName(), "r") == 0) {
                         nestedPlaneElement.lookupValue("r", planeElement.colorValues.r);
-                        std::cout << "r value in plane: " << planeElement.colorValues.r << std::endl;
                     }
                     if (strcmp(color[k].getName(), "g") == 0) {
                         nestedPlaneElement.lookupValue("g", planeElement.colorValues.g);
-                        std::cout << "g value in plane: " << planeElement.colorValues.g << std::endl;
                     }
                     if (strcmp(color[k].getName(), "b") == 0) {
                         nestedPlaneElement.lookupValue("b", planeElement.colorValues.b);
-                        std::cout << "b value in plane: " << planeElement.colorValues.b << std::endl;
                     }
                 }
             }
@@ -281,7 +257,7 @@ void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start, c
     }
 }
 
-void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile data, SceneBuilder::LightElement lightElement)
+void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile &data, SceneBuilder::LightElement lightElement) const
 {
     if (strcmp(element.getName(), "point") == 0) {
         for (int i = 0; i < element.getLength(); i++) {
@@ -290,15 +266,12 @@ void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile
                 const libconfig::Setting& nestedPointElement = pointElement[j];
                 if (strcmp(nestedPointElement.getName(), "x") == 0) {
                     pointElement.lookupValue("x", lightElement.points.x);
-                    std::cout << "x value in light: " << lightElement.points.x << std::endl;
                 }
                 if (strcmp(nestedPointElement.getName(), "y") == 0) {
                     pointElement.lookupValue("y", lightElement.points.y);
-                    std::cout << "y value in light: " << lightElement.points.y << std::endl;
                 }
                 if (strcmp(nestedPointElement.getName(), "z") == 0) {
                     pointElement.lookupValue("z", lightElement.points.z);
-                    std::cout << "z value in light: " << lightElement.points.z << std::endl;
                 }
             }
             data._lightList.push_back(lightElement);
@@ -307,37 +280,38 @@ void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile
 }
 
 void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string type,
-    int count, completeFile &data, SceneBuilder::LightElement lightElement)
+    int index, completeFile &data, SceneBuilder::LightElement lightElement, Scene &scene, RayTracer::Camera &cam) const
 {
-    // if (type == "Camera") {
-    //     saveCameraData(element, data);
-    //     buildObject(type, data, count);
-    // }
+    if (type == "Camera") {
+        saveCameraData(element, data);
+        if (strcmp(element.getName(), "fieldOfView") == 0)
+            buildObject(type, data, index, scene, cam);
+    }
     if (type == "Sphere") {
-        saveSphereData(element, count, data);
-        buildObject(type, data, count);
+        saveSphereData(element, index, data);
+        buildObject(type, data, index, scene, cam);
     }
     if (type == "Plane") {
-        savePlaneData(element, count, data);
-        buildObject(type, data, count);
+        savePlaneData(element, index, data);
+        buildObject(type, data, index, scene, cam);
     }
-    // if (type == "Lights") {
-    //     saveLightData(element, data, lightElement);
-    //     buildObject(type, data, count);
-    // }
+    if (type == "Lights") {
+        saveLightData(element, data, lightElement);
+        buildObject(type, data, index, scene, cam);
+    }
 
 }
 
-void SceneBuilder::buildObject(std::string type, completeFile data, int index) const
+void SceneBuilder::buildObject(std::string type, completeFile data, int index, Scene &scene, RayTracer::Camera &cam) const
 {
-    _object.at(type)(data, index);
+    _object.at(type)(data, index, scene, cam);
 }
 
 
-std::shared_ptr<IScene> SceneBuilder::getScene()
-{
-    return _scene;
-}
+// std::shared_ptr<IScene> SceneBuilder::getScene()
+// {
+//     return scene;
+// }
 
 
 SceneBuilder::~SceneBuilder()

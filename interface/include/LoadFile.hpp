@@ -14,7 +14,7 @@
 
 class LoadFile : virtual public ILoadFile {
     public:
-        LoadFile(std::string path);
+        LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam);
         ~LoadFile();
 
     protected:

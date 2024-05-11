@@ -8,7 +8,8 @@
 #include "LoadFile.hpp"
 #include <cstring>
 
-LoadFile::LoadFile(std::string path) {
+LoadFile::LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam)
+{
     libconfig::Config cfg;
     try {
         cfg.readFile(path.c_str());
@@ -29,12 +30,13 @@ LoadFile::LoadFile(std::string path) {
         if (element.exists("type")) {
             std::string type;
             element.lookupValue("type", type);
-            _actualBuilder = std::make_shared<SceneBuilder>(element);
+            _actualBuilder = std::make_shared<SceneBuilder>(element, scene, cam);
         }
 
         if (strcmp(element.getName(), "primitives") == 0)
-            _actualBuilder = std::make_shared<SceneBuilder>(element);
+            _actualBuilder = std::make_shared<SceneBuilder>(element, scene, cam);
     }
+    cam.render(scene);
 }
 
 

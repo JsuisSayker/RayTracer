@@ -12,12 +12,19 @@ Scene::Scene() {}
 
 Scene::~Scene() {}
 
-void Scene::addPrimitive(std::shared_ptr<IPrimitives> primitive) {
+void Scene::addPrimitive(std::shared_ptr<IPrimitives> primitive)
+{
   _primitives.push_back(primitive);
 }
 
-void Scene::addCamera(std::shared_ptr<ICamera> camera) {
+void Scene::addCamera(std::shared_ptr<ICamera> camera)
+{
   _camera.push_back(camera);
+}
+
+std::shared_ptr<ICamera> Scene::getCamera()
+{
+  return _camera[0];
 }
 
 bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,

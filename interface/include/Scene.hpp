@@ -24,6 +24,7 @@ public:
 
   void addPrimitive(std::shared_ptr<IPrimitives> primitive);
   void addCamera(std::shared_ptr<ICamera> camera);
+  std::shared_ptr<ICamera> getCamera();
   bool hits(const RayTracer::Ray &r, Math::Interval ray_t,
             Material::Material &rec) const;
 

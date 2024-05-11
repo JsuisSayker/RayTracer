@@ -16,6 +16,32 @@ RayTracer::Camera::Camera()
 
 RayTracer::Camera::~Camera() {}
 
+void RayTracer::Camera::setResolution(int width, int height)
+{
+  _image_width = width;
+  _image_height = height;
+  _aspect_ratio = 16.0 / 9.0;
+}
+
+void RayTracer::Camera::setLookFrom(double x, double y, double z)
+{
+  _lookfrom = Math::Point3D(x, y, z);
+}
+
+void RayTracer::Camera::setFov(double fov)
+{
+  _vfov = fov;
+}
+
+void RayTracer::Camera::setDefaultValues()
+{
+  _samples_per_pixel = 20;
+  _max_depth = 50;
+  _vup = Math::Vector3D(0, 1, 0);
+  _defocus_angle = 0.6;
+  _focus_dist = 10.0;
+}
+
 double linear_to_gamma(double linear_component)
 {
   if (linear_component > 0)

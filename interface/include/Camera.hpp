@@ -15,9 +15,10 @@
 #include "Scene.hpp"
 #include "Vector3D.hpp"
 #include <fstream>
+#include <raytracer/ICamera.hpp>
 
 namespace RayTracer {
-class Camera {
+class Camera : virtual public ICamera {
 public:
   Rectangle3D _screen;
   Math::Point3D _origin;
@@ -37,6 +38,11 @@ public:
 
   Camera();
   ~Camera();
+
+  void setResolution(int width, int height);
+  void setLookFrom(double x, double y, double z);
+  void setFov(double fov);
+  void setDefaultValues();
 
   void render(const Scene &world);
   void initialize();
