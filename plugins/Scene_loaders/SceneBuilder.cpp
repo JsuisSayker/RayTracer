@@ -28,8 +28,10 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTrac
                     if (_typeList.size() > 1) {
                         if (_typeList[index] == _typeList[index + 1]) {
                             index += 1;
-                        } else
+                        } else {
+                            _typeList.clear();
                             index = 0;
+                        }
                     }
                     saveSceneData(_scenesLists[i], type, index, data, lightElement, scene, cam);
                 }
