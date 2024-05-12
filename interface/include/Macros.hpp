@@ -13,5 +13,4 @@
 #define ERROR (-1)
 #define UNUSED __attribute__((unused))
 
-
 #endif /* !MACROS_HPP_ */

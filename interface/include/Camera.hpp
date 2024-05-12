@@ -19,9 +19,9 @@
 
 namespace RayTracer {
 class Camera : virtual public ICamera {
-public:
-  Rectangle3D _screen;
-  Math::Point3D _origin;
+  public:
+    Rectangle3D _screen;
+    Math::Point3D _origin;
 
     int _image_width = 100;
     double _aspect_ratio = 1.0;
@@ -39,16 +39,16 @@ public:
     Camera();
     ~Camera();
 
-  void setResolution(int width, int height);
-  void setLookFrom(double x, double y, double z);
-  void setFov(double fov);
-  void setDefaultValues();
+    void setResolution(int width, int height);
+    void setLookFrom(double x, double y, double z);
+    void setFov(double fov);
+    void setDefaultValues();
 
-  void render(const Scene &world);
-  void initialize();
-  RayTracer::Ray get_ray(int i, int j) const;
-  Math::Vector3D sample_square() const;
-  Math::Point3D defocus_disk_sample() const;
+    void render(const Scene &world);
+    void initialize();
+    RayTracer::Ray get_ray(int i, int j) const;
+    Math::Vector3D sample_square() const;
+    Math::Point3D defocus_disk_sample() const;
 
   protected:
     int _image_height;

@@ -17,15 +17,15 @@ LoadFile::LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam)
         std::cerr << "I/O error while reading file." << std::endl;
         return;
     } catch (const libconfig::ParseException &pex) {
-        std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine()
-                  << " - " << pex.getError() << std::endl;
+        std::cerr << "Parse error at " << pex.getFile() << ":" << pex.getLine() << " - "
+                  << pex.getError() << std::endl;
         return;
     }
 
-    const libconfig::Setting& root = cfg.getRoot();
+    const libconfig::Setting &root = cfg.getRoot();
 
     for (int i = 0; i < root.getLength(); ++i) {
-        const libconfig::Setting& element = root[i];
+        const libconfig::Setting &element = root[i];
 
         if (element.exists("type")) {
             std::string type;
@@ -39,7 +39,4 @@ LoadFile::LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam)
     cam.render(scene);
 }
 
-
-LoadFile::~LoadFile()
-{
-}
+LoadFile::~LoadFile() {}
