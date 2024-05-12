@@ -33,7 +33,7 @@ void RayTracer::Camera::setFov(double fov) { _fov = fov; }
 
 void RayTracer::Camera::setDefaultValues()
 {
-    _samples_per_pixel = 100;
+    _samples_per_pixel = 20;
     _max_depth = 50;
     _vup = Math::Vector3D(0, 1, 0);
     _defocus_angle = 0.6;

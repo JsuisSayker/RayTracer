@@ -43,9 +43,9 @@ class SceneBuilder : virtual public ISceneBuilder {
     };
 
     struct color {
-        int r;
-        int g;
-        int b;
+        double r;
+        double g;
+        double b;
     };
 
     struct CameraElement {
