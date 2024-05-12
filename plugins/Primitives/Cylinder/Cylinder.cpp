@@ -18,17 +18,6 @@ RayTracer::Cylinder::Cylinder(const Math::Point3D &center, double radius, double
     _material = mat;
 }
 
-RayTracer::Cylinder::Cylinder(const Math::Point3D &center, double radius,
-                              std::shared_ptr<Material::Material> mat, const char axe)
-    : _radius(fmax(0, radius))
-{
-    _center = center;
-    _radius = radius;
-    _height = infinity;
-    _axe = axe;
-    _material = mat;
-}
-
 RayTracer::Cylinder::~Cylinder() {}
 
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
