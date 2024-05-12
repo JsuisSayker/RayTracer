@@ -147,23 +147,22 @@ void SceneBuilder::createCone(completeFile &data, int index, Scene &scene,
 }
 
 void SceneBuilder::createCylinder(completeFile &data, int index, Scene &scene,
-                              UNUSED RayTracer::Camera &cam)
+                                  UNUSED RayTracer::Camera &cam)
 {
-    std::shared_ptr<Materials::Material> actualMaterial =
-        _material.at(data._cylinderList[index].material)(data, SceneBuilder::ActualObject::CYLINDER, index);
+    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
+        data._cylinderList[index].material)(data, SceneBuilder::ActualObject::CYLINDER, index);
     if (data._cylinderList[index].height != -1.0) {
         std::shared_ptr<IPrimitives> cylinder = std::make_shared<RayTracer::Cylinder>(
             Math::Point3D(data._cylinderList[index].center.x, data._cylinderList[index].center.y,
                           data._cylinderList[index].center.z),
-            data._cylinderList[index].radius, data._cylinderList[index].height,
-            actualMaterial, data._cylinderList[index].axis[0]);
+            data._cylinderList[index].radius, data._cylinderList[index].height, actualMaterial,
+            data._cylinderList[index].axis[0]);
         scene.addPrimitive(cylinder);
     } else {
         std::shared_ptr<IPrimitives> cylinder = std::make_shared<RayTracer::Cylinder>(
             Math::Point3D(data._cylinderList[index].center.x, data._cylinderList[index].center.y,
                           data._cylinderList[index].center.z),
-            data._cylinderList[index].radius, actualMaterial,
-            data._cylinderList[index].axis[0]);
+            data._cylinderList[index].radius, actualMaterial, data._cylinderList[index].axis[0]);
         scene.addPrimitive(cylinder);
     }
 }
@@ -356,7 +355,7 @@ void SceneBuilder::saveConeData(const libconfig::Setting &element, int start,
 }
 
 void SceneBuilder::saveCylinderData(const libconfig::Setting &element, int start,
-                                completeFile &data) const
+                                    completeFile &data) const
 {
     SceneBuilder::CylinderElement cylinderElement;
     for (int i = start; i < element.getLength(); i++) {

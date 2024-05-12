@@ -126,12 +126,12 @@ class SceneBuilder : virtual public ISceneBuilder {
                    {"Lights",
                     std::bind(&SceneBuilder::createLight, this, std::placeholders::_1,
                               std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
-                   {"Cone", std::bind(&SceneBuilder::createCone, this, std::placeholders::_1,
-                                      std::placeholders::_2, std::placeholders::_3,
-                                      std::placeholders::_4)},
-                    {"Cylinder", std::bind(&SceneBuilder::createCylinder, this, std::placeholders::_1,
-                        std::placeholders::_2, std::placeholders::_3,
-                        std::placeholders::_4)}};
+                   {"Cone",
+                    std::bind(&SceneBuilder::createCone, this, std::placeholders::_1,
+                              std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+                   {"Cylinder", std::bind(&SceneBuilder::createCylinder, this,
+                                          std::placeholders::_1, std::placeholders::_2,
+                                          std::placeholders::_3, std::placeholders::_4)}};
 
     std::map<std::string, std::function<std::shared_ptr<Materials::Material>(
                               completeFile &, SceneBuilder::ActualObject, int)>>
