@@ -76,7 +76,6 @@ bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
     rec.t = t;
     rec.normal = (rec.p - _center) / _radius;
     rec.p = ray.at(rec.t);
-    // Math::Vector3D outward_normal = (rec.p - _center) / _radius;
     rec.set_face_normal(ray, rec.normal);
     rec.mat = _material;
     if (_height != infinity) {
