@@ -90,6 +90,11 @@ SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject 
             Math::Vector3D(data._coneList[index].colorValues.r, data._coneList[index].colorValues.g,
                            data._coneList[index].colorValues.b);
     }
+    if (actualObject == SceneBuilder::ActualObject::CYLINDER) {
+        albedo =
+            Math::Vector3D(data._cylinderList[index].colorValues.r, data._cylinderList[index].colorValues.g,
+                           data._cylinderList[index].colorValues.b);
+    }
     return std::make_shared<Materials::Flat>(albedo);
 }
 
