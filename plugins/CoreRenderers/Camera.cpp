@@ -62,7 +62,8 @@ Math::Vector3D get_ray_color(const RayTracer::Ray &r, int depth, const Scene &wo
         RayTracer::Ray scattered;
         Math::Vector3D attenuation;
         if (rec.mat->scatter(r, rec, attenuation, scattered))
-            return light_color(world, rec, attenuation * get_ray_color(scattered, depth - 1, world));
+            return light_color(world, rec,
+                               attenuation * get_ray_color(scattered, depth - 1, world));
         return Math::Vector3D(0.0, 0.0, 0.0);
     }
 

@@ -16,7 +16,7 @@ Materials::Metal::Metal(const Math::Vector3D &albedo, double fuzz)
 Materials::Metal::~Metal() {}
 
 bool Materials::Metal::scatter(const RayTracer::Ray &r_in, Materials::Material &rec,
-                              Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
+                               Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
     Math::Vector3D reflected = reflect(r_in._direction, rec.normal);
     reflected = unit_vector(reflected) + (random_unit_vector() * _fuzz);
