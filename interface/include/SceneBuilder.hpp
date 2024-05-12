@@ -8,8 +8,8 @@
 #ifndef SCENEBUILDER_HPP_
 #define SCENEBUILDER_HPP_
 
-#include "Glass.hpp"
 #include "Flat.hpp"
+#include "Glass.hpp"
 #include "Material.hpp"
 #include "Metal.hpp"
 #include "Plane.hpp"

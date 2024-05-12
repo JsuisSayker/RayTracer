@@ -122,10 +122,10 @@ void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene,
 void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene,
                                UNUSED RayTracer::Camera &cam)
 {
-    std::shared_ptr<Lights::DirectionalLight> directionalLights = std::make_shared<Lights::DirectionalLight>(
-        Math::Vector3D(data._lightList[index].directionalLights.x,
-                       data._lightList[index].directionalLights.y,
-                       data._lightList[index].directionalLights.z));
+    std::shared_ptr<Lights::DirectionalLight> directionalLights =
+        std::make_shared<Lights::DirectionalLight>(Math::Vector3D(
+            data._lightList[index].directionalLights.x, data._lightList[index].directionalLights.y,
+            data._lightList[index].directionalLights.z));
     scene._directional_lights.push_back(directionalLights);
 }
 
@@ -311,7 +311,6 @@ void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string 
         if (strcmp(element.getName(), "directional") == 0) {
             data._lightList.push_back(lightElement);
             buildObject(type, data, index, scene, cam);
-
         }
     }
 }
