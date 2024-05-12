@@ -1,6 +1,5 @@
 *vgcore.*
 *.out
-*.ppm
 .vscode
 *.sh
 *.so
@@ -18,6 +17,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+output.ppm
 
 # Visual Studio Code
 .vscode
