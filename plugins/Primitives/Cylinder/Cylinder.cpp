@@ -8,7 +8,7 @@
 #include <Cylinder.hpp>
 
 RayTracer::Cylinder::Cylinder(const Math::Point3D &center, double radius, double height,
-                              std::shared_ptr<Material::Material> mat, const char axe)
+                              std::shared_ptr<Materials::Material> mat, const char axe)
     : _radius(fmax(0, radius))
 {
     _center = center;
@@ -21,7 +21,7 @@ RayTracer::Cylinder::Cylinder(const Math::Point3D &center, double radius, double
 RayTracer::Cylinder::~Cylinder() {}
 
 bool RayTracer::Cylinder::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                               Material::Material &rec) const
+                               Materials::Material &rec) const
 {
     double a, b, c, discriminant, t, t0, t1;
     Math::Vector3D oc = ray._origin - _center;

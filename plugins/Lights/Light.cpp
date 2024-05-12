@@ -5,8 +5,8 @@
 ** Light
 */
 
-#include "Light.hpp"
+#include <Light.hpp>
 
-Light::Light() {}
+Lights::Light::Light() {}
 
-Light::~Light() {}
+Lights::Light::~Light() {}

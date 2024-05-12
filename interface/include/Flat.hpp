@@ -2,25 +2,25 @@
 ** EPITECH PROJECT, 2024
 ** RayTracer
 ** File description:
-** Metal
+** Flat
 */
 
-#ifndef METAL_HPP_
-#define METAL_HPP_
+#ifndef LAMBERTIAN_HPP_
+#define LAMBERTIAN_HPP_
 
 #include "Material.hpp"
 
 namespace Materials {
-class Metal : virtual public Material {
+class Flat : virtual public Materials::Material {
   public:
-    Metal(const Math::Vector3D &albedo, double fuzz);
-    ~Metal();
+    Flat(const Math::Vector3D &albedo);
+    ~Flat();
+
     bool scatter(const RayTracer::Ray &r_in, Materials::Material &rec, Math::Vector3D &attenuation,
                  RayTracer::Ray &scattered) const;
 
   protected:
-    double _fuzz;
 };
 } // namespace Materials
 
-#endif /* !METAL_HPP_ */
+#endif /* !LAMBERTIAN_HPP_ */

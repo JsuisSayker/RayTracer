@@ -13,11 +13,11 @@ namespace RayTracer {
 class Cylinder : virtual public APrimitives {
   public:
     Cylinder(const Math::Point3D &center, double radius, double height,
-             std::shared_ptr<Material::Material> mat, const char axe = 'y');
-    Cylinder(const Math::Point3D &center, double radius, std::shared_ptr<Material::Material> mat,
+             std::shared_ptr<Materials::Material> mat, const char axe = 'y');
+    Cylinder(const Math::Point3D &center, double radius, std::shared_ptr<Materials::Material> mat,
              const char axe = 'y');
     ~Cylinder();
-    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Material::Material &rec) const;
+    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Materials::Material &rec) const;
 
   protected:
     double _height;

@@ -13,11 +13,11 @@ namespace RayTracer {
 class Cone : virtual public APrimitives {
   public:
     Cone(const Math::Point3D &center, double radius, double height, double angle,
-         std::shared_ptr<Material::Material> mat, const char axe = 'y');
+         std::shared_ptr<Materials::Material> mat, const char axe = 'y');
     Cone(const Math::Point3D &center, double radius, double angle,
-         std::shared_ptr<Material::Material> mat, const char axe = 'y');
+         std::shared_ptr<Materials::Material> mat, const char axe = 'y');
     ~Cone();
-    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Material::Material &rec) const;
+    bool hits(const RayTracer::Ray &ray, Math::Interval ray_t, Materials::Material &rec) const;
 
   protected:
     double _angle;

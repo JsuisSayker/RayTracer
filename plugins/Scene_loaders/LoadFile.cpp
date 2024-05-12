@@ -5,7 +5,7 @@
 ** LoadFile
 */
 
-#include "LoadFile.hpp"
+#include <LoadFile.hpp>
 #include <cstring>
 
 LoadFile::LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam)
@@ -36,7 +36,7 @@ LoadFile::LoadFile(std::string path, Scene &scene, RayTracer::Camera &cam)
         if (strcmp(element.getName(), "primitives") == 0)
             _actualBuilder = std::make_shared<SceneBuilder>(element, scene, cam);
     }
-    cam.render(scene);
+    cam.render_scene(scene);
 }
 
 LoadFile::~LoadFile() {}

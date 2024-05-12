@@ -8,7 +8,7 @@
 #include <Plane.hpp>
 #include <cstdio>
 
-RayTracer::Plane::Plane(const char axe, double position, std::shared_ptr<Material::Material> mat)
+RayTracer::Plane::Plane(const char axe, double position, std::shared_ptr<Materials::Material> mat)
 {
     this->_position = position;
     this->_axe = axe;
@@ -18,7 +18,7 @@ RayTracer::Plane::Plane(const char axe, double position, std::shared_ptr<Materia
 RayTracer::Plane::~Plane() {}
 
 bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                            Material::Material &rec) const
+                            Materials::Material &rec) const
 {
     double t;
     if (_axe == 'X' || _axe == 'x') {

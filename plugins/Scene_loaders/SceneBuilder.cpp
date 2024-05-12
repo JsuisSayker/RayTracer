@@ -13,7 +13,6 @@
 SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTracer::Camera &cam)
     : _scenesLists(list)
 {
-    // scene = std::make_shared<IScene>();
     std::string type;
     int index = 0;
     completeFile data;
@@ -43,7 +42,7 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTrac
                 list.lookupValue("type", type);
             }
             if (strcmp(_scenesLists[i].getName(), "fieldOfView") == 0) {
-                list.lookupValue("fieldOfView", cam._vfov);
+                list.lookupValue("fieldOfView", cam._fov);
             }
             if (strcmp(_scenesLists[i].getName(), "ambient") == 0) {
                 list.lookupValue("ambient", scene._ambient_light);
@@ -56,29 +55,22 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTrac
     }
 }
 
-std::shared_ptr<Material::Material>
+std::shared_ptr<Materials::Material>
 SceneBuilder::createMetalMaterial(UNUSED completeFile &data,
                                   UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
 {
     Math::Vector3D albedo = random_vector(0.5, 1);
     double fuzz = random_double(0, 0.5);
-    return std::make_shared<Material::Metal>(albedo, fuzz);
+    return std::make_shared<Materials::Metal>(albedo, fuzz);
 }
 
-std::shared_ptr<Material::Material> SceneBuilder::createLambertianMaterial(
+std::shared_ptr<Materials::Material> SceneBuilder::createDielectricMaterial(
     UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
 {
-    Math::Vector3D albedo = random_vector() * random_vector();
-    return std::make_shared<Material::Lambertian>(albedo);
+    return std::make_shared<Materials::Glass>(1.5);
 }
 
-std::shared_ptr<Material::Material> SceneBuilder::createDielectricMaterial(
-    UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
-{
-    return std::make_shared<Material::Dielectric>(1.5);
-}
-
-std::shared_ptr<Material::Material>
+std::shared_ptr<Materials::Material>
 SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject actualObject,
                                  int index)
 {
@@ -93,7 +85,7 @@ SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject 
                                 data._planeList[index].colorValues.g,
                                 data._planeList[index].colorValues.b);
     }
-    return std::make_shared<Material::Lambertian>(albedo);
+    return std::make_shared<Materials::Flat>(albedo);
 }
 
 void SceneBuilder::createCamera(completeFile &data, UNUSED int index, Scene &scene,
@@ -107,7 +99,7 @@ void SceneBuilder::createCamera(completeFile &data, UNUSED int index, Scene &sce
 void SceneBuilder::createSphere(completeFile &data, int index, Scene &scene,
                                 UNUSED RayTracer::Camera &cam)
 {
-    std::shared_ptr<Material::Material> actualMaterial = _material.at(
+    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
         data._spheresList[index].material)(data, SceneBuilder::ActualObject::SPHERE, index);
     std::shared_ptr<IPrimitives> sphere = std::make_shared<RayTracer::Sphere>(
         Math::Point3D((double)data._spheresList[index].position.x,
@@ -120,7 +112,7 @@ void SceneBuilder::createSphere(completeFile &data, int index, Scene &scene,
 void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene,
                                UNUSED RayTracer::Camera &cam)
 {
-    std::shared_ptr<Material::Material> actualMaterial = _material.at(
+    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
         data._planeList[index].material)(data, SceneBuilder::ActualObject::PLANE, index);
     std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>(
         data._planeList[index].axis[0], data._planeList[index].position, actualMaterial);
@@ -130,7 +122,11 @@ void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene,
 void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene,
                                UNUSED RayTracer::Camera &cam)
 {
-    // scene._ambient_light = data._lightList[index].ambient;
+    std::shared_ptr<Lights::DirectionalLight> directionalLights = std::make_shared<Lights::DirectionalLight>(
+        Math::Vector3D(data._lightList[index].directionalLights.x,
+                       data._lightList[index].directionalLights.y,
+                       data._lightList[index].directionalLights.z));
+    scene._directional_lights.push_back(directionalLights);
 }
 
 void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile &data) const
@@ -255,7 +251,7 @@ void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start,
 }
 
 void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile &data,
-                                 SceneBuilder::LightElement lightElement) const
+                                 SceneBuilder::LightElement &lightElement) const
 {
     if (strcmp(element.getName(), "point") == 0) {
         for (int i = 0; i < element.getLength(); i++) {
@@ -272,13 +268,29 @@ void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile
                     pointElement.lookupValue("z", lightElement.points.z);
                 }
             }
-            data._lightList.push_back(lightElement);
+        }
+    }
+    if (strcmp(element.getName(), "directional") == 0) {
+        for (int i = 0; i < element.getLength(); i++) {
+            const libconfig::Setting &pointElement = element[i];
+            for (int j = 0; j < pointElement.getLength(); j++) {
+                const libconfig::Setting &nestedPointElement = pointElement[j];
+                if (strcmp(nestedPointElement.getName(), "x") == 0) {
+                    pointElement.lookupValue("x", lightElement.directionalLights.x);
+                }
+                if (strcmp(nestedPointElement.getName(), "y") == 0) {
+                    pointElement.lookupValue("y", lightElement.directionalLights.y);
+                }
+                if (strcmp(nestedPointElement.getName(), "z") == 0) {
+                    pointElement.lookupValue("z", lightElement.directionalLights.z);
+                }
+            }
         }
     }
 }
 
 void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string type, int index,
-                                 completeFile &data, SceneBuilder::LightElement lightElement,
+                                 completeFile &data, SceneBuilder::LightElement &lightElement,
                                  Scene &scene, RayTracer::Camera &cam) const
 {
     if (type == "Camera") {
@@ -296,7 +308,11 @@ void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string 
     }
     if (type == "Lights") {
         saveLightData(element, data, lightElement);
-        buildObject(type, data, index, scene, cam);
+        if (strcmp(element.getName(), "directional") == 0) {
+            data._lightList.push_back(lightElement);
+            buildObject(type, data, index, scene, cam);
+
+        }
     }
 }
 

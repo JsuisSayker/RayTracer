@@ -50,6 +50,13 @@ Math::Vector3D Math::Vector3D::operator+=(const Math::Vector3D &v)
     return *this;
 }
 
+bool Math::Vector3D::operator!=(const Math::Vector3D &v) const
+{
+    if (x != v.x || y != v.y || z != v.z)
+        return true;
+    return false;
+}
+
 Math::Vector3D Math::Vector3D::operator-(const Math::Vector3D &v) const
 {
     return Math::Vector3D(x - v.x, y - v.y, z - v.z);

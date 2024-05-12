@@ -8,8 +8,8 @@
 #include <Camera.hpp>
 #include <Cone.hpp>
 #include <Cylinder.hpp>
-#include <Dielectric.hpp>
-#include <Lambertian.hpp>
+#include <Glass.hpp>
+#include <Flat.hpp>
 #include <LoadFile.hpp>
 #include <Material.hpp>
 #include <Metal.hpp>

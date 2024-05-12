@@ -8,8 +8,8 @@
 #ifndef SCENEBUILDER_HPP_
 #define SCENEBUILDER_HPP_
 
-#include "Dielectric.hpp"
-#include "Lambertian.hpp"
+#include "Glass.hpp"
+#include "Flat.hpp"
 #include "Material.hpp"
 #include "Metal.hpp"
 #include "Plane.hpp"
@@ -76,6 +76,7 @@ class SceneBuilder : virtual public ISceneBuilder {
         double ambient;
         double diffuse;
         coordinates points;
+        coordinates directionalLights;
     };
 
     std::shared_ptr<IScene> _scene;
@@ -102,15 +103,12 @@ class SceneBuilder : virtual public ISceneBuilder {
                                         std::placeholders::_2, std::placeholders::_3,
                                         std::placeholders::_4)}};
 
-    std::map<std::string, std::function<std::shared_ptr<Material::Material>(
+    std::map<std::string, std::function<std::shared_ptr<Materials::Material>(
                               completeFile &, SceneBuilder::ActualObject, int)>>
         _material = {
             {"Metal", std::bind(&SceneBuilder::createMetalMaterial, this, std::placeholders::_1,
                                 std::placeholders::_2, std::placeholders::_3)},
-            {"Lambertian",
-             std::bind(&SceneBuilder::createLambertianMaterial, this, std::placeholders::_1,
-                       std::placeholders::_2, std::placeholders::_3)},
-            {"Dielectric",
+            {"Glass",
              std::bind(&SceneBuilder::createDielectricMaterial, this, std::placeholders::_1,
                        std::placeholders::_2, std::placeholders::_3)},
             {"Flat", std::bind(&SceneBuilder::createFlatMaterial, this, std::placeholders::_1,
@@ -122,15 +120,15 @@ class SceneBuilder : virtual public ISceneBuilder {
 
     void buildObject(std::string type, completeFile data, int index, Scene &scene,
                      RayTracer::Camera &cam) const;
-    std::shared_ptr<Material::Material>
+    std::shared_ptr<Materials::Material>
     createMetalMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
-    std::shared_ptr<Material::Material>
+    std::shared_ptr<Materials::Material>
     createLambertianMaterial(completeFile &data, SceneBuilder::ActualObject actualObject,
                              int index);
-    std::shared_ptr<Material::Material>
+    std::shared_ptr<Materials::Material>
     createDielectricMaterial(completeFile &data, SceneBuilder::ActualObject actualObject,
                              int index);
-    std::shared_ptr<Material::Material>
+    std::shared_ptr<Materials::Material>
     createFlatMaterial(completeFile &data, SceneBuilder::ActualObject actualObject, int index);
 
     void createCamera(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
@@ -139,13 +137,13 @@ class SceneBuilder : virtual public ISceneBuilder {
     void createLight(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
 
     void saveSceneData(const libconfig::Setting &list, std::string type, int count,
-                       completeFile &data, SceneBuilder::LightElement lightElement, Scene &scene,
+                       completeFile &data, SceneBuilder::LightElement &lightElement, Scene &scene,
                        RayTracer::Camera &cam) const;
     void saveCameraData(const libconfig::Setting &list, completeFile &data) const;
     void saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const;
     void savePlaneData(const libconfig::Setting &element, int start, completeFile &data) const;
     void saveLightData(const libconfig::Setting &element, completeFile &data,
-                       SceneBuilder::LightElement lightElement) const;
+                       SceneBuilder::LightElement &lightElement) const;
     // std::shared_ptr<IScene> getScene();
 
   private:

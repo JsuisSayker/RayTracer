@@ -19,7 +19,6 @@ class IScene {
     virtual ~IScene() = default;
     virtual void addPrimitive(std::shared_ptr<IPrimitives> primitive) = 0;
     virtual void addCamera(std::shared_ptr<ICamera> camera) = 0;
-    virtual std::shared_ptr<ICamera> getCamera() = 0;
 
   protected:
   private:

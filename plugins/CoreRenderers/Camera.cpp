@@ -6,7 +6,7 @@
 */
 
 #include <Camera.hpp>
-#include <Lambertian.hpp>
+#include <Flat.hpp>
 
 RayTracer::Camera::Camera()
 {
@@ -29,11 +29,11 @@ void RayTracer::Camera::setLookFrom(double x, double y, double z)
     _lookat = Math::Point3D(0, 0, 0);
 }
 
-void RayTracer::Camera::setFov(double fov) { _vfov = fov; }
+void RayTracer::Camera::setFov(double fov) { _fov = fov; }
 
 void RayTracer::Camera::setDefaultValues()
 {
-    _samples_per_pixel = 5;
+    _samples_per_pixel = 100;
     _max_depth = 50;
     _vup = Math::Vector3D(0, 1, 0);
     _defocus_angle = 0.6;
@@ -69,30 +69,38 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
     out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
-Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
+Math::Vector3D light_color(const Scene &world, Materials::Flat &rec,
+                           const Math::Vector3D &ray_color_value)
+{
+    double coeff = 1.0;
+    if ((!world._directional_lights.empty()) &&
+        (world._directional_lights.front().get() != nullptr) &&
+        (world._directional_lights.front().get()->_direction != Math::Vector3D(0, 0, 0)))
+        coeff = world._directional_lights.front().get()->_direction.dot(rec.normal);
+    return ray_color_value * world._ambient_light * coeff;
+}
+
+Math::Vector3D get_ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 {
     if (depth <= 0)
         return Math::Vector3D(0, 0, 0);
-    Material::Lambertian rec(Math::Vector3D(0, 0, 0));
+    Materials::Flat rec(Math::Vector3D(0, 0, 0));
     if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
         RayTracer::Ray scattered;
         Math::Vector3D attenuation;
         if (rec.mat->scatter(r, rec, attenuation, scattered))
-            return attenuation * ray_color(scattered, depth - 1, world);
+            return light_color(world, rec,
+                               attenuation * get_ray_color(scattered, depth - 1, world));
         return Math::Vector3D(0.0, 0.0, 0.0);
     }
 
     Math::Vector3D unit_direction = unit_vector(r._direction);
     double a = 0.5 * (unit_direction.y + 1.0);
-    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) + Math::Vector3D(0.5, 0.7, 1.0) * a;
+    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) +
+           Math::Vector3D(0.5, 0.7, 1.0) * a * world._ambient_light;
 }
 
-Math::Vector3D light_color(const Scene &world, const Math::Vector3D &ray_color_value)
-{
-    return ray_color_value * world._ambient_light;
-}
-
-void RayTracer::Camera::render(const Scene &world)
+void RayTracer::Camera::render_scene(const Scene &world)
 {
     this->initialize();
 
@@ -104,7 +112,7 @@ void RayTracer::Camera::render(const Scene &world)
             Math::Vector3D pixel_color(0, 0, 0);
             for (int sample = 0; sample < _samples_per_pixel; sample++) {
                 RayTracer::Ray r = get_ray(x, y);
-                pixel_color += light_color(world, ray_color(r, _max_depth, world));
+                pixel_color += get_ray_color(r, _max_depth, world);
             }
             write_color(output_file, pixel_color * _pixel_samples_scale);
         }
@@ -122,7 +130,7 @@ void RayTracer::Camera::initialize()
 
     _origin = _lookfrom;
 
-    double theta = degrees_to_radians(_vfov);
+    double theta = degrees_to_radians(_fov);
     double h = tan(theta / 2);
     double viewport_height = 2 * h * _focus_dist;
     double viewport_width = viewport_height * (double(_image_width) / _image_height);
