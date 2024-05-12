@@ -20,7 +20,7 @@ static double reflectance(double cosine, double refraction_index)
 }
 
 bool Materials::Glass::scatter(const RayTracer::Ray &r_in, Materials::Material &rec,
-                                   Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
+                               Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
     attenuation = Math::Vector3D(1.0, 1.0, 1.0);
     double ri = rec.front_face ? (1.0 / _refraction_index) : _refraction_index;
