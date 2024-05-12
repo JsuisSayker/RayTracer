@@ -85,6 +85,11 @@ SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject 
                                 data._planeList[index].colorValues.g,
                                 data._planeList[index].colorValues.b);
     }
+    if (actualObject == SceneBuilder::ActualObject::CONE) {
+        albedo = Math::Vector3D(data._coneList[index].colorValues.r,
+                                data._coneList[index].colorValues.g,
+                                data._coneList[index].colorValues.b);
+    }
     return std::make_shared<Materials::Flat>(albedo);
 }
 
@@ -117,6 +122,28 @@ void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene,
     std::shared_ptr<IPrimitives> plane = std::make_shared<RayTracer::Plane>(
         data._planeList[index].axis[0], data._planeList[index].position, actualMaterial);
     scene.addPrimitive(plane);
+}
+
+void SceneBuilder::createCone(completeFile &data, int index, Scene &scene,
+                               UNUSED RayTracer::Camera &cam)
+{
+    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
+        data._coneList[index].material)(data, SceneBuilder::ActualObject::CONE, index);
+    if (data._coneList[index].height != -1.0) {
+        std::shared_ptr<IPrimitives> cone = std::make_shared<RayTracer::Cone>(
+            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y, data._coneList[index].center.z),
+            data._coneList[index].radius, data._coneList[index].height
+            ,data._coneList[index].angle
+            , actualMaterial, data._coneList[index].axis[0]);
+        scene.addPrimitive(cone);
+    } else {
+        std::shared_ptr<IPrimitives> cone = std::make_shared<RayTracer::Cone>(
+            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y, data._coneList[index].center.z),
+            data._coneList[index].radius,
+            data._coneList[index].angle,
+            actualMaterial, data._coneList[index].axis[0]);
+        scene.addPrimitive(cone);
+    }
 }
 
 void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene,
@@ -250,6 +277,62 @@ void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start,
     }
 }
 
+void SceneBuilder::saveConeData(const libconfig::Setting &element, int start,
+                                 completeFile &data) const
+{
+    SceneBuilder::ConeElement coneElement;
+    for (int i = start; i < element.getLength(); i++) {
+        const libconfig::Setting &coneElementInFile = element[i];
+        for (int j = 0; j < coneElementInFile.getLength(); j++) {
+            const libconfig::Setting &nestedConeElement = coneElementInFile[j];
+            if (strcmp(nestedConeElement.getName(), "axis") == 0) {
+                coneElementInFile.lookupValue("axis", coneElement.axis);
+            }
+            if (strcmp(nestedConeElement.getName(), "angle") == 0) {
+                coneElementInFile.lookupValue("angle", coneElement.angle);
+            }
+            if (strcmp(nestedConeElement.getName(), "radius") == 0) {
+                coneElementInFile.lookupValue("radius", coneElement.radius);
+            }
+            if (strcmp(nestedConeElement.getName(), "height") == 0) {
+                coneElementInFile.lookupValue("height", coneElement.height);
+            }
+            if (strcmp(nestedConeElement.getName(), "material") == 0) {
+                coneElementInFile.lookupValue("material", coneElement.material);
+            }
+            if (strcmp(nestedConeElement.getName(), "center") == 0) {
+                const libconfig::Setting &center = nestedConeElement;
+                for (int k = 0; k < center.getLength(); k++) {
+                    if (strcmp(center[k].getName(), "x") == 0) {
+                        nestedConeElement.lookupValue("x", coneElement.center.x);
+                    }
+                    if (strcmp(center[k].getName(), "y") == 0) {
+                        nestedConeElement.lookupValue("y", coneElement.center.y);
+                    }
+                    if (strcmp(center[k].getName(), "z") == 0) {
+                        nestedConeElement.lookupValue("z", coneElement.center.z);
+                    }
+                }
+            }
+            if (strcmp(nestedConeElement.getName(), "color") == 0) {
+                const libconfig::Setting &color = nestedConeElement;
+                for (int k = 0; k < color.getLength(); k++) {
+                    if (strcmp(color[k].getName(), "r") == 0) {
+                        nestedConeElement.lookupValue("r", coneElement.colorValues.r);
+                    }
+                    if (strcmp(color[k].getName(), "g") == 0) {
+                        nestedConeElement.lookupValue("g", coneElement.colorValues.g);
+                    }
+                    if (strcmp(color[k].getName(), "b") == 0) {
+                        nestedConeElement.lookupValue("b", coneElement.colorValues.b);
+                    }
+                }
+            }
+        }
+        data._coneList.push_back(coneElement);
+    }
+}
+
 void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile &data,
                                  SceneBuilder::LightElement &lightElement) const
 {
@@ -304,6 +387,10 @@ void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string 
     }
     if (type == "Plane") {
         savePlaneData(element, index, data);
+        buildObject(type, data, index, scene, cam);
+    }
+    if (type == "Cone") {
+        saveConeData(element, index, data);
         buildObject(type, data, index, scene, cam);
     }
     if (type == "Lights") {

@@ -15,6 +15,7 @@
 #include "Plane.hpp"
 #include "Scene.hpp"
 #include "Sphere.hpp"
+#include <Cone.hpp>
 #include <Camera.hpp>
 #include <Macros.hpp>
 #include <filesystem>
@@ -32,8 +33,8 @@ class SceneBuilder : virtual public ISceneBuilder {
         CAMERA,
         LIGHT,
         SPHERE,
-        PLANE,
-        DONE
+        CONE,
+        PLANE
     };
 
     struct coordinates {
@@ -72,6 +73,16 @@ class SceneBuilder : virtual public ISceneBuilder {
         color colorValues;
     };
 
+    struct ConeElement {
+        std::string axis;
+        double height = -1.0;
+        double radius;
+        double angle;
+        coordinates center;
+        std::string material;
+        color colorValues;
+    };
+
     struct LightElement {
         double ambient;
         double diffuse;
@@ -86,6 +97,7 @@ class SceneBuilder : virtual public ISceneBuilder {
     struct completeFile {
         std::vector<SphereElement> _spheresList;
         std::vector<PlaneElement> _planeList;
+        std::vector<ConeElement> _coneList;
         std::vector<LightElement> _lightList;
         CameraElement _camera;
     };
@@ -101,7 +113,8 @@ class SceneBuilder : virtual public ISceneBuilder {
                               std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
                    {"Lights", std::bind(&SceneBuilder::createLight, this, std::placeholders::_1,
                                         std::placeholders::_2, std::placeholders::_3,
-                                        std::placeholders::_4)}};
+                                        std::placeholders::_4)},
+                    {"Cone", std::bind(&SceneBuilder::createCone, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)}};
 
     std::map<std::string, std::function<std::shared_ptr<Materials::Material>(
                               completeFile &, SceneBuilder::ActualObject, int)>>
@@ -134,6 +147,7 @@ class SceneBuilder : virtual public ISceneBuilder {
     void createCamera(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createSphere(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createPlane(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+    void createCone(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createLight(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
 
     void saveSceneData(const libconfig::Setting &list, std::string type, int count,
@@ -142,6 +156,7 @@ class SceneBuilder : virtual public ISceneBuilder {
     void saveCameraData(const libconfig::Setting &list, completeFile &data) const;
     void saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const;
     void savePlaneData(const libconfig::Setting &element, int start, completeFile &data) const;
+    void saveConeData(const libconfig::Setting &element, int start, completeFile &data) const;
     void saveLightData(const libconfig::Setting &element, completeFile &data,
                        SceneBuilder::LightElement &lightElement) const;
     // std::shared_ptr<IScene> getScene();
