@@ -7,9 +7,9 @@
 
 #include <Glass.hpp>
 
-Material::Glass::Glass(double refraction_index) : _refraction_index(refraction_index) {}
+Materials::Glass::Glass(double refraction_index) : _refraction_index(refraction_index) {}
 
-Material::Glass::~Glass() {}
+Materials::Glass::~Glass() {}
 
 static double reflectance(double cosine, double refraction_index)
 {
@@ -19,7 +19,7 @@ static double reflectance(double cosine, double refraction_index)
     return r0 + (1 - r0) * pow((1 - cosine), 5);
 }
 
-bool Material::Glass::scatter(const RayTracer::Ray &r_in, Material &rec,
+bool Materials::Glass::scatter(const RayTracer::Ray &r_in, Materials::Material &rec,
                                    Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
     attenuation = Math::Vector3D(1.0, 1.0, 1.0);

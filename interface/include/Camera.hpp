@@ -27,7 +27,7 @@ class Camera {
     int _samples_per_pixel = 10;
     int _max_depth = 10;
 
-    double _vfov = 90;
+    double _fov = 90;
     Math::Point3D _lookfrom = Math::Point3D(0, 0, 0);
     Math::Point3D _lookat = Math::Point3D(0, 0, -1);
     Math::Vector3D _vup = Math::Vector3D(0, 1, 0);
@@ -38,7 +38,7 @@ class Camera {
     Camera();
     ~Camera();
 
-    void render(const Scene &world);
+    void render_scene(const Scene &world);
     void initialize();
     RayTracer::Ray get_ray(int i, int j) const;
     Math::Vector3D sample_square() const;

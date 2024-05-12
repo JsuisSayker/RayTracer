@@ -11,7 +11,7 @@
 #include <memory>
 
 RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius,
-                          std::shared_ptr<Material::Material> mat)
+                          std::shared_ptr<Materials::Material> mat)
     : _radius(fmax(0, radius)), _is_moving(false)
 {
     _center = center;
@@ -19,7 +19,7 @@ RayTracer::Sphere::Sphere(const Math::Point3D &center, double radius,
 }
 
 RayTracer::Sphere::Sphere(const Math::Point3D &center1, const Math::Point3D &center2, double radius,
-                          std::shared_ptr<Material::Material> mat)
+                          std::shared_ptr<Materials::Material> mat)
     : _radius(fmax(0, radius)), _is_moving(true)
 {
     _center = center1;
@@ -30,7 +30,7 @@ RayTracer::Sphere::Sphere(const Math::Point3D &center1, const Math::Point3D &cen
 RayTracer::Sphere::~Sphere() {}
 
 bool RayTracer::Sphere::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                             Material::Material &rec) const
+                             Materials::Material &rec) const
 {
     Math::Point3D center = _is_moving ? sphere_center(ray.time()) : _center;
     Math::Vector3D oc = center - ray._origin;
@@ -74,7 +74,7 @@ Math::Point3D RayTracer::Sphere::sphere_center(double time) const
 
 extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
 {
-    std::shared_ptr<Material::Material> material_ground =
-        std::make_shared<Material::Flat>(Math::Vector3D(0.8, 0.8, 0.0));
+    std::shared_ptr<Materials::Material> material_ground =
+        std::make_shared<Materials::Flat>(Math::Vector3D(0.8, 0.8, 0.0));
     return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1, material_ground);
 }

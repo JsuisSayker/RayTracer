@@ -7,15 +7,15 @@
 
 #include <Metal.hpp>
 
-Material::Metal::Metal(const Math::Vector3D &albedo, double fuzz)
-    : Material::Material(), _fuzz(fuzz < 1 ? fuzz : 1)
+Materials::Metal::Metal(const Math::Vector3D &albedo, double fuzz)
+    : Materials::Material(), _fuzz(fuzz < 1 ? fuzz : 1)
 {
     _albedo = albedo;
 }
 
-Material::Metal::~Metal() {}
+Materials::Metal::~Metal() {}
 
-bool Material::Metal::scatter(const RayTracer::Ray &r_in, Material &rec,
+bool Materials::Metal::scatter(const RayTracer::Ray &r_in, Materials::Material &rec,
                               Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
     Math::Vector3D reflected = reflect(r_in._direction, rec.normal);

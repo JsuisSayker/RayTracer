@@ -13,11 +13,11 @@
 #include <Ray.hpp>
 #include <Vector3D.hpp>
 
-namespace Material {
+namespace Materials {
 class Material {
   public:
-    Material(){};
-    virtual ~Material() = default;
+    Material();
+    virtual ~Material();
 
     virtual bool scatter(const RayTracer::Ray &r_in, Material &rec, Math::Vector3D &attenuation,
                          RayTracer::Ray &scattered) const = 0;
@@ -38,6 +38,6 @@ class Material {
   protected:
     Math::Vector3D _albedo;
 };
-} // namespace Material
+} // namespace Materials
 
 #endif /* !MATERIAL_HPP_ */

@@ -8,7 +8,7 @@
 #include <Cone.hpp>
 
 RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double height, double angle,
-                      std::shared_ptr<Material::Material> mat, const char axe)
+                      std::shared_ptr<Materials::Material> mat, const char axe)
     : _radius(fmax(0, radius))
 {
     _angle = angle;
@@ -20,7 +20,7 @@ RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double height,
 }
 
 RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double angle,
-                      std::shared_ptr<Material::Material> mat, const char axe)
+                      std::shared_ptr<Materials::Material> mat, const char axe)
     : _radius(fmax(0, radius))
 {
     _angle = angle;
@@ -34,7 +34,7 @@ RayTracer::Cone::Cone(const Math::Point3D &center, double radius, double angle,
 RayTracer::Cone::~Cone() {}
 
 bool RayTracer::Cone::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                           Material::Material &rec) const
+                           Materials::Material &rec) const
 {
     double a, b, c, discriminant, t, t0, t1;
     Math::Vector3D oc = ray._origin - _center;

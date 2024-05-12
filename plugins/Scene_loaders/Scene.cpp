@@ -19,9 +19,9 @@ void Scene::addPrimitive(std::shared_ptr<IPrimitives> primitive)
 
 void Scene::addCamera(std::shared_ptr<ICamera> camera) { _camera.push_back(camera); }
 
-bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t, Material::Material &rec) const
+bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t, Materials::Material &rec) const
 {
-    Material::Flat temp_rec(Math::Vector3D(0, 0, 0));
+    Materials::Flat temp_rec(Math::Vector3D(0, 0, 0));
     bool hit_anything = false;
     double closest_so_far = ray_t._max;
 

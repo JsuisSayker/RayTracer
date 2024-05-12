@@ -10,17 +10,17 @@
 
 #include "Material.hpp"
 
-namespace Material {
-class Flat : virtual public Material::Material {
+namespace Materials {
+class Flat : virtual public Materials::Material {
   public:
     Flat(const Math::Vector3D &albedo);
     ~Flat();
 
-    bool scatter(const RayTracer::Ray &r_in, Material &rec, Math::Vector3D &attenuation,
+    bool scatter(const RayTracer::Ray &r_in, Materials::Material &rec, Math::Vector3D &attenuation,
                  RayTracer::Ray &scattered) const;
 
   protected:
 };
-} // namespace Material
+} // namespace Materials
 
 #endif /* !LAMBERTIAN_HPP_ */

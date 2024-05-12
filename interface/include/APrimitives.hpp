@@ -17,7 +17,7 @@ class APrimitives : virtual public IPrimitives {
     ~APrimitives();
 
     virtual bool hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                      Material::Material &rec) const = 0;
+                      Materials::Material &rec) const = 0;
 
     void translate(const Math::Vector3D &translation);
     void rotate(double x, double y, double z);
@@ -25,7 +25,7 @@ class APrimitives : virtual public IPrimitives {
   protected:
     Math::Point3D _center;
     Math::Vector3D *_rotation;
-    std::shared_ptr<Material::Material> _material; // Fixed: Added template parameter to shared_ptr
+    std::shared_ptr<Materials::Material> _material; // Fixed: Added template parameter to shared_ptr
 };
 } // namespace RayTracer
 

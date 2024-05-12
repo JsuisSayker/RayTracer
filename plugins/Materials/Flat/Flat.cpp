@@ -7,10 +7,10 @@
 
 #include <Flat.hpp>
 
-Material::Flat::Flat(const Math::Vector3D &albedo) { this->_albedo = albedo; }
-Material::Flat::~Flat() {}
+Materials::Flat::Flat(const Math::Vector3D &albedo) { this->_albedo = albedo; }
+Materials::Flat::~Flat() {}
 
-bool Material::Flat::scatter(const RayTracer::Ray &r_in, Material &rec,
+bool Materials::Flat::scatter(const RayTracer::Ray &r_in, Materials::Material &rec,
                                    Math::Vector3D &attenuation, RayTracer::Ray &scattered) const
 {
     Math::Vector3D scatter_direction = rec.normal + random_unit_vector();
