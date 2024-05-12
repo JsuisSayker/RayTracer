@@ -25,8 +25,8 @@ void RayTracer::Camera::setResolution(int width, int height)
 
 void RayTracer::Camera::setLookFrom(double x, double y, double z)
 {
-  _lookfrom = Math::Point3D(x, y, z);
-  _lookat = Math::Point3D(0, 0, 0);
+    _lookfrom = Math::Point3D(x, y, z);
+    _lookat = Math::Point3D(0, 0, 0);
 }
 
 void RayTracer::Camera::setFov(double fov) { _vfov = fov; }

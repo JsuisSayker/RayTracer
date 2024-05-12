@@ -29,9 +29,9 @@ RayTracer::Raytracer::~Raytracer() {}
 
 int RayTracer::Raytracer::run(std::string scene_file)
 {
-  Scene world;
-  RayTracer::Camera cam;
+    Scene world;
+    RayTracer::Camera cam;
 
-  LoadFile loader(scene_file, world, cam);
-  return OK;
+    LoadFile loader(scene_file, world, cam);
+    return OK;
 }
