@@ -45,7 +45,8 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
     out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
-Math::Vector3D light_color(const Scene &world, Material::Lambertian &rec, const Math::Vector3D &ray_color_value)
+Math::Vector3D light_color(const Scene &world, Material::Lambertian &rec,
+                           const Math::Vector3D &ray_color_value)
 {
     Math::Vector3D directional_light = world._directional_lights.front().get()->_direction;
     double coeff = directional_light.dot(rec.normal);
@@ -67,7 +68,8 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 
     Math::Vector3D unit_direction = unit_vector(r._direction);
     double a = 0.5 * (unit_direction.y + 1.0);
-    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) + Math::Vector3D(0.5, 0.7, 1.0) * a * world._ambient_light;
+    return Math::Vector3D(1.0, 1.0, 1.0) * (1.0 - a) +
+           Math::Vector3D(0.5, 0.7, 1.0) * a * world._ambient_light;
 }
 
 void RayTracer::Camera::render(const Scene &world)
