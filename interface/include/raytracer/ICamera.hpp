@@ -17,8 +17,8 @@ public:
   virtual void setFov(double fov) = 0;
   virtual void setDefaultValues() = 0;
 
-protected:
-private:
+  protected:
+  private:
 };
 
 #endif /* !ICAMERA_HPP_ */

@@ -28,11 +28,11 @@ public:
   bool hits(const RayTracer::Ray &r, Math::Interval ray_t,
             Material::Material &rec) const;
 
-protected:
-  std::vector<std::shared_ptr<ICamera>> _camera;
-  std::vector<std::shared_ptr<IPrimitives>> _primitives;
+    double _ambient_light;
 
-private:
+  protected:
+    std::vector<std::shared_ptr<ICamera>> _camera;
+    std::vector<std::shared_ptr<IPrimitives>> _primitives;
 };
 
 #endif /* !SCENE_HPP_ */

@@ -1,5 +1,6 @@
 name: ci
 run-name: ${{github.actor}} verifying my code
+
 on:
   push:
     branches-ignore:
@@ -7,17 +8,40 @@ on:
   pull_request:
     branches-ignore:
       - " ga-ignore-"
+
 jobs:
+  auto_format:
+    # Check if the PR is not from a fork
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
+    if: github.repository == 'JsuisSayker/RayTracer'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - name: clang-format
+        run: ./format.sh
+      - name: Check for modified files
+        id: git-check
+        run: echo "modified=$(if git diff-index --quiet HEAD --; then echo "false"; else echo "true"; fi)" >> $GITHUB_OUTPUT
+      - name: Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        if: steps.git-check.outputs.modified == 'true'
+        with:
+          commit_message: Automated Change
+
   check_program_compilation:
     runs-on: ubuntu-latest
     timeout-minutes: 2
+    needs: auto_format
     container: epitechcontent/epitest-docker:latest
     steps:
-
       - name: Checkout GH repository
         uses: actions/checkout@master
         with:
-          repository: ''
+          repository: ""
 
       - name: Compile repository
         run: cmake -S . -B build
@@ -58,12 +82,11 @@ jobs:
     needs: check_program_compilation
     if: github.event_name == 'push'
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
-          target_repo_url:
-            ${{ vars.MIRROR_URL }}
-          ssh_private_key:                              # <-- use 'secrets' to pass credential information.
+          target_repo_url: ${{ vars.MIRROR_URL }}
+          ssh_private_key: # <-- use 'secrets' to pass credential information.
             ${{ secrets.GIT_SSH_PRIVATE_KEY }}

@@ -13,8 +13,8 @@ class ILoadFile {
         ILoadFile(){};
         virtual ~ILoadFile() = default;
 
-    protected:
-    private:
+  protected:
+  private:
 };
 
 #endif /* !ILOADFILE_HPP_ */

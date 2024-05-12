@@ -8,7 +8,7 @@
 #include "Scene.hpp"
 #include "Lambertian.hpp"
 
-Scene::Scene() {}
+Scene::Scene() { _ambient_light = 0.0; }
 
 Scene::~Scene() {}
 
@@ -33,15 +33,13 @@ bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t,
   bool hit_anything = false;
   double closest_so_far = ray_t._max;
 
-  for (const std::shared_ptr<IPrimitives> &primitive : _primitives) {
-    RayTracer::Sphere *temp_sphere =
-        dynamic_cast<RayTracer::Sphere *>(primitive.get());
-    if (primitive->hits(r, Math::Interval(ray_t._min, closest_so_far),
-                        temp_rec)) {
-      hit_anything = true;
-      closest_so_far = temp_rec.t;
-      rec = temp_rec;
+    for (const std::shared_ptr<IPrimitives> &primitive : _primitives) {
+        RayTracer::Sphere *temp_sphere = dynamic_cast<RayTracer::Sphere *>(primitive.get());
+        if (primitive->hits(r, Math::Interval(ray_t._min, closest_so_far), temp_rec)) {
+            hit_anything = true;
+            closest_so_far = temp_rec.t;
+            rec = temp_rec;
+        }
     }
-  }
-  return hit_anything;
+    return hit_anything;
 }

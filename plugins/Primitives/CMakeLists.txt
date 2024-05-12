@@ -9,3 +9,4 @@ target_link_libraries(raytracer_primitives
 add_subdirectory(Sphere)
 add_subdirectory(Plane)
 add_subdirectory(Cylinder)
+add_subdirectory(Cone)

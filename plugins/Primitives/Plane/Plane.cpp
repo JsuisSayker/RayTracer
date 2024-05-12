@@ -10,37 +10,41 @@
 
 RayTracer::Plane::Plane(const char axe, double position, std::shared_ptr<Material::Material> mat)
 {
-  this->position = position;
-  this->axe = axe;
+    this->_position = position;
+    this->_axe = axe;
+    this->_material = mat;
 }
 
 RayTracer::Plane::~Plane() {}
 
 bool RayTracer::Plane::hits(const RayTracer::Ray &ray, Math::Interval ray_t,
-                            Material::Material &rec) const {
-  if (axe == 'X' || axe == 'x') {
-    if (ray._direction.x == 0)
-      return -1;
-    double t = (position - ray._origin._x) / ray._direction.x;
-    if (t < 0)
-      return -1;
-    return t;
-  }
-  if (axe == 'Y' || axe == 'y') {
-    if (ray._direction.y == 0)
-      return -1;
-    double t = (position - ray._origin._y) / ray._direction.y;
-    if (t < 0)
-      return -1;
-    return t;
-  }
-  if (axe == 'Z' || axe == 'z') {
-    if (ray._direction.z == 0)
-      return -1;
-    double t = (position - ray._origin._z) / ray._direction.z;
-    if (t < 0)
-      return -1;
-    return t;
-  }
-  return -1;
+                            Material::Material &rec) const
+{
+    double t;
+    if (_axe == 'X' || _axe == 'x') {
+        if (ray._direction.x == 0)
+            return false;
+        t = (_position - ray._origin._x) / ray._direction.x;
+        if (t < 0)
+            return false;
+    }
+    if (_axe == 'Y' || _axe == 'y') {
+        if (ray._direction.y == 0)
+            return false;
+        t = (_position - ray._origin._y) / ray._direction.y;
+        if (t < 0)
+            return false;
+    }
+    if (_axe == 'Z' || _axe == 'z') {
+        if (ray._direction.z == 0)
+            return false;
+        t = (_position - ray._origin._z) / ray._direction.z;
+        if (t < 0)
+            return false;
+    }
+    rec.t = t;
+    rec.p = ray.at(rec.t);
+    rec.mat = _material;
+    return true;
+    return true;
 }

@@ -14,12 +14,9 @@
 #include <memory>
 
 class PrimitivesRecord {
-public:
-  PrimitivesRecord(){};
-  ~PrimitivesRecord(){};
-  
-
-
+  public:
+    PrimitivesRecord(){};
+    ~PrimitivesRecord(){};
 };
 
 #endif /* !PRIMITIVESRECORD_HPP_ */

@@ -13,8 +13,8 @@ class ISceneBuilder {
         ISceneBuilder(){};
         virtual ~ISceneBuilder() = default;
 
-    protected:
-    private:
+  protected:
+  private:
 };
 
 #endif /* !ISCENEBUILDER_HPP_ */

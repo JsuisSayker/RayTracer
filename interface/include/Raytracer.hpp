@@ -12,10 +12,10 @@
 
 namespace RayTracer {
 class Raytracer {
-public:
-  Raytracer();
-  ~Raytracer();
-  int run(std::string scene_file);
+  public:
+    Raytracer();
+    ~Raytracer();
+    int run(std::string scene_file);
 };
 } // namespace RayTracer
 

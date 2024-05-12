@@ -6,6 +6,7 @@
 */
 
 #include <Camera.hpp>
+#include <Cone.hpp>
 #include <Cylinder.hpp>
 #include <LoadFile.hpp>
 #include <Dielectric.hpp>
