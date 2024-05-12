@@ -42,10 +42,10 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTrac
                 list.lookupValue("type", type);
             }
             if (strcmp(_scenesLists[i].getName(), "fieldOfView") == 0) {
-                list.lookupValue("fieldOfView", data._camera.fov);
+                list.lookupValue("fieldOfView", cam._vfov);
             }
             if (strcmp(_scenesLists[i].getName(), "ambient") == 0) {
-                list.lookupValue("ambient", lightElement.ambient);
+                list.lookupValue("ambient", scene._ambient_light);
             }
             if (strcmp(_scenesLists[i].getName(), "diffuse") == 0) {
                 list.lookupValue("diffuse", lightElement.diffuse);
@@ -53,8 +53,6 @@ SceneBuilder::SceneBuilder(const libconfig::Setting &list, Scene &scene, RayTrac
             saveSceneData(_scenesLists[i], type, index, data, lightElement, scene, cam);
         }
     }
-    std::cout << "at the end" << std::endl;
-    // cam.render(scene);
 }
 
 std::shared_ptr<Material::Material> SceneBuilder::createMetalMaterial(UNUSED completeFile &data, UNUSED SceneBuilder::ActualObject actualObject, UNUSED int index)
@@ -93,13 +91,9 @@ std::shared_ptr<Material::Material> SceneBuilder::createFlatMaterial(completeFil
 
 void SceneBuilder::createCamera(completeFile &data, UNUSED int index, Scene &scene, RayTracer::Camera &cam)
 {
-    // std::shared_ptr<ICamera> camera = std::make_shared<RayTracer::Camera>();
     cam.setResolution(data._camera.width, data._camera.height);
     cam.setLookFrom(data._camera.position.x, data._camera.position.y, data._camera.position.z);
-    cam.setFov(data._camera.fov);
     cam.setDefaultValues();
-    // scene.addCamera(cam);
-    std::cout << "MAGNIFIQUE" << std::endl;
 }
 
 void SceneBuilder::createSphere(completeFile &data, int index, Scene &scene, UNUSED RayTracer::Camera &cam)
@@ -112,7 +106,6 @@ void SceneBuilder::createSphere(completeFile &data, int index, Scene &scene, UNU
         (double)data._spheresList[index].position.z),
         data._spheresList[index].radius, actualMaterial);
     scene.addPrimitive(sphere);
-    std::cout << "BOUILLANT" << std::endl;
 }
 
 void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene, UNUSED RayTracer::Camera &cam)
@@ -123,19 +116,11 @@ void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene, UNUS
         data._planeList[index].axis[0], data._planeList[index].position, actualMaterial
     );
     scene.addPrimitive(plane);
-    std::cout << "LEGENDAIRE" << std::endl;
 }
 
-void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene, UNUSED RayTracer::Camera &cam)
+void SceneBuilder::createLight(completeFile &data, int index, Scene &scene, UNUSED RayTracer::Camera &cam)
 {
-    // std::shared_ptr<ILight> light = std::make_shared<RayTracer::Light>(
-    //     data._lightList[index].ambient, data._lightList[index].diffuse,
-    //     Math::Point3D(data._lightList[index].points.x,
-    //         data._lightList[index].points.y,
-    //         data._lightList[index].points.z)
-    // );
-    // scene->addLight(light);
-    std::cout << "MYTHIQUE" << std::endl;
+    // scene._ambient_light = data._lightList[index].ambient;
 }
 
 void SceneBuilder::saveCameraData(const libconfig::Setting &element, completeFile &data) const
@@ -307,11 +292,6 @@ void SceneBuilder::buildObject(std::string type, completeFile data, int index, S
     _object.at(type)(data, index, scene, cam);
 }
 
-
-// std::shared_ptr<IScene> SceneBuilder::getScene()
-// {
-//     return scene;
-// }
 
 
 SceneBuilder::~SceneBuilder()
