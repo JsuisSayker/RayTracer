@@ -17,6 +17,7 @@
 #include "Sphere.hpp"
 #include <Camera.hpp>
 #include <Cone.hpp>
+#include <Cylinder.hpp>
 #include <Macros.hpp>
 #include <filesystem>
 #include <functional>
@@ -34,6 +35,7 @@ class SceneBuilder : virtual public ISceneBuilder {
         LIGHT,
         SPHERE,
         CONE,
+        CYLINDER,
         PLANE
     };
 
@@ -83,6 +85,15 @@ class SceneBuilder : virtual public ISceneBuilder {
         color colorValues;
     };
 
+    struct CylinderElement {
+        std::string axis;
+        double height = -1.0;
+        double radius;
+        coordinates center;
+        std::string material;
+        color colorValues;
+    };
+
     struct LightElement {
         double ambient;
         double diffuse;
@@ -98,6 +109,7 @@ class SceneBuilder : virtual public ISceneBuilder {
         std::vector<SphereElement> _spheresList;
         std::vector<PlaneElement> _planeList;
         std::vector<ConeElement> _coneList;
+        std::vector<CylinderElement> _cylinderList;
         std::vector<LightElement> _lightList;
         CameraElement _camera;
     };
@@ -114,9 +126,12 @@ class SceneBuilder : virtual public ISceneBuilder {
                    {"Lights",
                     std::bind(&SceneBuilder::createLight, this, std::placeholders::_1,
                               std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
-                   {"Cone", std::bind(&SceneBuilder::createCone, this, std::placeholders::_1,
-                                      std::placeholders::_2, std::placeholders::_3,
-                                      std::placeholders::_4)}};
+                   {"Cone",
+                    std::bind(&SceneBuilder::createCone, this, std::placeholders::_1,
+                              std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+                   {"Cylinder", std::bind(&SceneBuilder::createCylinder, this,
+                                          std::placeholders::_1, std::placeholders::_2,
+                                          std::placeholders::_3, std::placeholders::_4)}};
 
     std::map<std::string, std::function<std::shared_ptr<Materials::Material>(
                               completeFile &, SceneBuilder::ActualObject, int)>>
@@ -150,6 +165,7 @@ class SceneBuilder : virtual public ISceneBuilder {
     void createSphere(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createPlane(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createCone(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
+    void createCylinder(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
     void createLight(completeFile &data, int index, Scene &scene, RayTracer::Camera &cam);
 
     void saveSceneData(const libconfig::Setting &list, std::string type, int count,
@@ -159,6 +175,7 @@ class SceneBuilder : virtual public ISceneBuilder {
     void saveSphereData(const libconfig::Setting &element, int start, completeFile &data) const;
     void savePlaneData(const libconfig::Setting &element, int start, completeFile &data) const;
     void saveConeData(const libconfig::Setting &element, int start, completeFile &data) const;
+    void saveCylinderData(const libconfig::Setting &element, int start, completeFile &data) const;
     void saveLightData(const libconfig::Setting &element, completeFile &data,
                        SceneBuilder::LightElement &lightElement) const;
     // std::shared_ptr<IScene> getScene();

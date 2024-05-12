@@ -146,6 +146,27 @@ void SceneBuilder::createCone(completeFile &data, int index, Scene &scene,
     }
 }
 
+void SceneBuilder::createCylinder(completeFile &data, int index, Scene &scene,
+                                  UNUSED RayTracer::Camera &cam)
+{
+    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
+        data._cylinderList[index].material)(data, SceneBuilder::ActualObject::CYLINDER, index);
+    if (data._cylinderList[index].height != -1.0) {
+        std::shared_ptr<IPrimitives> cylinder = std::make_shared<RayTracer::Cylinder>(
+            Math::Point3D(data._cylinderList[index].center.x, data._cylinderList[index].center.y,
+                          data._cylinderList[index].center.z),
+            data._cylinderList[index].radius, data._cylinderList[index].height, actualMaterial,
+            data._cylinderList[index].axis[0]);
+        scene.addPrimitive(cylinder);
+    } else {
+        std::shared_ptr<IPrimitives> cylinder = std::make_shared<RayTracer::Cylinder>(
+            Math::Point3D(data._cylinderList[index].center.x, data._cylinderList[index].center.y,
+                          data._cylinderList[index].center.z),
+            data._cylinderList[index].radius, actualMaterial, data._cylinderList[index].axis[0]);
+        scene.addPrimitive(cylinder);
+    }
+}
+
 void SceneBuilder::createLight(completeFile &data, int index, UNUSED Scene &scene,
                                UNUSED RayTracer::Camera &cam)
 {
@@ -333,6 +354,59 @@ void SceneBuilder::saveConeData(const libconfig::Setting &element, int start,
     }
 }
 
+void SceneBuilder::saveCylinderData(const libconfig::Setting &element, int start,
+                                    completeFile &data) const
+{
+    SceneBuilder::CylinderElement cylinderElement;
+    for (int i = start; i < element.getLength(); i++) {
+        const libconfig::Setting &cylinderElementInFile = element[i];
+        for (int j = 0; j < cylinderElementInFile.getLength(); j++) {
+            const libconfig::Setting &nestedcylinderElement = cylinderElementInFile[j];
+            if (strcmp(nestedcylinderElement.getName(), "axis") == 0) {
+                cylinderElementInFile.lookupValue("axis", cylinderElement.axis);
+            }
+            if (strcmp(nestedcylinderElement.getName(), "radius") == 0) {
+                cylinderElementInFile.lookupValue("radius", cylinderElement.radius);
+            }
+            if (strcmp(nestedcylinderElement.getName(), "height") == 0) {
+                cylinderElementInFile.lookupValue("height", cylinderElement.height);
+            }
+            if (strcmp(nestedcylinderElement.getName(), "material") == 0) {
+                cylinderElementInFile.lookupValue("material", cylinderElement.material);
+            }
+            if (strcmp(nestedcylinderElement.getName(), "center") == 0) {
+                const libconfig::Setting &center = nestedcylinderElement;
+                for (int k = 0; k < center.getLength(); k++) {
+                    if (strcmp(center[k].getName(), "x") == 0) {
+                        nestedcylinderElement.lookupValue("x", cylinderElement.center.x);
+                    }
+                    if (strcmp(center[k].getName(), "y") == 0) {
+                        nestedcylinderElement.lookupValue("y", cylinderElement.center.y);
+                    }
+                    if (strcmp(center[k].getName(), "z") == 0) {
+                        nestedcylinderElement.lookupValue("z", cylinderElement.center.z);
+                    }
+                }
+            }
+            if (strcmp(nestedcylinderElement.getName(), "color") == 0) {
+                const libconfig::Setting &color = nestedcylinderElement;
+                for (int k = 0; k < color.getLength(); k++) {
+                    if (strcmp(color[k].getName(), "r") == 0) {
+                        nestedcylinderElement.lookupValue("r", cylinderElement.colorValues.r);
+                    }
+                    if (strcmp(color[k].getName(), "g") == 0) {
+                        nestedcylinderElement.lookupValue("g", cylinderElement.colorValues.g);
+                    }
+                    if (strcmp(color[k].getName(), "b") == 0) {
+                        nestedcylinderElement.lookupValue("b", cylinderElement.colorValues.b);
+                    }
+                }
+            }
+        }
+        data._cylinderList.push_back(cylinderElement);
+    }
+}
+
 void SceneBuilder::saveLightData(const libconfig::Setting &element, completeFile &data,
                                  SceneBuilder::LightElement &lightElement) const
 {
@@ -391,6 +465,10 @@ void SceneBuilder::saveSceneData(const libconfig::Setting &element, std::string 
     }
     if (type == "Cone") {
         saveConeData(element, index, data);
+        buildObject(type, data, index, scene, cam);
+    }
+    if (type == "Cylinder") {
+        saveCylinderData(element, index, data);
         buildObject(type, data, index, scene, cam);
     }
     if (type == "Lights") {
