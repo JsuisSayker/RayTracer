@@ -9,9 +9,9 @@
 #define ILOADFILE_HPP_
 
 class ILoadFile {
-    public:
-        ILoadFile(){};
-        virtual ~ILoadFile() = default;
+  public:
+    ILoadFile(){};
+    virtual ~ILoadFile() = default;
 
   protected:
   private:

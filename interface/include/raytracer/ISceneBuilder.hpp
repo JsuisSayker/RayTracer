@@ -9,9 +9,9 @@
 #define ISCENEBUILDER_HPP_
 
 class ISceneBuilder {
-    public:
-        ISceneBuilder(){};
-        virtual ~ISceneBuilder() = default;
+  public:
+    ISceneBuilder(){};
+    virtual ~ISceneBuilder() = default;
 
   protected:
   private:
