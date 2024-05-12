@@ -6,7 +6,7 @@
 */
 
 #include "Scene.hpp"
-#include "Lambertian.hpp"
+#include "Flat.hpp"
 
 Scene::Scene() { _ambient_light = 0.0; }
 
@@ -21,7 +21,7 @@ void Scene::addCamera(std::shared_ptr<ICamera> camera) { _camera.push_back(camer
 
 bool Scene::hits(const RayTracer::Ray &r, Math::Interval ray_t, Material::Material &rec) const
 {
-    Material::Lambertian temp_rec(Math::Vector3D(0, 0, 0));
+    Material::Flat temp_rec(Math::Vector3D(0, 0, 0));
     bool hit_anything = false;
     double closest_so_far = ray_t._max;
 

@@ -6,7 +6,7 @@
 */
 
 #include <Camera.hpp>
-#include <Lambertian.hpp>
+#include <Flat.hpp>
 
 RayTracer::Camera::Camera()
 {
@@ -45,7 +45,7 @@ void write_color(std::ostream &out, const Math::Vector3D &color)
     out << rbyte << ' ' << gbyte << ' ' << bbyte << '\n';
 }
 
-Math::Vector3D light_color(const Scene &world, Material::Lambertian &rec, const Math::Vector3D &ray_color_value)
+Math::Vector3D light_color(const Scene &world, Material::Flat &rec, const Math::Vector3D &ray_color_value)
 {
     Math::Vector3D directional_light = world._directional_lights.front().get()->_direction;
     double coeff = directional_light.dot(rec.normal);
@@ -56,7 +56,7 @@ Math::Vector3D ray_color(const RayTracer::Ray &r, int depth, const Scene &world)
 {
     if (depth <= 0)
         return Math::Vector3D(0, 0, 0);
-    Material::Lambertian rec(Math::Vector3D(0, 0, 0));
+    Material::Flat rec(Math::Vector3D(0, 0, 0));
     if (world.hits(r, Math::Interval(0.001, infinity), rec)) {
         RayTracer::Ray scattered;
         Math::Vector3D attenuation;

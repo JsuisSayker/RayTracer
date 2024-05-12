@@ -8,8 +8,8 @@
 #include <Camera.hpp>
 #include <Cone.hpp>
 #include <Cylinder.hpp>
-#include <Dielectric.hpp>
-#include <Lambertian.hpp>
+#include <Glass.hpp>
+#include <Flat.hpp>
 #include <Material.hpp>
 #include <Metal.hpp>
 #include <Plane.hpp>
@@ -30,8 +30,8 @@ int RayTracer::Raytracer::run(std::string scene_file)
 {
     Scene world;
 
-    std::shared_ptr<Material::Lambertian> ground_material =
-        std::make_shared<Material::Lambertian>(Math::Vector3D(0.5, 0.5, 0.5));
+    std::shared_ptr<Material::Flat> ground_material =
+        std::make_shared<Material::Flat>(Math::Vector3D(0.5, 0.5, 0.5));
     world.addPrimitive(
         std::make_shared<RayTracer::Sphere>(Math::Point3D(0, -1000, 0), 1000, ground_material));
 
@@ -46,7 +46,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     //             if (choose_mat < 0.8) {
     //                 // diffuse
     //                 Math::Vector3D albedo = random_vector() * random_vector();
-    //                 sphere_material = std::make_shared<Material::Lambertian>(albedo);
+    //                 sphere_material = std::make_shared<Material::Flat>(albedo);
     //                 Math::Point3D center2 = center + Math::Vector3D(0, random_double(0, .5), 0);
     //                 world.addPrimitive(
     //                     std::make_shared<RayTracer::Sphere>(center, center2, 0.2,
@@ -60,7 +60,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
     //                     std::make_shared<RayTracer::Sphere>(center, 0.2, sphere_material));
     //             } else {
     //                 // glass
-    //                 sphere_material = std::make_shared<Material::Dielectric>(1.5);
+    //                 sphere_material = std::make_shared<Material::Glass>(1.5);
     //                 world.addPrimitive(
     //                     std::make_shared<RayTracer::Sphere>(center, 0.2, sphere_material));
     //             }
@@ -68,18 +68,18 @@ int RayTracer::Raytracer::run(std::string scene_file)
     //     }
     // }
 
-    std::shared_ptr<Material::Dielectric> material1 = std::make_shared<Material::Dielectric>(1.5);
+    std::shared_ptr<Material::Glass> material1 = std::make_shared<Material::Glass>(1.5);
     world.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 1, 0), 1.0, material1));
 
-    std::shared_ptr<Material::Lambertian> material2 =
-        std::make_shared<Material::Lambertian>(Math::Vector3D(0.4, 0.2, 0.1));
+    std::shared_ptr<Material::Flat> material2 =
+        std::make_shared<Material::Flat>(Math::Vector3D(0.4, 0.2, 0.1));
     world.addPrimitive(
         std::make_shared<RayTracer::Sphere>(Math::Point3D(-4, 1, 0), 1.0, material2));
 
     std::shared_ptr<Material::Metal> material3 =
         std::make_shared<Material::Metal>(Math::Vector3D(0, 0.6, 0.5), 0.0);
     world.addPrimitive(
-        std::make_shared<RayTracer::Cone>(Math::Point3D(4, 1, 0), 1.0, 0.8, 100, material3));
+        std::make_shared<RayTracer::Cylinder>(Math::Point3D(4, 1, 0), 1.0, 0.8, material3));
 
     world._ambient_light = 1.0;
     world._directional_lights.push_back(
@@ -89,7 +89,7 @@ int RayTracer::Raytracer::run(std::string scene_file)
 
     cam._aspect_ratio = 16.0 / 9.0;
     cam._image_width = 400;
-    cam._samples_per_pixel = 40;
+    cam._samples_per_pixel = 100;
     cam._max_depth = 50;
 
     cam._vfov = 40;

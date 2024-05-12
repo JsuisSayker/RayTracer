@@ -33,9 +33,9 @@ target_link_libraries(raytracer
   raytracer_directionallight
   raytracer_math
   raytracer_materials
-  raytracer_lambertian
+  raytracer_flat
   raytracer_metal
-  raytracer_dielectric
+  raytracer_glass
   raytracer_primitives
   raytracer_core_rendrers
   raytracer_sphere

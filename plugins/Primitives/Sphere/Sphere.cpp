@@ -5,7 +5,7 @@
 ** Sphere
 */
 
-#include <Lambertian.hpp>
+#include <Flat.hpp>
 #include <Material.hpp>
 #include <Sphere.hpp>
 #include <memory>
@@ -75,6 +75,6 @@ Math::Point3D RayTracer::Sphere::sphere_center(double time) const
 extern "C" std::shared_ptr<RayTracer::APrimitives> entryPoint()
 {
     std::shared_ptr<Material::Material> material_ground =
-        std::make_shared<Material::Lambertian>(Math::Vector3D(0.8, 0.8, 0.0));
+        std::make_shared<Material::Flat>(Math::Vector3D(0.8, 0.8, 0.0));
     return std::make_shared<RayTracer::Sphere>(Math::Point3D(0, 0, 0), 1, material_ground);
 }
