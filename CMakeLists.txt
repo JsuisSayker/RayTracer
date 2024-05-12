@@ -29,6 +29,8 @@ add_subdirectory(plugins)
 
 target_link_libraries(raytracer
   raytracer_interfaces
+  raytracer_light
+  raytracer_directionallight
   raytracer_math
   raytracer_materials
   raytracer_lambertian

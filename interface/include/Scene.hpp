@@ -8,6 +8,7 @@
 #ifndef SCENE_HPP_
 #define SCENE_HPP_
 
+#include "DirectionalLight.hpp"
 #include "Interval.hpp"
 #include "Point3D.hpp"
 #include "Sphere.hpp"
@@ -27,6 +28,7 @@ class Scene {
     bool hits(const RayTracer::Ray &r, Math::Interval ray_t, Material::Material &rec) const;
 
     double _ambient_light;
+    std::vector<std::shared_ptr<Lights::DirectionalLight>> _directional_lights;
 
   protected:
     std::vector<std::shared_ptr<ICamera>> _camera;

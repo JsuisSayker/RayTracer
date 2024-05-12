@@ -78,13 +78,15 @@ int RayTracer::Raytracer::run(std::string scene_file)
         std::make_shared<Material::Metal>(Math::Vector3D(0.7, 0.6, 0.5), 0.0);
     world.addPrimitive(std::make_shared<RayTracer::Sphere>(Math::Point3D(4, 1, 0), 1.0, material3));
 
-    world._ambient_light = 0.2;
+    world._ambient_light = 1.0;
+    world._directional_lights.push_back(
+        std::make_shared<Lights::DirectionalLight>(Math::Vector3D(1, 1, 1)));
 
     RayTracer::Camera cam;
 
     cam._aspect_ratio = 16.0 / 9.0;
-    cam._image_width = 200;
-    cam._samples_per_pixel = 20;
+    cam._image_width = 400;
+    cam._samples_per_pixel = 40;
     cam._max_depth = 50;
 
     cam._vfov = 20;
