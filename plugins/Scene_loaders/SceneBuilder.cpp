@@ -86,9 +86,9 @@ SceneBuilder::createFlatMaterial(completeFile &data, SceneBuilder::ActualObject 
                                 data._planeList[index].colorValues.b);
     }
     if (actualObject == SceneBuilder::ActualObject::CONE) {
-        albedo = Math::Vector3D(data._coneList[index].colorValues.r,
-                                data._coneList[index].colorValues.g,
-                                data._coneList[index].colorValues.b);
+        albedo =
+            Math::Vector3D(data._coneList[index].colorValues.r, data._coneList[index].colorValues.g,
+                           data._coneList[index].colorValues.b);
     }
     return std::make_shared<Materials::Flat>(albedo);
 }
@@ -125,23 +125,23 @@ void SceneBuilder::createPlane(completeFile &data, int index, Scene &scene,
 }
 
 void SceneBuilder::createCone(completeFile &data, int index, Scene &scene,
-                               UNUSED RayTracer::Camera &cam)
+                              UNUSED RayTracer::Camera &cam)
 {
-    std::shared_ptr<Materials::Material> actualMaterial = _material.at(
-        data._coneList[index].material)(data, SceneBuilder::ActualObject::CONE, index);
+    std::shared_ptr<Materials::Material> actualMaterial =
+        _material.at(data._coneList[index].material)(data, SceneBuilder::ActualObject::CONE, index);
     if (data._coneList[index].height != -1.0) {
         std::shared_ptr<IPrimitives> cone = std::make_shared<RayTracer::Cone>(
-            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y, data._coneList[index].center.z),
-            data._coneList[index].radius, data._coneList[index].height
-            ,data._coneList[index].angle
-            , actualMaterial, data._coneList[index].axis[0]);
+            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y,
+                          data._coneList[index].center.z),
+            data._coneList[index].radius, data._coneList[index].height, data._coneList[index].angle,
+            actualMaterial, data._coneList[index].axis[0]);
         scene.addPrimitive(cone);
     } else {
         std::shared_ptr<IPrimitives> cone = std::make_shared<RayTracer::Cone>(
-            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y, data._coneList[index].center.z),
-            data._coneList[index].radius,
-            data._coneList[index].angle,
-            actualMaterial, data._coneList[index].axis[0]);
+            Math::Point3D(data._coneList[index].center.x, data._coneList[index].center.y,
+                          data._coneList[index].center.z),
+            data._coneList[index].radius, data._coneList[index].angle, actualMaterial,
+            data._coneList[index].axis[0]);
         scene.addPrimitive(cone);
     }
 }
@@ -278,7 +278,7 @@ void SceneBuilder::savePlaneData(const libconfig::Setting &element, int start,
 }
 
 void SceneBuilder::saveConeData(const libconfig::Setting &element, int start,
-                                 completeFile &data) const
+                                completeFile &data) const
 {
     SceneBuilder::ConeElement coneElement;
     for (int i = start; i < element.getLength(); i++) {

@@ -15,8 +15,8 @@
 #include "Plane.hpp"
 #include "Scene.hpp"
 #include "Sphere.hpp"
-#include <Cone.hpp>
 #include <Camera.hpp>
+#include <Cone.hpp>
 #include <Macros.hpp>
 #include <filesystem>
 #include <functional>
@@ -111,10 +111,12 @@ class SceneBuilder : virtual public ISceneBuilder {
                    {"Camera",
                     std::bind(&SceneBuilder::createCamera, this, std::placeholders::_1,
                               std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
-                   {"Lights", std::bind(&SceneBuilder::createLight, this, std::placeholders::_1,
-                                        std::placeholders::_2, std::placeholders::_3,
-                                        std::placeholders::_4)},
-                    {"Cone", std::bind(&SceneBuilder::createCone, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)}};
+                   {"Lights",
+                    std::bind(&SceneBuilder::createLight, this, std::placeholders::_1,
+                              std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)},
+                   {"Cone", std::bind(&SceneBuilder::createCone, this, std::placeholders::_1,
+                                      std::placeholders::_2, std::placeholders::_3,
+                                      std::placeholders::_4)}};
 
     std::map<std::string, std::function<std::shared_ptr<Materials::Material>(
                               completeFile &, SceneBuilder::ActualObject, int)>>
